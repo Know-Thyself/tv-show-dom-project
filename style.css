@@ -1,3 +1,92 @@
+*{
+  background-color: rgb(51, 46, 46);
+}
 #root {
-  color: red;
+  color: rgb(224, 15, 50);
+}
+.header {
+  height: auto;
+}
+.logo {
+  height: 64px;
+  width: 64px;
+  float: left;
+  margin: 0 1.5% 0 1.5%;
+}
+a {
+  color:  rgb(218, 217, 223);
+  color: antiquewhite;
+  
+}
+.root {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-evenly;
+}
+.root div {
+  height: auto;
+  width: 100%;
+}
+h3 {
+  display: block;
+  width: fit-content;
+  margin: auto;
+  text-align: center;
+  padding: 5px;
+  background-color: rgb(218, 217, 223);
+  width: 95%;
+  border-radius: 10px;
+}
+img {
+  display: block;
+  margin: auto;
+  height: auto;
+  width: 95%;
+}
+p {
+  display: flex;
+  flex-wrap: wrap;
+  margin: auto;
+  text-align: justify;
+  width: 97.5%;
+  color:  rgb(218, 217, 223);
+  color: antiquewhite;
+}
+
+
+
+@media screen and (min-width: 650px) {
+  .root {
+    display: flex;
+
+  }
+  .root div {
+    display: block;
+    width: 50%;
+    margin-top: 15px;
+  }
+  img {
+    width: 90%;
+  }
+  p {
+    width: 95%;
+  }
+}
+
+@media screen and (min-width: 1150px) {
+  .root div {
+    display: block;
+    height: auto;
+    width: 33%;
+    margin-top: 15px;
+  }
+
+  img {
+    width: 95%;
+  }
+  p {
+    width: 97.5%;
+  }
 }
