@@ -1,16 +1,22 @@
 //You can edit ALL of the code here
+// Getting elements from the DOM 
+const rootElem = document.getElementById("root");
+const searchButton = document.querySelector(".search-button");
+const searchBar = document.querySelector(".search-bar");
 
-let promise = fetch("https://api.tvmaze.com/shows/82/episodes")
-.then(response => response.json())
+// Getting data from API and parsing it into a json file
+let request = fetch("https://api.tvmaze.com/shows/82/episodes")
+const promisedEpisodes = request.then(response => response.json())
 
-promise.then(extract);
+// And then passing the data into functions to generate content to the webpage
+const extractedEpisodes = promisedEpisodes.then(extracted)
+promisedEpisodes.then(searchedObj)
 
-function extract(obj) {
- obj.forEach(element => {
-
-   const rootElem = document.getElementById("root");
+// A function to extract and transform the data into a webpage. 
+function extracted(obj) {
+  obj.forEach(element => {
    
-    let expandingList = document.createElement('div', { is : 'expanding-list' })
+    let expandingList = document.createElement('div', { is : 'expanding-list' });
     rootElem.appendChild(expandingList);
     header = document.createElement('h3');
     expandingList.appendChild(header);
@@ -22,9 +28,29 @@ function extract(obj) {
     paragraph.innerHTML = `${element.summary}`;
     expandingList.appendChild(paragraph);
 
- });
-}
+  });
 
+}
+ let expandingList = document.createElement('div', { is : 'expanding-list' });
+// An event listener to dynamically update the web page while a user is typing in the search bar.
+function searchedObj() {
+  
+  const searchEvent = searchBar.addEventListener('keyup', (e) => {
+  const searchValue = e.target.value.toLowerCase();
+  const parentDiv = document.getElementsByTagName('div');
+  
+    for (let i = 3; i < 76; i++) {
+      if (!parentDiv[i].firstChild.innerHTML.toLowerCase().includes(searchValue) && !parentDiv[i].lastChild.innerHTML.toLowerCase().includes(searchValue)) {
+          parentDiv[i].style.display = "none";
+
+      } else if(parentDiv[i].firstChild.innerHTML.toLowerCase().includes(searchValue) || parentDiv[i].lastChild.innerHTML.toLowerCase().includes(searchValue)) {
+          parentDiv[i].style.display = "block";
+          
+        } 
+    }
+
+  });
+} 
 
 /* function setup() {
   

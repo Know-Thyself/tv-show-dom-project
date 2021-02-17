@@ -1,5 +1,7 @@
+/* Mobile first Responsive Web Design */
 *{
   background-color: rgb(51, 46, 46);
+  box-sizing: border-box;
 }
 #root {
   color: rgb(224, 15, 50);
@@ -14,10 +16,37 @@
   margin: 0 1.5% 0 1.5%;
 }
 a {
-  color:  rgb(218, 217, 223);
   color: antiquewhite;
-  
 }
+.search-container {
+  float: right;
+}
+.search-button {
+  float: right;
+  margin-top: 20px;
+  margin-right: 16px;
+  background: rgb(219, 210, 210);
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+}
+.fa {
+  float: right;
+  padding: 6px;
+  background: #ddd;
+  border: none;
+  cursor: pointer;
+}
+.search-bar {
+  float: right;
+  padding: 6px;
+  margin-top: 20px;
+  background: #ddd;
+  font-size: 1rem;
+  margin-right: 4px;
+  border: none;
+}
+
 .root {
   display: flex;
   flex-wrap: wrap;
@@ -28,6 +57,7 @@ a {
 .root div {
   height: auto;
   width: 100%;
+  display: block;
 }
 h3 {
   display: block;
@@ -51,19 +81,13 @@ p {
   margin: auto;
   text-align: justify;
   width: 97.5%;
-  color:  rgb(218, 217, 223);
   color: antiquewhite;
 }
 
 
-
+/* For medium screen sizes like iPad/tablets */
 @media screen and (min-width: 650px) {
-  .root {
-    display: flex;
-
-  }
   .root div {
-    display: block;
     width: 50%;
     margin-top: 15px;
   }
@@ -75,9 +99,9 @@ p {
   }
 }
 
+/* Larger Screen Devices - Laptops/Desktops */
 @media screen and (min-width: 1150px) {
   .root div {
-    display: block;
     height: auto;
     width: 33%;
     margin-top: 15px;
