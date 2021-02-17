@@ -1,8 +1,8 @@
 //You can edit ALL of the code here
 // Getting elements from the DOM 
 const rootElem = document.getElementById("root");
-const searchButton = document.querySelector(".search-button");
 const searchBar = document.querySelector(".search-bar");
+let searchResult;
 
 // Getting data from API and parsing it into a json file
 let request = fetch("https://api.tvmaze.com/shows/82/episodes")
@@ -33,12 +33,23 @@ function extracted(obj) {
 }
 
 // An event listener to dynamically update the web page while a user is typing in the search bar.
-function searchedObj() {
+function searchedObj(obj) {
   
   const searchEvent = searchBar.addEventListener('keyup', (e) => {
-  const searchValue = e.target.value.toLowerCase();
   const parentDiv = document.getElementsByTagName('div');
+  const searchInfo = document.querySelector('.search-info');
+  searchInfo.style.display = "block";
   
+    const searchValue = e.target.value.toLowerCase();
+    searchResult = obj.filter((episode) => {
+    return (episode.name.toLowerCase().includes(searchValue) || episode.summary.toLowerCase().includes(searchValue));
+
+    })
+    searchInfo.innerHTML = `Displaying ${searchResult.length}/73 Episodes`;
+    
+    if (searchValue === "") {
+      searchInfo.style.display = "none";
+    }
     for (let i = 3; i < 76; i++) {
       if (!parentDiv[i].firstChild.innerHTML.toLowerCase().includes(searchValue) && !parentDiv[i].lastChild.innerHTML.toLowerCase().includes(searchValue)) {
           parentDiv[i].style.display = "none";

@@ -46,6 +46,10 @@ a {
   margin-right: 4px;
   border: none;
 }
+.search-info {
+  color: antiquewhite;
+  display: none;
+}
 
 .root {
   display: flex;
