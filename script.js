@@ -31,7 +31,7 @@ function extracted(obj) {
   });
 
 }
- let expandingList = document.createElement('div', { is : 'expanding-list' });
+
 // An event listener to dynamically update the web page while a user is typing in the search bar.
 function searchedObj() {
   
