@@ -9,8 +9,6 @@ let searchResult;
 let request = fetch("https://api.tvmaze.com/shows/82/episodes")
 const promisedEpisodes = request.then(response => response.json())
 
-console.log(promisedEpisodes);
-
 // And then passing the data into functions to generate content to the webpage
 const extractedEpisodes = promisedEpisodes.then(extracted)
 promisedEpisodes.then(searchedObj)
@@ -40,26 +38,25 @@ function extracted(obj) {
     select.appendChild(options);
 
     const activeOption = document.querySelector('.dropdown-menu');
-
+    // An event listener for select option box
     select.addEventListener('change', function(){
       console.log(this.value);
       let checker = document.createElement('option');
       checker.innerHTML = (`${this.value}`).split(' ').slice(2).join(' ');;
       
-      console.log(checker);
-
       for (let i = 3; i < 76; i++) {
-      if (!parentDiv[i].firstChild.innerHTML.includes(checker.innerHTML)) {
+        if (!parentDiv[i].firstChild.innerHTML.includes(checker.innerHTML)) {
           parentDiv[i].style.display = "none";
-
-      } else if(parentDiv[i].firstChild.innerHTML.includes(checker.innerHTML)) {
+        } 
+        else if(parentDiv[i].firstChild.innerHTML.includes(checker.innerHTML)) {
           parentDiv[i].style.display = "block";
           parentDiv[i].style.width = "50%";
-
           hiddenBtnDiv.style.display = "block";
           
         } 
-    }
+
+      }
+
     })
 
   });
@@ -95,6 +92,7 @@ function searchedObj(obj) {
     }
 
   });
+  
 } 
 
 // An event listener to go back to all episodes

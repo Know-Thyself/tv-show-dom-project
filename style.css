@@ -6,6 +6,7 @@
 #root {
   color: rgb(224, 15, 50);
 }
+/* logo, select options and search bar */
 .header {
   height: auto;
   display: flex;
@@ -30,10 +31,12 @@
   color: darkcyan;
 }
 
+/* Search bar and search button */
 .search-container {
   float: right;
 }
-.search-button {
+/* Temporarily removed button */
+/* .search-button {
   float: right;
   margin-top: 20px;
   margin-right: 16px;
@@ -48,7 +51,7 @@
   background: #ddd;
   border: none;
   cursor: pointer;
-}
+} */
 .search-bar {
   float: right;
   padding: 6px;
@@ -58,11 +61,13 @@
   margin-right: 18px;
   border: none;
 }
+/* Only to appear to display search result */
 .search-info {
   color: antiquewhite;
   display: none;
 }
 
+/* All episodes' names images and summaries */
 .root {
   display: flex;
   flex-wrap: wrap;
@@ -100,6 +105,7 @@ p {
   color: antiquewhite;
 }
 
+/* A button to go back to all episodes */
 .hidden-button-container {
   display: none;
   text-align: center;
@@ -115,6 +121,8 @@ p {
 .hidden-button:hover{
   background-color: lightsteelblue;
 }
+
+/* Footer */
 .footer {
   height: 50px;
   background-color: rgb(75, 49, 49);

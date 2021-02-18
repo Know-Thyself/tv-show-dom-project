@@ -2,24 +2,23 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TV Show Project | Biruk (Know-Thyself)</title>
     <link href="style.css" rel="stylesheet" />
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
   </head>
 
-
   <body>
+    <!-- The header consisting of the logo, the select box and the search bar  -->
     <div class="header">
       <img class="logo" src="/favicon.ico" alt="logo-image">
-      
+      <!-- Select box to pick an episode -->
       <select name="episodes" id="episodes" class="episodes">
         <option value="episode" class="dropdown-menu">Choose from our list of episodes</option>
-      
       </select>
 
-
+      <!-- Search bar to search for episodes -->
       <div class="search-container">
         <h4 class="search-info"></h4>
         <form action="">
@@ -28,18 +27,19 @@
         </form>
       </div>
     </div>
-      <!-- <a href="https://www.tvmaze.com/">The data is originated from TVMaze.com</a> -->
+
+    <!-- A root container for all episodes generated using an api and DOM manipulation  -->
     <div class="root" id="root">
     </div>
+    <!-- A button to be used after an episode is selected to go back to all episodes -->
     <div class="hidden-button-container">
       <button type="button" class="hidden-button">Back to all episodes</button>
     </div>
-
+    <!-- Footer just to show where the data is originated from -->
     <footer class="footer">
       <a class="data-info" href="https://www.tvmaze.com/">The api data on this webpage is originated from TVMaze.com</a>
     </footer>
     
-
     <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
     <script src="episodes.js"></script>
 
