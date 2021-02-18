@@ -30,10 +30,6 @@
   color: darkcyan;
 }
 
-a {
-  color: antiquewhite;
-}
-
 .search-container {
   float: right;
 }
@@ -119,7 +115,19 @@ p {
 .hidden-button:hover{
   background-color: lightsteelblue;
 }
-
+.footer {
+  height: 50px;
+  background-color: rgb(75, 49, 49);
+}
+.data-info {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  background-color: rgb(75, 49, 49);
+  padding-top: 10px;
+  color: aqua;
+  font-size: medium;
+}
 /* For medium screen sizes like iPad/tablets */
 @media screen and (min-width: 650px) {
   .root div {

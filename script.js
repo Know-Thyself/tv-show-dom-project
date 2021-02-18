@@ -54,7 +54,7 @@ function extracted(obj) {
 
       } else if(parentDiv[i].firstChild.innerHTML.includes(checker.innerHTML)) {
           parentDiv[i].style.display = "block";
-          parentDiv[i].style.width = "60%";
+          parentDiv[i].style.width = "50%";
 
           hiddenBtnDiv.style.display = "block";
           
