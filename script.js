@@ -2,11 +2,14 @@
 // Getting elements from the DOM 
 const rootElem = document.getElementById("root");
 const searchBar = document.querySelector(".search-bar");
+const parentDiv = document.getElementsByTagName('div');
 let searchResult;
 
 // Getting data from API and parsing it into a json file
 let request = fetch("https://api.tvmaze.com/shows/82/episodes")
 const promisedEpisodes = request.then(response => response.json())
+
+console.log(promisedEpisodes);
 
 // And then passing the data into functions to generate content to the webpage
 const extractedEpisodes = promisedEpisodes.then(extracted)
@@ -21,12 +24,43 @@ function extracted(obj) {
     header = document.createElement('h3');
     expandingList.appendChild(header);
     header.innerHTML = `${element.name} S0${element.season}E0${element.number}`;
+    header.setAttribute('id', `${element.id}`)
     img = document.createElement('img');
     img.src = element.image.medium; 
     expandingList.appendChild(img);
     paragraph = document.createElement('p');
     paragraph.innerHTML = `${element.summary}`;
     expandingList.appendChild(paragraph);
+
+
+    let select = document.querySelector('.episodes');
+    let options = document.createElement('option');
+    options.innerHTML = `S0${element.season}E0${element.number} - ${element.name}`;
+    options.setAttribute('id', `${element.id}`)
+    select.appendChild(options);
+
+    const activeOption = document.querySelector('.dropdown-menu');
+
+    select.addEventListener('change', function(){
+      console.log(this.value);
+      let checker = document.createElement('option');
+      checker.innerHTML = (`${this.value}`).split(' ').slice(2).join(' ');;
+      
+      console.log(checker);
+
+      for (let i = 3; i < 76; i++) {
+      if (!parentDiv[i].firstChild.innerHTML.includes(checker.innerHTML)) {
+          parentDiv[i].style.display = "none";
+
+      } else if(parentDiv[i].firstChild.innerHTML.includes(checker.innerHTML)) {
+          parentDiv[i].style.display = "block";
+          parentDiv[i].style.width = "60%";
+
+          hiddenBtnDiv.style.display = "block";
+          
+        } 
+    }
+    })
 
   });
 
@@ -36,7 +70,7 @@ function extracted(obj) {
 function searchedObj(obj) {
   
   const searchEvent = searchBar.addEventListener('keyup', (e) => {
-  const parentDiv = document.getElementsByTagName('div');
+  
   const searchInfo = document.querySelector('.search-info');
   searchInfo.style.display = "block";
   
@@ -62,6 +96,13 @@ function searchedObj(obj) {
 
   });
 } 
+
+// An event listener to go back to all episodes
+hiddenBtnDiv = document.querySelector('.hidden-button-container');
+hiddenButton = document.querySelector('.hidden-button');
+hiddenButton.addEventListener('click', function() {
+  window.location.reload();
+})
 
 /* function setup() {
   

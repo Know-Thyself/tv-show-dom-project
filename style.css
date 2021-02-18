@@ -8,6 +8,8 @@
 }
 .header {
   height: auto;
+  display: flex;
+  justify-content: space-between;
 }
 .logo {
   height: 64px;
@@ -15,9 +17,23 @@
   float: left;
   margin: 0 1.5% 0 1.5%;
 }
+.episodes {
+  margin-top: 15px;
+  padding: 2px;
+  background: #ddd;
+  font-size: 1rem;
+  border: none;
+  height: 35px;
+}
+.episodes option {
+  height: 30px;
+  color: darkcyan;
+}
+
 a {
   color: antiquewhite;
 }
+
 .search-container {
   float: right;
 }
@@ -43,7 +59,7 @@ a {
   margin-top: 20px;
   background: #ddd;
   font-size: 1rem;
-  margin-right: 4px;
+  margin-right: 18px;
   border: none;
 }
 .search-info {
@@ -88,6 +104,21 @@ p {
   color: antiquewhite;
 }
 
+.hidden-button-container {
+  display: none;
+  text-align: center;
+}
+.hidden-button {
+  margin-top: 20px;
+  background-color: rgb(218, 217, 223);
+  padding: 5px;
+  font-size: 1.2rem;
+  font-weight: 500;
+  border-radius: 6px;
+}
+.hidden-button:hover{
+  background-color: lightsteelblue;
+}
 
 /* For medium screen sizes like iPad/tablets */
 @media screen and (min-width: 650px) {

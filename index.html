@@ -9,21 +9,30 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
   </head>
 
+
   <body>
     <div class="header">
       <img class="logo" src="/favicon.ico" alt="logo-image">
+      
+      <select name="episodes" id="episodes" class="episodes">
+        <option value="episode" class="dropdown-menu">Choose from our list of episodes</option>
+      
+      </select>
+
+
       <div class="search-container">
         <h4 class="search-info"></h4>
         <form action="">
-          <button class="search-button" type="submit"><i class="fa fa-search"></i></button>
-          <input class="search-bar" type="text" placeholder="Search for episodes" name="search">
+          <!-- <button class="search-button" type="submit"><i class="fa fa-search"></i></button> -->
+          <input class="search-bar" type="text" placeholder="Search for episodes" name="search"> 
         </form>
       </div>
-
     </div>
-      <a href="https://www.tvmaze.com/">The data is originated from TVMaze.com</a>
-    
+      <!-- <a href="https://www.tvmaze.com/">The data is originated from TVMaze.com</a> -->
     <div class="root" id="root">
+    </div>
+    <div class="hidden-button-container">
+      <button type="button" class="hidden-button">Back to all episodes</button>
     </div>
     
 
