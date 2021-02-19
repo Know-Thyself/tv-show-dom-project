@@ -8,7 +8,7 @@ let searchResult;
 // Getting data from API and parsing it into a json file
 let request = fetch("https://api.tvmaze.com/shows/82/episodes")
 const promisedEpisodes = request.then(response => response.json())
-
+console.log(promisedEpisodes)
 // And then passing the data into functions to generate content to the webpage
 const extractedEpisodes = promisedEpisodes.then(extracted)
 promisedEpisodes.then(searchedObj)
@@ -31,7 +31,7 @@ function extracted(obj) {
     expandingList.appendChild(paragraph);
 
 
-    let select = document.querySelector('.episodes');
+    let select = document.querySelector('.select');
     let options = document.createElement('option');
     options.innerHTML = `S0${element.season}E0${element.number} - ${element.name}`;
     options.setAttribute('id', `${element.id}`)
@@ -44,16 +44,16 @@ function extracted(obj) {
       let checker = document.createElement('option');
       checker.innerHTML = (`${this.value}`).split(' ').slice(2).join(' ');;
       
-      for (let i = 3; i < 76; i++) {
+      for (let i = 3; i < parentDiv.length; i++) {
         if (!parentDiv[i].firstChild.innerHTML.includes(checker.innerHTML)) {
           parentDiv[i].style.display = "none";
         } 
-        else if(parentDiv[i].firstChild.innerHTML.includes(checker.innerHTML)) {
-          parentDiv[i].style.display = "block";
-          parentDiv[i].style.width = "50%";
-          hiddenBtnDiv.style.display = "block";
+          else if(parentDiv[i].firstChild.innerHTML.includes(checker.innerHTML)) {
+            parentDiv[i].style.display = "block";
+            parentDiv[i].style.width = "50%";
+            hiddenBtnDiv.style.display = "block";
           
-        } 
+          } 
 
       }
 
