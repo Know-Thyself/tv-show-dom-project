@@ -6,7 +6,7 @@ const parentDiv = document.getElementsByTagName('div');
 let searchResult;
 
 // Getting data from API and parsing it into a json file
-let request = fetch("https://api.tvmaze.com/shows/22036/episodes")
+let request = fetch("https://api.tvmaze.com/shows/82/episodes")
 const promisedEpisodes = request.then(response => response.json())
 console.log(promisedEpisodes)
 // And then passing the data into functions to generate content to the webpage
@@ -69,7 +69,9 @@ function searchedObj(obj) {
   const searchEvent = searchBar.addEventListener('keyup', (e) => {
   
   const searchInfo = document.querySelector('.search-info');
+  const searchInfo2 = document.querySelector('.search-info2');
   searchInfo.style.display = "block";
+  searchInfo2.style.display = "block";
   
     const searchValue = e.target.value.toLowerCase();
     searchResult = obj.filter((episode) => {
@@ -80,6 +82,7 @@ function searchedObj(obj) {
     
     if (searchValue === "") {
       searchInfo.style.display = "none";
+      searchInfo2.style.display = "none";
     }
     for (let i = 3; i < 76; i++) {
       if (!parentDiv[i].firstChild.innerHTML.toLowerCase().includes(searchValue) && !parentDiv[i].lastChild.innerHTML.toLowerCase().includes(searchValue)) {
@@ -87,8 +90,9 @@ function searchedObj(obj) {
 
       } else if(parentDiv[i].firstChild.innerHTML.toLowerCase().includes(searchValue) || parentDiv[i].lastChild.innerHTML.toLowerCase().includes(searchValue)) {
           parentDiv[i].style.display = "block";
-          
+         
         } 
+
     }
 
   });

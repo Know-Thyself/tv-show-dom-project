@@ -68,9 +68,13 @@
   border: none;
 }
 /* Only to appear to display search result */
-.search-info {
-  color: antiquewhite;
+.search-info,
+.search-info2 {
+  /* color: rgb(212, 169, 176); */
+  color: rgb(179, 172, 81);
+  font-weight: 500;
   display: none;
+  margin-right: 20px;
 }
 
 /* All episodes' names images and summaries */
@@ -130,17 +134,17 @@ p {
 
 /* Footer */
 .footer {
-  height: 50px;
+  height: 70px;
   background-color: rgb(75, 49, 49);
 }
 .data-info {
   display: block;
   text-align: center;
   margin-top: 20px;
-  background-color: rgb(75, 49, 49);
   padding-top: 10px;
-  color: aqua;
-  font-size: medium;
+  color: rgb(179, 172, 81);
+  font-size: large;
+
 }
 /* For medium screen sizes like iPad/tablets */
 @media screen and (min-width: 750px) {
