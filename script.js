@@ -6,7 +6,7 @@ const parentDiv = document.getElementsByTagName('div');
 let searchResult;
 
 // Getting data from API and parsing it into a json file
-let request = fetch("https://api.tvmaze.com/shows/82/episodes")
+let request = fetch("https://api.tvmaze.com/shows/22036/episodes")
 const promisedEpisodes = request.then(response => response.json())
 console.log(promisedEpisodes)
 // And then passing the data into functions to generate content to the webpage
@@ -76,7 +76,7 @@ function searchedObj(obj) {
     return (episode.name.toLowerCase().includes(searchValue) || episode.summary.toLowerCase().includes(searchValue));
 
     })
-    searchInfo.innerHTML = `Displaying ${searchResult.length}/73 Episodes`;
+    searchInfo.innerHTML = `Displaying ${searchResult.length}/${parentDiv.length - 4} Episodes`;
     
     if (searchValue === "") {
       searchInfo.style.display = "none";
