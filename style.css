@@ -26,7 +26,8 @@
   float: left;
   margin: 0 1.5% 0 1.5%;
 }
-.select {
+.select-shows,
+.select-episodes {
   margin-top: 5px;
   margin-left: 8px;
   margin-right: 10px;
@@ -35,12 +36,16 @@
   font-size: 1rem;
   border: none;
   height: 35px;
-  /* max-width: 80%; */
+  max-width: 60%;
   align-items: center;
 }
-.select option {
+.select-shows option,
+.select-episodes option {
   height: 30px;
   color: darkcyan;
+}
+.select-episodes {
+  display: none;
 }
 
 /* Search bar and search button */
@@ -73,6 +78,8 @@
   font-size: 1rem;
   margin-right: 10px;
   border: none;
+  height: 35px;
+  width: 50%;
 }
 /* Only to appear to display search result */
 .search-info,
@@ -91,12 +98,12 @@
   width: 100%;
   justify-content: space-evenly;
 }
-.root div {
-  height: auto;
+.expanding-div {
   width: 100%;
-  display: block;
+  display: flexbox;
+  margin-top: 10px;
 }
-h3 {
+h2 {
   display: block;
   /* width: fit-content; */
   margin: auto;
@@ -109,7 +116,7 @@ h3 {
 img {
   display: block;
   margin: auto;
-  height: auto;
+  height: 30rem;
   width: 95%;
 }
 p {
@@ -121,6 +128,23 @@ p {
   /* color: rgb(212, 169, 176); */
   color: rgb(77, 162, 168);
 }
+/* .infoContainer {
+  display: flex;
+  min-width: 100%;
+
+} */
+
+ h4 {
+  font-size: large;
+  color: rgba(215, 216, 247, 0.952);
+  width:  95%;
+  justify-content: center;
+  margin: 15px;
+  background-color: rgb(5, 37, 31);
+  padding: 10px;
+  height: 4rem;
+}
+
 
 /* A button to go back to all episodes */
 .hidden-button-container {
@@ -158,14 +182,18 @@ p {
   .header {
     flex-direction: row;
   }
-  .select {
+  .select-shows,
+  .select-episodes {
     margin-top: 18px;
+    width: 30%;
   }
+
   .search-bar {
     margin-right: 18px;
     margin-top: 20px;
+    width: 80%;
   }
-  .root div {
+  .expanding-div {
     width: 50%;
     margin-top: 15px;
   }
@@ -174,6 +202,9 @@ p {
   }
   p {
     width: 95%;
+  }
+  hr {
+    width: 90%;
   }
 }
 
@@ -184,7 +215,14 @@ p {
     width: 33%;
     margin-top: 15px;
   }
-  h3 {
+  .select-shows,
+  .select-episodes {
+    width: 20%;
+  }
+  .search-bar {
+    width: 100%;
+  }
+  h2 {
     width: 98%;
   }
   img {
@@ -192,5 +230,8 @@ p {
   }
   p {
     width: 97.5%;
+  }
+  h4 {
+    margin-left: 12px;
   }
 }

@@ -14,8 +14,11 @@
     <div class="header">
       <img class="logo" src="/favicon.ico" alt="logo-image">
       <!-- Select box to pick an episode -->
-      <select name="episodes" id="episodes" class="select">
-        <option value="episode" class="dropdown-menu">Choose from our list of episodes</option>
+      <select name="episodes" id="episodes" class="select-episodes">
+        <option value="shows" class="dropdown-menu">Select from our list of Episodes</option>
+      </select>
+      <select name="shows" id="shows" class="select-shows">
+        <option value="episode" class="dropdown-menu">Select from our list of Shows</option>
       </select>
 
       <!-- Search bar to search for episodes -->
@@ -24,7 +27,7 @@
         <h4 class="search-info2">Clear the search bar to go back to all episodes</h4>
         <form action="">
           <!-- <button class="search-button" type="submit"><i class="fa fa-search"></i></button> -->
-          <input class="search-bar" type="text" placeholder="Search for episodes" name="search"> 
+          <input class="search-bar" type="text" placeholder="Search for shows" name="search"> 
         </form>
       </div>
     </div>
@@ -34,7 +37,7 @@
     </div>
     <!-- A button to be used after an episode is selected to go back to all episodes -->
     <div class="hidden-button-container">
-      <button type="button" class="hidden-button">Back to all episodes</button>
+      <button type="button" class="hidden-button">Back to all shows</button><button type="button" id="episodes-link" class="hidden-button">Episodes of this show</button>
     </div>
     <!-- Footer just to show where the data is originated from -->
     <footer class="footer">
@@ -46,5 +49,6 @@
 
     <!-- Loads YOUR javascript code -->
     <script src="script.js"></script>
+    <script src="shows.js"></script>
   </body>
 </html>
