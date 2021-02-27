@@ -96,18 +96,22 @@
 
 .nav-link {
   padding: 1% 0%;
-  background-color: #ddd;
+  background-color:  rgb(94, 9, 9);
   text-decoration: none;
   text-align: center;
   margin-top: 18px;
   margin-bottom: 18px;
   width: 10rem;
   font-size: large;
-  color: rgb(9, 4, 37);
+  color: rgb(246, 245, 253);
   font-weight: 600;
   display: none;
   position: relative;
   border-radius: 5px;
+  margin-right: 2rem;
+}
+.nav-link:hover {
+  background-color: crimson;
 }
 
 /* All episodes' names images and summaries */

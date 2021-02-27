@@ -1,21 +1,13 @@
 //You can edit ALL of the code here
 // Getting elements from the DOM 
-      const displayShows = document.getElementById('shows-page');
-      const displayEpisodes = document.getElementById('episodes-page');
+const displayShows = document.getElementById('shows-page-wrapper');
+const displayEpisodes = document.getElementById('episodes-page-wrapper');
 
 const rootElem = document.getElementById("root-shows");
 const rootEpisodes = document.getElementById("root-episodes");
 const searchBar = document.querySelector(".search-bar");
-let selectShows = document.getElementById('shows');
 const parentDiv = document.getElementsByTagName('div');
 let data = [];
-
-// function switchDisplay(shown, hidden) {
-//   document.getElementById('show').style.display = "block";
-//   document.getElementById('hidden').style.display = "none";
-//   return false;
-// }
-
 
 //Getting data from API and passing it as a parameter
 
@@ -43,10 +35,8 @@ function allShows(obj) {
     header = document.createElement('h2');
     expandingList.appendChild(header);
     header.innerHTML = `${element.name}` 
-    //S0${element.season}E0${element.number}`;
     img = document.createElement('img');
     img.setAttribute('class', 'episodeImage');
-    //let usableImg = Object.values(`${element.image}`);
     img.src = element.image.medium; 
     expandingList.appendChild(img);
     paragraph = document.createElement('p');
@@ -55,35 +45,28 @@ function allShows(obj) {
 
     //Genres, Status, Rating and Runtime
     let genres = document.createElement('h4');
-    //let status = document.createElement('h4');
     let rating = document.createElement('h4');
-    //let runtime = document.createElement('h4');
     expandingList.appendChild(genres);
     expandingList.appendChild(rating);
+
     // Giving a bit of space between words and after commas
     let corrected = element.genres.toString().split(',').join(', ');
-  
-     
     genres.innerHTML = `Genres: ${corrected}`
     rating.innerHTML = `Status: ${element.status}   Rating: ${element.rating.average} Runtime: ${element.runtime}`; 
-
     genres.style.wordSpacing = "5px";
     rating.style.wordSpacing = "5px";
 
     let selectShows = document.querySelector('#shows');
     let options = document.createElement('option');
-    //options.value = `episodes.html`
     options.innerHTML = `${element.name}`;
     selectShows.appendChild(options);
     let anchorTag = document.createElement('a');
     anchorTag.setAttribute('href', '#');
-    //anchorTag.setAttribute("onclick", "return display('episodes-page', 'shows-page');");
     options.appendChild(anchorTag);
 
-    // An event listener for select option box
+    // An event listener to fetch a show's episodes data when selected
     selectShows.addEventListener('change', function(){
 
-      //switchDisplay('episodes-page', 'shows-page');
       displayShows.style.display = 'none';
       displayEpisodes.style.display = 'block';
   
@@ -135,7 +118,6 @@ function showSearch () {
       } else if(parentDiv[i].innerHTML.toLowerCase().includes(searchValue)) {
           parentDiv[i].style.display = "flexbox";
           parentDiv[i].style.marginTop = "0";
-
          
         } 
 
@@ -153,12 +135,7 @@ function showSearch () {
 
 }
 
-// An event listener to go back to all episodes
-button = document.querySelector('.button');
-
-
-
-// Linking to episodes page
+// Loading episodes page
 function episodesPage(obj) {
 
   obj.forEach(element => {
@@ -175,8 +152,6 @@ function episodesPage(obj) {
     header.innerHTML = `${element.name} S0${element.season}E0${element.number}`;
     img = document.createElement('img');
     img.setAttribute('class', 'episodeImage');
-    // let usableImg = Object.values(element.image);
-    // console.log(usableImg);
     img.src = element.image.medium; 
     expandingList.appendChild(img);
     paragraph = document.createElement('p');
@@ -190,7 +165,6 @@ function episodesPage(obj) {
     select.appendChild(options);
 
     let navLink = document.getElementById('navigation-link');
-   
     // An event listener for select option box
     select.addEventListener('change', function() {
       console.log(this.value);
@@ -203,13 +177,13 @@ function episodesPage(obj) {
           parentDiv[i].style.display = "none";
         } 
           else if(parentDiv[i].innerHTML.includes(checker.innerHTML)) {
-            parentDiv[i].style.display = "block";
+            parentDiv[i].style.display = "flex";
             parentDiv[i].style.width = "100%";
             displayShows.style.display = "none";
             displayEpisodes.style.display = "block";
             buttonContainer.style.display = "";
             navLink.style.display = "inline-block";
-             navLink.setAttribute('href', window.location.href);
+            navLink.setAttribute('href', window.location.href);
         
           } 
 
@@ -220,34 +194,33 @@ function episodesPage(obj) {
   });
 
 }
+
 let episodesBtn = document.getElementById("episodes-button");
 let buttonContainer = document.getElementById("button-container");
 
 episodesBtn.addEventListener('click', function() {
-  for(let i = 0; i < parentDiv.length; i++)
-  return parentDiv[i].style.display = "block";
+  // Next step... a button to go back to all episodes
 
 })
-
-
 
 // An event listener to dynamically update the web page while a user is typing in the search bar.
 function episodeSearch(obj) {
   
   const searchEvent = searchBar.addEventListener('keyup', (e) => {
-  // const expandingList = document.getElementById('expandingDiv');
+  
   const searchInfo = document.querySelector('.search-info');
   const searchInfo2 = document.querySelector('.search-info2');
   searchInfo.style.display = "block";
   searchInfo2.style.display = "block";
   
-    const searchValue = e.target.value.toLowerCase();
+  const searchValue = e.target.value.toLowerCase();
+  // Filtering the search
   searchResult = obj.filter((episode) => {
     return (episode.name.toLowerCase().includes(searchValue) || episode.summary.toLowerCase().includes(searchValue));
 
     })
     searchInfo.innerHTML = `Displaying ${searchResult.length}/${parentDiv.length - 4} Episodes`;
-    
+
     if (searchValue === "") {
       searchInfo.style.display = "none";
       searchInfo2.style.display = "none";
@@ -267,20 +240,4 @@ function episodeSearch(obj) {
   
 } 
 
-
 window.onload = loadShows;
-
-//window.onload = getAllShows;
-/* function setup() {
-  
-  const allEpisodes = getAllEpisodes();
-  makePageForEpisodes(allEpisodes);
- 
-}
-
-function makePageForEpisodes(episodeList) {
-  const rootElem = document.getElementById("root");
-  rootElem.textContent = `Got ${episodeList.length} episode(s)`;
-}
-
-window.onload = setup; */
