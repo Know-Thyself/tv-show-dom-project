@@ -13,6 +13,13 @@
   /* color: rgb(10, 51, 51); */
   color: rgb(1, 41, 30);
 }
+.display-shows {
+  display: block;
+}
+.display-episodes {
+  display: none;
+}
+
 /* logo, select options and search bar */
 .header {
   height: auto;
@@ -43,9 +50,6 @@
 .select-episodes option {
   height: 30px;
   color: darkcyan;
-}
-.select-episodes {
-  display: none;
 }
 
 /* Search bar and search button */
@@ -90,8 +94,25 @@
   margin-right: 20px;
 }
 
+.nav-link {
+  padding: 1% 0%;
+  background-color: #ddd;
+  text-decoration: none;
+  text-align: center;
+  margin-top: 18px;
+  margin-bottom: 18px;
+  width: 10rem;
+  font-size: large;
+  color: rgb(9, 4, 37);
+  font-weight: 600;
+  display: none;
+  position: relative;
+  border-radius: 5px;
+}
+
 /* All episodes' names images and summaries */
-.root {
+.root-shows,
+.root-episodes {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
@@ -100,7 +121,7 @@
 }
 .expanding-div {
   width: 100%;
-  display: flexbox;
+  display: block;
   margin-top: 10px;
 }
 h2 {
@@ -134,10 +155,10 @@ p {
 
 } */
 
- h4 {
+h4 {
   font-size: large;
   color: rgba(215, 216, 247, 0.952);
-  width:  95%;
+  width: 95%;
   justify-content: center;
   margin: 15px;
   background-color: rgb(5, 37, 31);
@@ -145,13 +166,12 @@ p {
   height: 4rem;
 }
 
-
 /* A button to go back to all episodes */
-.hidden-button-container {
-  display: none;
+.button-container {
+  display: block;
   text-align: center;
 }
-.hidden-button {
+.episodes-button {
   margin-top: 20px;
   background-color: rgb(218, 217, 223);
   padding: 5px;
@@ -159,7 +179,7 @@ p {
   font-weight: 500;
   border-radius: 6px;
 }
-.hidden-button:hover {
+.button:hover {
   background-color: lightsteelblue;
 }
 
@@ -193,7 +213,8 @@ p {
     margin-top: 20px;
     width: 80%;
   }
-  .expanding-div {
+  .root-shows .expanding-div,
+  .root-episodes .expanding-div {
     width: 50%;
     margin-top: 15px;
   }
@@ -210,7 +231,8 @@ p {
 
 /* Larger Screen Devices - Laptops/Desktops */
 @media screen and (min-width: 1150px) {
-  .root div {
+  .root-shows .expanding-div,
+  .root-episodes .expanding-div {
     height: auto;
     width: 33%;
     margin-top: 15px;

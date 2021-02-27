@@ -1,10 +1,21 @@
 //You can edit ALL of the code here
 // Getting elements from the DOM 
-const rootElem = document.getElementById("root");
+      const displayShows = document.getElementById('shows-page');
+      const displayEpisodes = document.getElementById('episodes-page');
+
+const rootElem = document.getElementById("root-shows");
+const rootEpisodes = document.getElementById("root-episodes");
 const searchBar = document.querySelector(".search-bar");
 let selectShows = document.getElementById('shows');
 const parentDiv = document.getElementsByTagName('div');
 let data = [];
+
+// function switchDisplay(shown, hidden) {
+//   document.getElementById('show').style.display = "block";
+//   document.getElementById('hidden').style.display = "none";
+//   return false;
+// }
+
 
 //Getting data from API and passing it as a parameter
 
@@ -14,7 +25,7 @@ const loadShows = async () => {
     data = await response.json();
     console.log(data);
     allShows(data);
-    searchEvent(data)
+    showSearch(data)
   } catch (err){
       console.error(err);
     }
@@ -24,10 +35,11 @@ const loadShows = async () => {
 // A function to extract data and populate the webpage. 
 function allShows(obj) {
   obj.forEach(element => {
-   
+    
+    const rootShows = document.getElementById('root-shows');
     let expandingList = document.createElement('div', { is : 'expanding-list' });
     expandingList.setAttribute('class', 'expanding-div');
-    rootElem.appendChild(expandingList);
+    rootShows.appendChild(expandingList);
     header = document.createElement('h2');
     expandingList.appendChild(header);
     header.innerHTML = `${element.name}` 
@@ -58,30 +70,37 @@ function allShows(obj) {
     genres.style.wordSpacing = "5px";
     rating.style.wordSpacing = "5px";
 
-    let select = document.querySelector('#shows');
+    let selectShows = document.querySelector('#shows');
     let options = document.createElement('option');
+    //options.value = `episodes.html`
     options.innerHTML = `${element.name}`;
-    select.appendChild(options);
+    selectShows.appendChild(options);
+    let anchorTag = document.createElement('a');
+    anchorTag.setAttribute('href', '#');
+    //anchorTag.setAttribute("onclick", "return display('episodes-page', 'shows-page');");
+    options.appendChild(anchorTag);
 
     // An event listener for select option box
-    select.addEventListener('change', function(){
-      console.log(this.value);
-      let checker = document.createElement('h2');
-      checker.innerHTML = `${this.value}`;
-      // .split(' ').slice(2).join(' ');
-      
-      for (let i = 3; i < parentDiv.length; i++) {
-        if (!parentDiv[i].firstChild.innerHTML.includes(checker.innerHTML)) {
-          parentDiv[i].style.display = "none";
+    selectShows.addEventListener('change', function(){
 
-        } 
-          else if(parentDiv[i].firstChild.innerHTML.includes(checker.innerHTML)) {
-            parentDiv[i].style.display = "flex";
-            parentDiv[i].style.width = "100%";
-            document.querySelector('.hidden-button-container').style.display = "block";
-            // once all the functionalities are done, it needs a bit of css styling for small screen sizes
-          } 
-
+      //switchDisplay('episodes-page', 'shows-page');
+      displayShows.style.display = 'none';
+      displayEpisodes.style.display = 'block';
+  
+      if (`${element.name}` === this.value) { 
+          `${element.id}`;
+          showID =`${element.id}`;
+          
+          fetch("https://api.tvmaze.com/shows/"+showID+"/episodes")
+          .then(response => response.json())
+          .then(episodes => {
+              console.log(episodes);
+              return episodes;
+          })
+          .then(episodesPage)
+          .then(episodeSearch)
+          .catch(err => console.error(err))
+                
       }
 
     })
@@ -92,7 +111,7 @@ function allShows(obj) {
 
 
 // An event listener to dynamically update the web page while a user is typing in the search bar.
-function searchEvent () { 
+function showSearch () { 
 
   searchBar.addEventListener('keyup', (e) => {
 
@@ -109,12 +128,14 @@ function searchEvent () {
     
     })  
     
-    for (let i = 3; i < parentDiv.length; i++) {
+    for (let i = 4; i < parentDiv.length; i++) {
       if (!parentDiv[i].innerHTML.toLowerCase().includes(searchValue)) {
           parentDiv[i].style.display = "none";
 
       } else if(parentDiv[i].innerHTML.toLowerCase().includes(searchValue)) {
           parentDiv[i].style.display = "flexbox";
+          parentDiv[i].style.marginTop = "0";
+
          
         } 
 
@@ -133,40 +154,23 @@ function searchEvent () {
 }
 
 // An event listener to go back to all episodes
-hiddenButton = document.querySelector('.hidden-button');
-
-hiddenButton.addEventListener('click', function() {
-  window.location.reload();
-
-})
+button = document.querySelector('.button');
 
 
 
-//window.onload = getAllShows;
-/* function setup() {
-  
-  const allEpisodes = getAllEpisodes();
-  makePageForEpisodes(allEpisodes);
- 
-}
+// Linking to episodes page
+function episodesPage(obj) {
 
-function makePageForEpisodes(episodeList) {
-  const rootElem = document.getElementById("root");
-  rootElem.textContent = `Got ${episodeList.length} episode(s)`;
-}
-
-window.onload = setup; */
-
-
-/* 
-
-function extracted(obj) {
   obj.forEach(element => {
-   
+    
+    const rootEpisodes = document.getElementById('root-episodes');
     let expandingList = document.createElement('div', { is : 'expanding-list' });
     expandingList.setAttribute('id', 'expandingDiv');
-    rootElem.appendChild(expandingList);
-    header = document.createElement('h3');
+    expandingList.setAttribute('class', 'expanding-div');
+
+    
+    rootEpisodes.appendChild(expandingList);
+    header = document.createElement('h2');
     expandingList.appendChild(header);
     header.innerHTML = `${element.name} S0${element.season}E0${element.number}`;
     img = document.createElement('img');
@@ -180,28 +184,33 @@ function extracted(obj) {
     expandingList.appendChild(paragraph);
 
 
-    let select = document.querySelector('#episodes');
+    let select = document.getElementById('episodes');
     let options = document.createElement('option');
     options.innerHTML = `S0${element.season}E0${element.number} - ${element.name}`;
     select.appendChild(options);
 
-    const activeOption = document.querySelector('.dropdown-menu');
+    let navLink = document.getElementById('navigation-link');
+   
     // An event listener for select option box
-    select.addEventListener('change', function(){
+    select.addEventListener('change', function() {
       console.log(this.value);
       let checker = document.createElement('option');
       checker.innerHTML = (this.value).split(' ').slice(2).join(' ');
       
-      for (let i = 3; i < parentDiv.length; i++) {
+      for (let i = 4; i < parentDiv.length; i++) {
         
-        if (!parentDiv[i].firstChild.innerHTML.includes(checker.innerHTML)) {
+        if (!parentDiv[i].innerHTML.includes(checker.innerHTML)) {
           parentDiv[i].style.display = "none";
         } 
-          else if(parentDiv[i].firstChild.innerHTML.includes(checker.innerHTML)) {
+          else if(parentDiv[i].innerHTML.includes(checker.innerHTML)) {
             parentDiv[i].style.display = "block";
-            parentDiv[i].style.width = "50%";
-            hiddenBtnDiv.style.display = "block";
-          
+            parentDiv[i].style.width = "100%";
+            displayShows.style.display = "none";
+            displayEpisodes.style.display = "block";
+            buttonContainer.style.display = "";
+            navLink.style.display = "inline-block";
+             navLink.setAttribute('href', window.location.href);
+        
           } 
 
       }
@@ -211,11 +220,19 @@ function extracted(obj) {
   });
 
 }
+let episodesBtn = document.getElementById("episodes-button");
+let buttonContainer = document.getElementById("button-container");
+
+episodesBtn.addEventListener('click', function() {
+  for(let i = 0; i < parentDiv.length; i++)
+  return parentDiv[i].style.display = "block";
+
+})
 
 
 
 // An event listener to dynamically update the web page while a user is typing in the search bar.
-function searchedObj(obj) {
+function episodeSearch(obj) {
   
   const searchEvent = searchBar.addEventListener('keyup', (e) => {
   // const expandingList = document.getElementById('expandingDiv');
@@ -235,7 +252,7 @@ function searchedObj(obj) {
       searchInfo.style.display = "none";
       searchInfo2.style.display = "none";
     }
-    for (let i = 3; i < 76; i++) {
+    for (let i = 4; i < parentDiv.length; i++) {
       if (!parentDiv[i].firstChild.innerHTML.toLowerCase().includes(searchValue) && !parentDiv[i].lastChild.innerHTML.toLowerCase().includes(searchValue)) {
           parentDiv[i].style.display = "none";
 
@@ -250,44 +267,20 @@ function searchedObj(obj) {
   
 } 
 
- */
-
-/* function selectAShow(arr) {
-  
-  arr.forEach(element => {
-    let shows = document.createElement('option'); 
-    shows.setAttribute("id", "`${element.id}`")
-    shows.innerHTML = `${element.name}`;
-    shows.setAttribute("id", `${element.id}`)
-    selectShows.append(shows);
-
-        selectShows.addEventListener('change', function() {
-        console.log(this.value);
-      
-          if (`${element.name}` === this.value) { 
-              `${element.id}`;
-              showID =`${element.id}`;
-              console.log(showID);
-              console.log(`${element.id}`);
-              let selected = document.getElementById(`${element.id}`)
-              console.log(selected);
-              console.log(selected.length);
-
-
-              fetch("https://api.tvmaze.com/shows/"+showID+"/episodes")
-              .then(response => response.json())
-              .then(data => {
-                console.log(data);
-                console.log(data.length);
-                return data;
-              })
-              .then(extracted)
-              .then(searchedObj)
-                
-          }
-          
-        })
-  })
-} */
 
 window.onload = loadShows;
+
+//window.onload = getAllShows;
+/* function setup() {
+  
+  const allEpisodes = getAllEpisodes();
+  makePageForEpisodes(allEpisodes);
+ 
+}
+
+function makePageForEpisodes(episodeList) {
+  const rootElem = document.getElementById("root");
+  rootElem.textContent = `Got ${episodeList.length} episode(s)`;
+}
+
+window.onload = setup; */

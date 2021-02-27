@@ -11,39 +11,68 @@
 
   <body>
     <!-- The header consisting of the logo, the select box and the search bar  -->
-    <div class="header">
-      <img class="logo" src="/favicon.ico" alt="logo-image">
-      <!-- Select box to pick an episode -->
-      <select name="episodes" id="episodes" class="select-episodes">
-        <option value="shows" class="dropdown-menu">Select from our list of Episodes</option>
-      </select>
-      <select name="shows" id="shows" class="select-shows">
-        <option value="episode" class="dropdown-menu">Select from our list of Shows</option>
-      </select>
+    <div id="shows-page" class="display-shows"> 
+      <div class="header">
+        <img class="logo" src="/favicon.ico" alt="logo-image">
+        <!-- Select box to pick an episode -->
+        <select name="shows" id="shows" class="select-shows">
+          <option value="episode" class="dropdown-menu">Select from our list of Shows</option>
+        </select>
+       
 
-      <!-- Search bar to search for episodes -->
-      <div class="search-container">
-        <h4 class="search-info"></h4>
-        <h4 class="search-info2">Clear the search bar to go back to all episodes</h4>
-        <form action="">
+        <!-- Search bar to search for episodes -->
+        <div class="search-container">
+          <h4 class="search-info"></h4>
+          <h4 class="search-info2">Clear the search bar to go back to all episodes</h4>
+          <form action="">
           <!-- <button class="search-button" type="submit"><i class="fa fa-search"></i></button> -->
-          <input class="search-bar" type="text" placeholder="Search for shows" name="search"> 
-        </form>
+            <input class="search-bar" type="text" placeholder="Search for shows" name="search"> 
+          </form>
+        </div>
       </div>
+
+      <!-- A root container for all shows generated using an api and DOM manipulation  -->
+      <div class="root-shows" id="root-shows">
+      </div>
+      <!-- Footer just to show where the data is originated from -->
+      <footer class="footer">
+        <a class="data-info" href="https://www.tvmaze.com/">The data on this app is originated from TVMaze.com</a>
+      </footer>
     </div>
 
-    <!-- A root container for all episodes generated using an api and DOM manipulation  -->
-    <div class="root" id="root">
+<!-- Episodes page -->
+    <div id="episodes-page" class="display-episodes">
+      <div class="header">
+        <img class="logo" src="/favicon.ico" alt="logo-image">
+        <!-- Select box to pick an episode -->
+        <select name="episodes" id="episodes" class="select-episodes">
+          <option value="episodes" class="dropdown-menu">Select from our list of Episodes</option>
+        </select>
+        <a id="navigation-link" class="nav-link" >Back to all Shows</a>
+        
+            <!-- Search bar to search for episodes -->
+        <div class="search-container">
+          <h4 class="search-info"></h4>
+          <h4 class="search-info2">Clear the search bar to go back to all episodes</h4>
+          <form action="">
+            <!-- <button class="search-button" type="submit"><i class="fa fa-search"></i></button> -->
+            <input class="search-bar" type="text" placeholder="Search for episodes" name="search">
+          </form>
+        </div>
+      </div>
+        
+      <!-- A root container for all episodes generated using an api and DOM manipulation  -->
+      <div class="root-episodes" id="root-episodes">
+      </div>
+      <!-- A button to be used after an episode is selected to go back to all episodes -->
+          <!-- Footer just to show where the data is originated from -->
+      <div id="button-container" class="button-container">
+        <button id="episodes-button" class="episodes-button">Back to all episodes</button>
+      </div>
+      <footer class="footer">
+        <a class="data-info" href="https://www.tvmaze.com/">The data on this app is originated from TVMaze.com</a>
+      </footer>
     </div>
-    <!-- A button to be used after an episode is selected to go back to all episodes -->
-    <div class="hidden-button-container">
-      <button type="button" class="hidden-button">Back to all shows</button><button type="button" id="episodes-link" class="hidden-button">Episodes of this show</button>
-    </div>
-    <!-- Footer just to show where the data is originated from -->
-    <footer class="footer">
-      <a class="data-info" href="https://www.tvmaze.com/">The data on this app is originated from TVMaze.com</a>
-    </footer>
-    
     <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
     <script src="episodes.js"></script>
 
