@@ -10,6 +10,7 @@
   </head>
 
   <body>
+    <div id="main-container"> 
     <!-- The header consisting of the logo, the select box and the search bar  -->
     <div id="shows-page-wrapper" class="display-shows"> 
       <div class="header">
@@ -47,10 +48,13 @@
       <div class="header">
         <img class="logo" src="/favicon.ico" alt="logo-image">
         <!-- Select box to pick an episode -->
+      
         <select name="episodes" id="episodes" class="select-episodes">
           <option value="episodes" class="dropdown-menu">Select from our list of Episodes</option>
         </select>
         <a id="navigation-link" class="nav-link">Back to all Shows</a>
+        <a id="episodes-navigation-link" class="nav-link episodes-link">Back to all Episodes</a>
+        
         
         <div class="episode-search-container">
           <h4 class="episode-search-info"></h4>
@@ -63,18 +67,18 @@
       </div>
         
       <!-- A root container for all episodes generated using an api and DOM manipulation  -->
+      <div id="episodes-wrapper"> 
       <div class="root-episodes" id="root-episodes">
+      </div>
       </div>
 
       <!-- A button to be used after an episode is selected to go back to all episodes -->
-      <div id="button-container" class="button-container">
-        <button id="episodes-button" class="episodes-button">Back to all episodes</button>
-      </div>
 
       <!-- Footer just to show where the data is originated from -->
       <footer class="footer">
         <a class="data-info" href="https://www.tvmaze.com/">The data on this app is originated from TVMaze.com</a>
       </footer>
+    </div>
     </div>
 
     <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
