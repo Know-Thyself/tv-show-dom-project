@@ -104,7 +104,6 @@
   display: none;
   margin-right: 20px;
 }
-
 .episode-search-info,
 .episode-search-info2 {
   color: antiquewhite;
@@ -112,7 +111,6 @@
   display: none;
   margin-right: 20px;
 }
-
 .nav-link {
   padding: 1% 0%;
   background-color:  rgb(165, 46, 46);
@@ -211,7 +209,7 @@ h4 {
 }
 
 /* For medium screen sizes like iPad/tablets */
-@media screen and (min-width: 750px) {
+@media screen and (min-width: 768px) {
   .header {
     flex-direction: row;
   }
