@@ -160,13 +160,13 @@
   display: block;
   margin-top: 10px;
 }
-h2 {
+.name {
   display: block;
   margin: auto;
   text-align: center;
   padding: 5px;
   background-color: rgb(218, 217, 223);
-  width: 95%;
+  width: 98%;
   border-radius: 8px;
 }
 img {
@@ -182,16 +182,22 @@ p {
   text-align: justify;
   width: 97.5%;
   color: rgb(77, 162, 168);
+  margin-top: 5px;
 }
 h4 {
+  display: block;
   font-size: large;
-  color: rgba(215, 216, 247, 0.952);
+  color: rgb(1, 41, 30);
   width: 95%;
   justify-content: center;
-  margin: 15px;
-  background-color: rgb(5, 37, 31);
-  padding: 10px;
-  height: 4rem;
+  margin: auto;
+  background-color: rgb(218, 217, 223);
+  padding: auto;
+  padding-left: 10px;
+  height: 2rem;
+}
+.genres {
+  padding-top: 7px;
 }
 
 /* Footer */
@@ -218,7 +224,6 @@ h4 {
     margin-top: 18px;
     width: 30%;
   }
-
   .search-bar,
   .episodes-search-bar {
     margin-right: 18px;
@@ -236,7 +241,7 @@ h4 {
   p {
     width: 95%;
   }
-  hr {
+  h4 {
     width: 90%;
   }
 }
@@ -258,7 +263,7 @@ h4 {
     margin-top: 8%;
     width: 100%;
   }
-  h2 {
+  .name {
     width: 98%;
   }
   img {
@@ -268,7 +273,8 @@ h4 {
     width: 97.5%;
   }
   h4 {
-    margin-left: 12px;
+    padding-left: 10px;
+    width: 95%;
   }
   
 }

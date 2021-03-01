@@ -49,18 +49,17 @@ function allShows(obj) {
     expandingList.setAttribute('class', 'expanding-div');
     rootShows.appendChild(expandingList);
     header = document.createElement('h2');
+    header.setAttribute('class', 'name');
     expandingList.appendChild(header);
     header.innerHTML = `${element.name}` 
     img = document.createElement('img');
     img.setAttribute('class', 'episodeImage');
     img.src = element.image.medium; 
     expandingList.appendChild(img);
-    paragraph = document.createElement('p');
-    paragraph.innerHTML = `${element.summary}`;
-    expandingList.appendChild(paragraph);
 
     //Genres, Status, Rating and Runtime
     let genres = document.createElement('h4');
+    genres.setAttribute('class', 'genres')
     let rating = document.createElement('h4');
     expandingList.appendChild(genres);
     expandingList.appendChild(rating);
@@ -71,6 +70,10 @@ function allShows(obj) {
     rating.innerHTML = `Status: ${element.status}   Rating: ${element.rating.average} Runtime: ${element.runtime}`; 
     genres.style.wordSpacing = "5px";
     rating.style.wordSpacing = "5px";
+
+    paragraph = document.createElement('p');
+    paragraph.innerHTML = `${element.summary}`;
+    expandingList.appendChild(paragraph);
 
     let selectShows = document.querySelector('#shows');
     let options = document.createElement('option');
