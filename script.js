@@ -150,6 +150,7 @@ function episodesPage(obj) {
     header = document.createElement('h2');
     expandingList.appendChild(header);
     header.innerHTML = `${element.name} S0${element.season}E0${element.number}`;
+    header.setAttribute('class', 'name')
     img = document.createElement('img');
     img.setAttribute('class', 'episodeImage');
     img.src = element.image.medium; 

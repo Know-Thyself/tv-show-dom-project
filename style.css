@@ -98,30 +98,31 @@
   width: 60%;
 }
 .search-info,
-.search-info2 {
-  color: antiquewhite;
-  font-weight: 500;
-  display: none;
-  margin-right: 20px;
-}
+.search-info2,
 .episode-search-info,
 .episode-search-info2 {
   color: antiquewhite;
   font-weight: 500;
   display: none;
   margin-right: 20px;
+  background-color: rgb(109, 4, 4);
+  padding-right: 10px;
+}
+.search-info,
+.episode-search-info {
+  padding-top: 10px;
 }
 .nav-link {
-  padding: 1% 0%;
-  background-color:  rgb(165, 46, 46);
+  padding: 0.6% 0%;
+  background-color: rgb(109, 4, 4);
   text-decoration: none;
   text-align: center;
-  margin-top: 10px;
+  margin-top: 18px;
   margin-bottom: 18px;
-  width: 10rem;
+  width: 9rem;
   font-size: large;
-  color: rgb(246, 245, 253);
-  font-weight: 600;
+  color: antiquewhite;
+  font-weight: 500;
   display: none;
   position: relative;
   border-radius: 5px;
@@ -129,7 +130,7 @@
   cursor: pointer;
 }
 .episodes-link {
-  width: 11rem;
+  width: 10rem;
 }
 .nav-link:hover {
   background-color: crimson;
