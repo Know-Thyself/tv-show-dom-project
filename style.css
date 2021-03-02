@@ -3,16 +3,6 @@
   background-color: rgb(51, 46, 46);
   box-sizing: border-box;
 }
-#root {
-  /* Experimenting with colors */
-  /* color: rgb(224, 15, 50); */
-  /* color: rgb(13, 16, 53); */
-  /* color: rgb(9, 45, 110); */
-  /* color: rgb(66, 42, 6); */
-  /* color: rgb(21, 70, 70); */
-  /* color: rgb(10, 51, 51); */
-  color: rgb(1, 41, 30);
-}
 .display-shows {
   display: block;
 }
@@ -33,19 +23,12 @@
   float: left;
   margin: 0 1.5% 0 1.5%;
 }
-.select-shows {
+.select-shows,
+.select-episodes  {
   margin-top: 5px;
   margin-left: 8px;
   margin-right: 10px;
   padding: 2px;
-  background: #ddd;
-  font-size: 1rem;
-  border: none;
-  height: 35px;
-  max-width: 60%;
-  align-items: center;
-}
-.select-episodes {
   background: #ddd;
   font-size: 1rem;
   border: none;
@@ -113,11 +96,11 @@
   padding-top: 10px;
 }
 .nav-link {
-  padding: 0.6% 0%;
+  padding: 0.7% 0%;
   background-color: rgb(109, 4, 4);
   text-decoration: none;
   text-align: center;
-  margin-top: 18px;
+  margin-top: 16px;
   margin-bottom: 18px;
   width: 9rem;
   font-size: large;
@@ -187,18 +170,18 @@ p {
 }
 h4 {
   display: block;
-  font-size: large;
+  font-size: medium;
   color: rgb(1, 41, 30);
   width: 95%;
   justify-content: center;
   margin: auto;
   background-color: rgb(218, 217, 223);
   padding: auto;
-  padding-left: 10px;
-  height: 2rem;
+  padding-left: 7px;
+  height: 1.75rem;
 }
 .genres {
-  padding-top: 7px;
+  padding-top: 6px;
 }
 
 /* Footer */
@@ -216,7 +199,7 @@ h4 {
 }
 
 /* For medium screen sizes like iPad/tablets */
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 680px) {
   .header {
     flex-direction: row;
   }
@@ -238,6 +221,7 @@ h4 {
   }
   img {
     width: 90%;
+    height: 18rem;
   }
   p {
     width: 95%;
@@ -247,12 +231,46 @@ h4 {
   }
 }
 
-/* Larger Screen Devices - Laptops/Desktops */
-@media screen and (min-width: 1150px) {
+/* Small screen Laptops/Desktops */
+@media screen and (min-width: 1025px) {
   .root-shows .expanding-div,
   .root-episodes .expanding-div {
     height: auto;
     width: 33%;
+    margin-top: 15px;
+  }
+  .select-shows,
+  .select-episodes {
+    width: 25%;
+  }
+  .search-bar,
+  .episodes-search-bar {
+    margin-top: 8%;
+    width: 100%;
+  }
+  .name {
+    width: 98%;
+  }
+  img {
+    width: 95%;
+    height: 16rem;
+  }
+  p {
+    width: 97.5%;
+  }
+  h4 {
+    padding-left: 10px;
+    width: 95%;
+  }
+  
+}
+
+/* Larger screen Devices - Laptops/Desktops */
+@media screen and (min-width: 1340px) {
+  .root-shows .expanding-div,
+  .root-episodes .expanding-div {
+    height: auto;
+    width: 24%;
     margin-top: 15px;
   }
   .select-shows,
@@ -274,8 +292,7 @@ h4 {
     width: 97.5%;
   }
   h4 {
-    padding-left: 10px;
-    width: 95%;
+    padding-left: 5px;
   }
   
 }
