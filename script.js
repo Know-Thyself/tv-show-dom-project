@@ -44,7 +44,7 @@ const loadEpisodes = async () => {
 function allShows(obj) {
   obj.forEach(element => {
     
-    const rootShows = document.getElementById('root-shows');
+    //Creating elements
     let expandingList = document.createElement('div', { is : 'expanding-list' });
     expandingList.setAttribute('class', 'expanding-div');
     rootShows.appendChild(expandingList);
@@ -70,11 +70,60 @@ function allShows(obj) {
     rating.innerHTML = `Status: ${element.status}   Rating: ${element.rating.average} Runtime: ${element.runtime}`; 
     genres.style.wordSpacing = "5px";
     rating.style.wordSpacing = "5px";
-
+    
+    //Truncated summary text
+    const truncatedText = element.summary.toString().split(' ').slice(0, 31).join(' ');
+    //Unused code, perhaps to be used at some point
+    const truncatedText2 = element.summary.toString().split(' ').splice(31).join(' ');
+    
     paragraph = document.createElement('p');
-    paragraph.innerHTML = `${element.summary}`;
-    expandingList.appendChild(paragraph);
+    paragraph.setAttribute('class', 'summary');
+    paragraph.innerHTML = `${truncatedText}...`;
+    let span = document.createElement('span');
+    span.setAttribute('class', 'more-text summary');
+    span.innerHTML =`${element.summary}`;
+    
+    //Read more button
+    let readMore = document.createElement('button');
+    readMore.setAttribute('class', 'read-more');
+    readMore.innerHTML = `Read more`;
+    expandingList.append(paragraph);
+    paragraph.appendChild(readMore); 
+    
+    //Read less button
+    let readLess = document.createElement('button');
+    readLess.innerHTML = `Read less`;
+    readLess.setAttribute('class', 'read-less');
+    
+    //A condition in which the button won't be necessary
+    if (element.summary.length <= truncatedText.length) {
+      paragraph.innerHTML = `${truncatedText}`;
+      readMore.style.display = "none";
+    }
+    
+    //An event listener to expand the summary text
+    readMore.addEventListener('click', () => {
+      expandingList.removeChild(expandingList.lastChild);
+      expandingList.appendChild(span);
+      span.setAttribute('class', 'more-text summary');
+      span.style.display = 'flex';
+      span.appendChild(readLess);
 
+    })
+    
+    //An event listener to collapse the summary text
+    readLess.addEventListener('click', () => {
+      expandingList.removeChild(expandingList.lastChild);
+      let paragraph = document.createElement('p');
+      expandingList.append(paragraph);
+      paragraph.setAttribute('class', 'summary')
+      paragraph.innerHTML = `${truncatedText}...`;
+      paragraph.appendChild(readMore);
+      span.style.display = 'none';
+
+    })
+    
+    //Select a show options
     let selectShows = document.querySelector('#shows');
     let options = document.createElement('option');
     options.innerHTML = `${element.name}`;
@@ -114,7 +163,8 @@ function showSearch () {
     // Revealing the hidden information lines
     searchInfo.style.display = "block";
     searchInfo2.style.display = "block";
-
+    
+    //Filtering search results
     let searchValue = e.target.value.toLowerCase();
    
     let searchResult = data.filter((element) => {
@@ -141,11 +191,10 @@ function episodesPage(obj) {
 
   obj.forEach(element => {
     
-    const rootEpisodes = document.getElementById('root-episodes');
+    //Creating elements
     const expandingList = document.createElement('div', { is : 'expanding-list' });
     expandingList.setAttribute('id', 'episodesDiv');
     expandingList.setAttribute('class', 'expanding-div');
-
     rootEpisodes.appendChild(expandingList);
     header = document.createElement('h2');
     expandingList.appendChild(header);
@@ -155,10 +204,61 @@ function episodesPage(obj) {
     img.setAttribute('class', 'episodeImage');
     img.src = element.image.medium; 
     expandingList.appendChild(img);
+
+    // Truncated summary Text
     paragraph = document.createElement('p');
-    paragraph.innerHTML = `${element.summary}`;
+    paragraph.setAttribute('class', 'summary');
     expandingList.appendChild(paragraph);
+    const truncatedText = element.summary.toString().split(' ').slice(0, 31).join(' ');
+    //Unused code that might be needed at some point
+    const truncatedText2 = element.summary.toString().split(' ').splice(31).join(' ');
+    paragraph.innerHTML = `${truncatedText}...`;
+    let span = document.createElement('span');
+    span.setAttribute('class', 'more-text summary');
+    span.innerHTML =`${element.summary}`;
+
+    //A read more button
+    let readMore = document.createElement('button');
+    readMore.setAttribute('class', 'read-more');
+    readMore.innerHTML = `Read more`;
+    expandingList.append(paragraph);
+    paragraph.appendChild(readMore); 
     
+    //A read less button
+    let readLess = document.createElement('button');
+    readLess.innerHTML = `Read less`;
+    readLess.setAttribute('class', 'read-less');
+    
+    //A condition in which the buttons won't be necessary
+    if (element.summary.length <= truncatedText.length) {
+      paragraph.innerHTML = `${truncatedText}`;
+      readMore.style.display = "none";
+    }
+    
+    //An event listener to expand the summary
+    readMore.addEventListener('click', () => {
+
+      expandingList.removeChild(expandingList.lastChild);
+      expandingList.appendChild(span);
+      span.setAttribute('class', 'more-text summary');
+      span.style.display = 'flex';
+      span.appendChild(readLess);
+
+    })
+
+    //An event listener to collapse the summary
+    readLess.addEventListener('click', () => {
+
+      expandingList.removeChild(expandingList.lastChild);
+      let paragraph = document.createElement('p');
+      expandingList.append(paragraph);
+      paragraph.setAttribute('class', 'summary')
+      paragraph.innerHTML = `${truncatedText}...`;
+      paragraph.appendChild(readMore);
+      span.style.display = 'none';
+
+    })
+    //Select options
     let select = document.getElementById('episodes');
     let options = document.createElement('option');
     options.innerHTML = `S0${element.season}E0${element.number} - ${element.name}`;
@@ -209,12 +309,12 @@ episodesLink.addEventListener('click', function() {
     document.getElementById('episodes').selectedIndex = 0;
 })
 
-// An event listener to dynamically update the web page while a user is typing in the search bar.
+// A function consisting of an listener to dynamically update the web page based on the user input 
 function episodeSearch() {
   
+  //Search result information
   const episodeSearchInfo = document.querySelector('.episode-search-info');
   const episodeSearchInfo2 = document.querySelector('.episode-search-info2');
-  
   
   episodesSearch.addEventListener('keyup', (e) => {
 
@@ -224,7 +324,7 @@ function episodeSearch() {
   
     const searchInput = e.target.value.toLowerCase();
 
-  // Filtering the search
+    //Filtering the search
     const searchFilter = parsedData.filter((elem) => {
       return (elem.name.toLowerCase().includes(searchInput) || elem.summary.toLowerCase().includes(searchInput));
 
@@ -232,7 +332,7 @@ function episodeSearch() {
     episodeSearchInfo.innerHTML = `Displaying ${searchFilter.length}/${parsedData.length} Episodes`;
     
     while(rootEpisodes.firstChild) {
-      rootEpisodes.removeChild(rootEpisodes.firstChild)
+      rootEpisodes.removeChild(rootEpisodes.firstChild);
     }
     episodesPage(searchFilter);
 

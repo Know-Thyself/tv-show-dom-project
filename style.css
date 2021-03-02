@@ -68,6 +68,7 @@
   border: none;
   cursor: pointer;
 } */
+/* Search bar for shows and episodes */
 .search-bar,
 .episodes-search-bar {
   float: right;
@@ -80,6 +81,7 @@
   height: 35px;
   width: 60%;
 }
+/* Shows how many search results have been found */
 .search-info,
 .search-info2,
 .episode-search-info,
@@ -95,6 +97,7 @@
 .episode-search-info {
   padding-top: 10px;
 }
+/* Navigation links */
 .nav-link {
   padding: 0.7% 0%;
   background-color: rgb(109, 4, 4);
@@ -159,15 +162,33 @@ img {
   height: 20rem;
   width: 95%;
 }
-p {
+.summary {
   display: flex;
   flex-wrap: wrap;
   margin: auto;
   text-align: justify;
-  width: 97.5%;
+  width: 95%;
   color: rgb(77, 162, 168);
-  margin-top: 5px;
 }
+.more-text {
+  display: none;
+} 
+.read-more,
+.read-less {
+  padding: 5px 10px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: rgb(77, 162, 168);
+  background-color: rgb(41, 40, 44);
+  font-size: 1rem;
+  margin-top: -0.8rem;
+}
+.read-more:hover,
+.read-less:hover {
+  background-color: rgb(35, 35, 43);
+}
+/* Genres, status, rating and runtime */
 h4 {
   display: block;
   font-size: medium;
@@ -223,8 +244,8 @@ h4 {
     width: 90%;
     height: 18rem;
   }
-  p {
-    width: 95%;
+  .summary {
+    width: 90%;
   }
   h4 {
     width: 90%;
@@ -255,8 +276,8 @@ h4 {
     width: 95%;
     height: 16rem;
   }
-  p {
-    width: 97.5%;
+  .summary {
+    width: 95%;
   }
   h4 {
     padding-left: 10px;
@@ -287,9 +308,6 @@ h4 {
   }
   img {
     width: 95%;
-  }
-  p {
-    width: 97.5%;
   }
   h4 {
     padding-left: 5px;
