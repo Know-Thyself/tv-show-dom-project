@@ -78,7 +78,7 @@ function allShows(obj) {
     
     paragraph = document.createElement('p');
     paragraph.setAttribute('class', 'summary');
-    paragraph.innerHTML = `${truncatedText}...`;
+    paragraph.innerHTML = `${truncatedText} ...`;
     let span = document.createElement('span');
     span.setAttribute('class', 'more-text summary');
     span.innerHTML =`${element.summary}`;
@@ -191,7 +191,7 @@ function episodesPage(obj) {
 
   obj.forEach(element => {
     
-    //Creating elements
+    //Creating and appending elements
     const expandingList = document.createElement('div', { is : 'expanding-list' });
     expandingList.setAttribute('id', 'episodesDiv');
     expandingList.setAttribute('class', 'expanding-div');
@@ -212,7 +212,7 @@ function episodesPage(obj) {
     const truncatedText = element.summary.toString().split(' ').slice(0, 31).join(' ');
     //Unused code that might be needed at some point
     const truncatedText2 = element.summary.toString().split(' ').splice(31).join(' ');
-    paragraph.innerHTML = `${truncatedText}...`;
+    paragraph.innerHTML = `${truncatedText} ...`;
     let span = document.createElement('span');
     span.setAttribute('class', 'more-text summary');
     span.innerHTML =`${element.summary}`;

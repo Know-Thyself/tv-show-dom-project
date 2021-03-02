@@ -290,27 +290,19 @@ h4 {
 @media screen and (min-width: 1340px) {
   .root-shows .expanding-div,
   .root-episodes .expanding-div {
-    height: auto;
     width: 24%;
-    margin-top: 15px;
-  }
-  .select-shows,
-  .select-episodes {
-    width: 25%;
-  }
-  .search-bar,
-  .episodes-search-bar {
-    margin-top: 8%;
-    width: 100%;
-  }
-  .name {
-    width: 98%;
-  }
-  img {
-    width: 95%;
   }
   h4 {
     padding-left: 5px;
+  }
+  
+}
+
+/* High resolution screens - Laptops/Desktops */
+@media screen and (min-width: 1920px) {
+  .root-shows .expanding-div,
+  .root-episodes .expanding-div {
+    width: 19%;
   }
   
 }
