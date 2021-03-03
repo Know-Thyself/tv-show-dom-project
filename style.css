@@ -105,7 +105,7 @@
   text-align: center;
   margin-top: 16px;
   margin-bottom: 18px;
-  width: 9rem;
+  width: 9.2rem;
   font-size: large;
   color: antiquewhite;
   font-weight: 500;
@@ -116,7 +116,7 @@
   cursor: pointer;
 }
 .episodes-link {
-  width: 10rem;
+  width: 9rem;
 }
 .nav-link:hover {
   background-color: crimson;

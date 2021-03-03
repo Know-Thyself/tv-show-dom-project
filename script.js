@@ -269,7 +269,8 @@ function episodesPage(obj) {
 
     // An event listener for select option box
     select.addEventListener('change', function() {
-
+      
+      displayShows.style.display = "none";
       let checker = document.createElement('option');
       checker.innerHTML = (this.value).split(' ').slice(2).join(' ');
       
@@ -280,10 +281,9 @@ function episodesPage(obj) {
         } 
           else if(parentDiv[i].innerHTML.includes(checker.innerHTML)) {
 
-            parentDiv[i].style.cssText = "display: flex; width: 98%; height:100%; margin: 2% 2% 0% 1%";
-            episodesLink.style.cssText = "display: inline-block; margin-right: 6%";
-            displayShows.style.display = "none";
             displayEpisodes.style.display = "block";
+            parentDiv[i].style.cssText = "display: flexbox; width: 85%; height: auto; margin: auto; margin-top: 1rem";
+            episodesLink.style.cssText = "display: inline-block; margin-right: 3rem";
             navLink.style.display = "inline-block";
            
           } 
