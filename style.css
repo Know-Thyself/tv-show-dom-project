@@ -147,6 +147,12 @@
   display: block;
   margin-top: 10px;
 }
+.show-name {
+  font-family: 'Rye', cursive;
+  color: aliceblue;
+  display: block;
+  text-align: center;
+}
 .name {
   display: block;
   margin: auto;

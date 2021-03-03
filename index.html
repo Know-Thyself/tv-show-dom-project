@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Rye&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TV Show Project | Biruk (Know-Thyself)</title>
     <link href="style.css" rel="stylesheet" />
@@ -49,7 +51,7 @@
 
           <!-- Select box to pick an episode -->
           <select name="episodes" id="episodes" class="select-episodes">
-            <option value="episodes" class="dropdown-menu">Select from our list of Episodes</option>
+            <option value="episodes" id="show-episodes" class="dropdown-menu">Select from our list of Episodes</option>
           </select>
           <a id="navigation-link" class="nav-link">Shows Home Page</a>
           <a id="episodes-navigation-link" class="nav-link episodes-link">Back To Episodes</a>
@@ -65,7 +67,8 @@
         </div> 
         
         <!-- A root container for all episodes generated using an api and DOM manipulation  -->
-        <div id="episodes-wrapper"> 
+        <div id="episodes-wrapper">
+          <h1 id="show-name" class="show-name"></h1> 
           <div class="root-episodes" id="root-episodes">
           </div>
         </div>

@@ -137,12 +137,14 @@ function allShows(obj) {
 
       displayShows.style.display = 'none';
       displayEpisodes.style.display = 'block';
-  
+      
       if (`${element.name}` === this.value) { 
           `${element.id}`;
           showID =`${element.id}`;
           loadEpisodes();
           navLink.style.display = 'block';
+          document.getElementById('show-episodes').innerHTML = `Select from episodes of ${element.name}`;
+          document.getElementById('show-name').innerHTML = `${element.name}`;
       }
 
     })
