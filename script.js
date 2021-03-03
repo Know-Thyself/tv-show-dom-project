@@ -202,16 +202,24 @@ function episodesPage(obj) {
     header.setAttribute('class', 'name')
     img = document.createElement('img');
     img.setAttribute('class', 'episodeImage');
-    img.src = element.image.medium; 
+  
+    if(element.image) {
+      img.src = element.image.medium;
+    } else {
+      img.src = "https://upload.wikimedia.org/wikipedia/commons/2/26/512pxIcon-sunset_photo_not_found.png";
+    }
     expandingList.appendChild(img);
 
     // Truncated summary Text
     paragraph = document.createElement('p');
     paragraph.setAttribute('class', 'summary');
     expandingList.appendChild(paragraph);
-    const truncatedText = element.summary.toString().split(' ').slice(0, 31).join(' ');
+    let truncatedText;
+    if(element.summary) { 
+    truncatedText = element.summary.toString().split(' ').slice(0, 31).join(' ');
     //Unused code that might be needed at some point
     const truncatedText2 = element.summary.toString().split(' ').splice(31).join(' ');
+    }
     paragraph.innerHTML = `${truncatedText} ...`;
     let span = document.createElement('span');
     span.setAttribute('class', 'more-text summary');
@@ -230,8 +238,12 @@ function episodesPage(obj) {
     readLess.setAttribute('class', 'read-less');
     
     //A condition in which the buttons won't be necessary
-    if (element.summary.length <= truncatedText.length) {
+    
+    if (element.summary && element.summary.length <= truncatedText.length) {
       paragraph.innerHTML = `${truncatedText}`;
+      readMore.style.display = "none";
+    } else if (!element.summary) {
+      paragraph.innerHTML = "";
       readMore.style.display = "none";
     }
     
