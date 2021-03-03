@@ -72,9 +72,9 @@ function allShows(obj) {
     rating.style.wordSpacing = "5px";
     
     //Truncated summary text
-    const truncatedText = element.summary.toString().split(' ').slice(0, 31).join(' ');
+    const truncatedText = element.summary.toString().split(' ').slice(0, 25).join(' ');
     //Unused code, perhaps to be used at some point
-    const truncatedText2 = element.summary.toString().split(' ').splice(31).join(' ');
+    const truncatedText2 = element.summary.toString().split(' ').splice(25).join(' ');
     
     paragraph = document.createElement('p');
     paragraph.setAttribute('class', 'summary');
@@ -216,9 +216,9 @@ function episodesPage(obj) {
     expandingList.appendChild(paragraph);
     let truncatedText;
     if(element.summary) { 
-    truncatedText = element.summary.toString().split(' ').slice(0, 31).join(' ');
+    truncatedText = element.summary.toString().split(' ').slice(0, 25).join(' ');
     //Unused code that might be needed at some point
-    const truncatedText2 = element.summary.toString().split(' ').splice(31).join(' ');
+    const truncatedText2 = element.summary.toString().split(' ').splice(25).join(' ');
     }
     paragraph.innerHTML = `${truncatedText} ...`;
     let span = document.createElement('span');
