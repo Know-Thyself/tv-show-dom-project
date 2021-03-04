@@ -6,7 +6,7 @@ const rootShows = document.getElementById("root-shows");
 const rootEpisodes = document.getElementById("root-episodes");
 const navLink = document.getElementById('navigation-link');
 const searchBar = document.querySelector(".search-bar");
-const episodesSearch = document.querySelector(".episodes-search-bar");
+const searchForEpisodes = document.querySelector(".episodes-search-bar");
 const parentDiv = document.getElementsByTagName('div');
 
 //Declaring variables for accessability
@@ -145,6 +145,7 @@ function allShows(obj) {
           navLink.style.display = 'block';
           document.getElementById('show-episodes').innerHTML = `Select from episodes of ${element.name}`;
           document.getElementById('show-name').innerHTML = `${element.name}`;
+          searchForEpisodes.style.display = 'block';
       }
 
     })
@@ -284,7 +285,6 @@ function episodesPage(obj) {
     // An event listener for select option box
     select.addEventListener('change', function() {
       
-      displayShows.style.display = "none";
       let checker = document.createElement('option');
       checker.innerHTML = (this.value).split(' ').slice(2).join(' ');
       
@@ -296,7 +296,7 @@ function episodesPage(obj) {
           else if(parentDiv[i].innerHTML.includes(checker.innerHTML)) {
 
             displayEpisodes.style.display = "block";
-            parentDiv[i].style.cssText = "display: flexbox; width: 85%; height: auto; margin: auto; margin-top: 1rem";
+            parentDiv[i].style.cssText = "display: flexbox; width: 90%; height: auto; margin: auto; margin-top: 1rem";
             episodesLink.style.cssText = "display: inline-block; margin-right: 3rem";
             navLink.style.display = "inline-block";
            
@@ -309,7 +309,6 @@ function episodesPage(obj) {
   });
 
 }
-
 const episodesLink = document.getElementById('episodes-navigation-link');
 
 // Event listener to go back to episode's page
@@ -319,8 +318,9 @@ episodesLink.addEventListener('click', function() {
       rootEpisodes.removeChild(rootEpisodes.firstChild)
     }
     episodesLink.style.display = "none";
-    episodesSearch.style.display = "inline-block";
+    searchForEpisodes.style.display = "block";
     document.getElementById('episodes').selectedIndex = 0;
+  
 })
 
 // A function consisting of an listener to dynamically update the web page based on the user input 
@@ -330,7 +330,7 @@ function episodeSearch() {
   const episodeSearchInfo = document.querySelector('.episode-search-info');
   const episodeSearchInfo2 = document.querySelector('.episode-search-info2');
   
-  episodesSearch.addEventListener('keyup', (e) => {
+  searchForEpisodes.addEventListener('keyup', (e) => {
 
     navLink.style.display = "none";
     episodeSearchInfo.style.display = "block";

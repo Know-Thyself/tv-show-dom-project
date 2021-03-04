@@ -142,11 +142,11 @@
   display: block;
   margin-top: 10px;
 }
-.filtered-div {
+/* .filtered-div {
   width: 100%;
   display: block;
   margin-top: 10px;
-}
+} */
 .show-name {
   font-family: 'Rye', cursive;
   color: aliceblue;
