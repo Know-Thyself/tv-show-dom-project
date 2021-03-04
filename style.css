@@ -25,8 +25,7 @@
 }
 .select-shows,
 .select-episodes  {
-  margin-left: 5px;
-  margin-right: 10px;
+  margin: 10px;
   padding: 2px;
   background: #ddd;
   font-size: 1rem;
@@ -72,10 +71,9 @@
 .episodes-search-bar {
   float: right;
   padding: 6px;
-  margin-top: 10px;
   background: #ddd;
   font-size: 1rem;
-  margin-right: 18px;
+  margin-right: 12px;
   border: none;
   height: 35px;
   width: 60%;
@@ -217,7 +215,7 @@ h4 {
 }
 
 /* For medium screen sizes like iPad/tablets */
-@media screen and (min-width: 680px) {
+@media screen and (min-width: 760px) {
   .header {
     flex-direction: row;
   }
@@ -229,15 +227,14 @@ h4 {
   }
   .search-bar,
   .episodes-search-bar {
-    margin-right: 18px;
+    margin-right: 12px;
     margin-top: 20px;
     width: 85%;
   }
   .nav-link {
-    margin-top: 0.2rem;
+    margin-top: 5px;
     margin-right: 0.5rem;
     padding: 1.7% 0%;
-    /* margin-bottom: 1,2rem; */
   }
   .root-shows .expanding-div,
   .root-episodes .expanding-div {
@@ -269,12 +266,12 @@ h4 {
     width: 25%;
   }
   .nav-link {
-    margin-top: 16px;
-    padding: 0.8% 0%;
+    margin-top: auto;
+    padding: 0.7% 0%;
   }
   .search-bar,
   .episodes-search-bar {
-    margin-top: 8%;
+    /* margin-top: 8%; */
     width: 90%;
   }
   .name {
@@ -303,7 +300,15 @@ h4 {
   h4 {
     padding-left: 5px;
   }
-  
+  .select-shows,
+  .select-episodes {
+    margin-top: 20px;
+  }
+  .search-bar,
+  .episodes-search-bar {
+    margin-top: 20px;
+    margin-right: 1.3rem;
+  }
 }
 
 /* High resolution screens - Laptops/Desktops */
@@ -311,6 +316,10 @@ h4 {
   .root-shows .expanding-div,
   .root-episodes .expanding-div {
     width: 19%;
+  }
+  .search-bar,
+  .episodes-search-bar {
+    margin-right: 2rem;
   }
   
 }
