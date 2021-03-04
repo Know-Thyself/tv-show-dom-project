@@ -2,20 +2,91 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Rye&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TV Show Project | My Name (My GitHub username)</title>
+    <title>TV Show Project | Biruk (Know-Thyself)</title>
     <link href="style.css" rel="stylesheet" />
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
   </head>
 
   <body>
-    <div id="root">
+    <div id="main-container"> 
+      <!-- The header consisting of the logo, the select box and the search bar  -->
+      <div id="shows-page-wrapper" class="display-shows"> 
+        <div class="header">
+          <img class="logo" src="/favicon.ico" alt="logo-image">
+
+          <!-- Select box to pick a show -->
+          <select name="shows" id="shows" class="select-shows">
+            <option value="episode" class="dropdown-menu">Select from our list of Shows</option>
+          </select>
+       
+          <!-- Search bar to search for shows -->
+          <div class="search-container">
+           
+            <form action="">
+              <!-- <button class="search-button" type="submit"><i class="fa fa-search"></i></button> -->
+              <input class="search-bar" type="text" placeholder="Search for shows" name="search"> 
+            </form>
+          </div>
+        </div>
+
+        <!-- A root container for all shows generated using an api and DOM manipulation  -->
+        <div class="shows-wrapper">
+          <h4 class="search-info"></h4>
+          <h4 class="search-info2">Clear the search bar to go back to all shows</h4>
+          <div class="root-shows" id="root-shows">
+          </div>
+        </div>
+
+        <!-- Footer just to show where the data is originated from -->
+        <footer class="footer">
+          <a class="data-info" href="https://www.tvmaze.com/">The data on this app is originated from TVMaze.com</a>
+        </footer>
+      </div>
+
+      <!-- Episodes page -->
+      <div id="episodes-page-wrapper" class="display-episodes">
+        <div class="header">
+          <img class="logo" src="/favicon.ico" alt="logo-image">
+          <a id="navigation-link" class="nav-link">Shows Home Page</a>
+          <a id="episodes-navigation-link" class="nav-link episodes-link">Back To Episodes</a>
+
+          <!-- Select box to pick an episode -->
+          <select name="episodes" id="episodes" class="select-episodes">
+            <option value="episodes" id="show-episodes" class="dropdown-menu">Select from our list of Episodes</option>
+          </select>
+        
+          <!-- <div class="episode-search-container"> -->
+          <form action="" class="search-episode">
+            <!-- <button class="search-button" type="submit"><i class="fa fa-search"></i></button> -->
+            <input class="episodes-search-bar" type="text" placeholder="Search for episodes" name="search">
+          </form>
+          <!-- </div> -->
+        </div> 
+        
+        <!-- A root container for all episodes generated using an api and DOM manipulation  -->
+        <div id="episodes-wrapper">
+          <h1 id="show-name" class="show-name"></h1> 
+            <h4 class="episode-search-info"></h4>
+            <h4 class="episode-search-info2">Clear the search bar to go back to all episodes</h4>
+          <div class="root-episodes" id="root-episodes">
+          </div>
+        </div>
+
+        <!-- Footer just to show where the data is originated from -->
+        <footer class="footer">
+          <a class="data-info" href="https://www.tvmaze.com/">The data on this app is originated from TVMaze.com</a>
+        </footer>
+      </div>
     </div>
 
     <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
     <script src="episodes.js"></script>
-
     <!-- Loads YOUR javascript code -->
     <script src="script.js"></script>
+    <script src="shows.js"></script>
   </body>
 </html>

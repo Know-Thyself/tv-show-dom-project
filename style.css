@@ -1,3 +1,325 @@
-#root {
-  color: red;
+/* Mobile first Responsive Web Design */
+* {
+  background-color: rgb(51, 46, 46);
+  box-sizing: border-box;
+}
+.display-shows {
+  display: block;
+}
+.display-episodes {
+  display: none;
+}
+
+/* logo, select options and search bar */
+.header {
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.logo {
+  height: 64px;
+  width: 64px;
+  float: left;
+  margin: 0 1.5% 0 1.5%;
+}
+.select-shows,
+.select-episodes  {
+  margin: 10px;
+  padding: 2px;
+  background: #ddd;
+  font-size: 1rem;
+  border: none;
+  height: 35px;
+  max-width: 60%;
+  align-items: center;
+}
+.select-shows option,
+.select-episodes option {
+  height: 30px;
+  color: darkcyan;
+}
+
+/* Search bar settings */
+.search-container {
+  float: right;
+  margin-bottom: 10px;
+}
+.episode-search-container {
+  float: right;
+  margin-bottom: 10px;
+}
+/* Temporarily removed button */
+/* .search-button {
+  float: right;
+  margin-top: 20px;
+  margin-right: 16px;
+  background: rgb(219, 210, 210);
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+}
+.fa {
+  float: right;
+  padding: 6px;
+  background: #ddd;
+  border: none;
+  cursor: pointer;
+} */
+/* Search bar for shows and episodes */
+.search-bar,
+.episodes-search-bar {
+  float: right;
+  padding: 6px;
+  background: #ddd;
+  font-size: 1rem;
+  margin-right: 12px;
+  border: none;
+  height: 35px;
+  width: 60%;
+}
+/* Shows how many search results have been found */
+.search-info,
+.search-info2,
+.episode-search-info,
+.episode-search-info2 {
+  color: aliceblue;
+  display: none;
+  text-align: center;
+  background-color: rgb(51, 46, 46);
+}
+.search-info,
+.episode-search-info {
+  margin-top: 1rem;
+}
+/* Navigation links */
+.nav-link {
+  padding: 0.7% 0%;
+  background-color: rgb(109, 4, 4);
+  text-decoration: none;
+  text-align: center;
+  margin: 6px 0 6px 5px;
+  width: 9.2rem;
+  font-size: large;
+  color: antiquewhite;
+  font-weight: 500;
+  display: none;
+  position: relative;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.episodes-link {
+  width: 9rem;
+}
+.nav-link:hover {
+  background-color: crimson;
+}
+
+/* All episodes' names images and summaries */
+.root-shows {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-evenly;
+}
+.root-episodes {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-evenly;
+}
+.expanding-div {
+  width: 100%;
+  display: block;
+  margin-top: 10px;
+}
+
+.show-name {
+  font-family: 'Rye', cursive;
+  color: aliceblue;
+  display: block;
+  text-align: center;
+}
+.name {
+  display: block;
+  margin: auto;
+  text-align: center;
+  padding: 5px;
+  background-color: rgb(218, 217, 223);
+  width: 98%;
+  border-radius: 8px;
+}
+img {
+  display: block;
+  margin: auto;
+  height: 20rem;
+  width: 95%;
+}
+.summary {
+  display: flex;
+  flex-wrap: wrap;
+  margin: auto;
+  text-align: justify;
+  width: 95%;
+  color: rgb(77, 162, 168);
+}
+.more-text {
+  display: none;
+} 
+.read-more,
+.read-less {
+  padding: 5px 10px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: rgb(77, 162, 168);
+  background-color: rgb(41, 40, 44);
+  font-size: 1rem;
+  margin-top: -0.8rem;
+}
+.read-more:hover,
+.read-less:hover {
+  background-color: rgb(35, 35, 43);
+}
+/* Genres, status, rating and runtime */
+h4 {
+  display: block;
+  font-size: medium;
+  color: rgb(1, 41, 30);
+  width: 95%;
+  justify-content: center;
+  margin: auto;
+  background-color: rgb(218, 217, 223);
+  padding: auto;
+  padding-left: 7px;
+  height: 1.75rem;
+}
+.genres {
+  padding-top: 6px;
+}
+
+/* Footer */
+.footer {
+  height: 70px;
+  background-color: rgb(75, 49, 49);
+}
+.data-info {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  padding-top: 10px;
+  color: antiquewhite;
+  font-size: large;
+}
+
+/* For medium screen sizes like iPad/tablets */
+@media screen and (min-width: 760px) {
+  .header {
+    flex-direction: row;
+  }
+  .select-shows,
+  .select-episodes {
+    margin-top: 18px;
+    margin-left: 0%;
+    width: 40%;
+  }
+  .search-bar,
+  .episodes-search-bar {
+    margin-right: 12px;
+    margin-top: 20px;
+    width: 85%;
+  }
+  .nav-link {
+    margin-top: 5px;
+    margin-right: 0.5rem;
+    padding: 1.7% 0%;
+  }
+  .root-shows .expanding-div,
+  .root-episodes .expanding-div {
+    width: 50%;
+    margin-top: 15px;
+  }
+  img {
+    width: 90%;
+    height: 18rem;
+  }
+  .summary {
+    width: 90%;
+  }
+  h4 {
+    width: 90%;
+  }
+}
+
+/* Small screen Laptops/Desktops */
+@media screen and (min-width: 1025px) {
+  .root-shows .expanding-div,
+  .root-episodes .expanding-div {
+    height: auto;
+    width: 33%;
+    margin-top: 15px;
+  }
+  .select-shows,
+  .select-episodes {
+    width: 25%;
+  }
+  .nav-link {
+    margin-top: auto;
+    padding: 0.7% 0%;
+  }
+  .search-bar,
+  .episodes-search-bar {
+    /* margin-top: 8%; */
+    width: 90%;
+  }
+  .name {
+    width: 98%;
+  }
+  img {
+    width: 95%;
+    height: 16rem;
+  }
+  .summary {
+    width: 95%;
+  }
+  h4 {
+    padding-left: 10px;
+    width: 95%;
+  }
+  
+}
+
+/* Larger screen Devices - Laptops/Desktops */
+@media screen and (min-width: 1340px) {
+  .root-shows .expanding-div,
+  .root-episodes .expanding-div {
+    width: 24%;
+  }
+  h4 {
+    padding-left: 5px;
+  }
+  .select-shows,
+  .select-episodes {
+    margin-top: 20px;
+  }
+  .search-bar,
+  .episodes-search-bar {
+    margin-top: 20px;
+    margin-right: 1.3rem;
+  }
+}
+
+/* High resolution screens - Laptops/Desktops */
+@media screen and (min-width: 1920px) {
+  .root-shows .expanding-div,
+  .root-episodes .expanding-div {
+    width: 19%;
+  }
+  .search-bar,
+  .episodes-search-bar {
+    margin-right: 2rem;
+  }
+  
 }
