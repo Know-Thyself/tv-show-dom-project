@@ -143,7 +143,7 @@ function allShows(obj) {
           showID =`${element.id}`;
           loadEpisodes();
           navLink.style.display = 'block';
-          document.getElementById('show-episodes').innerHTML = `Select from episodes of ${element.name}`;
+          document.getElementById('show-episodes').innerHTML = `Select from the list of ${element.name} episodes`;
           document.getElementById('show-name').innerHTML = `${element.name}`;
           searchForEpisodes.style.display = 'block';
       }
