@@ -25,8 +25,7 @@
        
           <!-- Search bar to search for shows -->
           <div class="search-container">
-            <h4 class="search-info"></h4>
-            <h4 class="search-info2">Clear the search bar to go back to all shows</h4>
+           
             <form action="">
               <!-- <button class="search-button" type="submit"><i class="fa fa-search"></i></button> -->
               <input class="search-bar" type="text" placeholder="Search for shows" name="search"> 
@@ -35,7 +34,11 @@
         </div>
 
         <!-- A root container for all shows generated using an api and DOM manipulation  -->
-        <div class="root-shows" id="root-shows">
+        <div class="shows-wrapper">
+          <h4 class="search-info"></h4>
+          <h4 class="search-info2">Clear the search bar to go back to all shows</h4>
+          <div class="root-shows" id="root-shows">
+          </div>
         </div>
 
         <!-- Footer just to show where the data is originated from -->
@@ -56,19 +59,20 @@
           <a id="navigation-link" class="nav-link">Shows Home Page</a>
           <a id="episodes-navigation-link" class="nav-link episodes-link">Back To Episodes</a>
         
-          <div class="episode-search-container">
-            <h4 class="episode-search-info"></h4>
-            <h4 class="episode-search-info2">Clear the search bar to go back to all episodes</h4>
+          <!-- <div class="episode-search-container"> -->
+          
             <form action="" class="search-episode">
               <!-- <button class="search-button" type="submit"><i class="fa fa-search"></i></button> -->
               <input class="episodes-search-bar" type="text" placeholder="Search for episodes" name="search">
             </form>
-          </div>
+          <!-- </div> -->
         </div> 
         
         <!-- A root container for all episodes generated using an api and DOM manipulation  -->
         <div id="episodes-wrapper">
           <h1 id="show-name" class="show-name"></h1> 
+            <h4 class="episode-search-info"></h4>
+            <h4 class="episode-search-info2">Clear the search bar to go back to all episodes</h4>
           <div class="root-episodes" id="root-episodes">
           </div>
         </div>

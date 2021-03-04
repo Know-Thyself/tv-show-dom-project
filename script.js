@@ -284,7 +284,7 @@ function episodesPage(obj) {
 
     // An event listener for select option box
     select.addEventListener('change', function() {
-      
+      searchForEpisodes.style.display = 'none';
       let checker = document.createElement('option');
       checker.innerHTML = (this.value).split(' ').slice(2).join(' ');
       
@@ -309,6 +309,7 @@ function episodesPage(obj) {
   });
 
 }
+console.log(displayEpisodes)
 const episodesLink = document.getElementById('episodes-navigation-link');
 
 // Event listener to go back to episode's page
@@ -332,7 +333,6 @@ function episodeSearch() {
   
   searchForEpisodes.addEventListener('keyup', (e) => {
 
-    navLink.style.display = "none";
     episodeSearchInfo.style.display = "block";
     episodeSearchInfo2.style.display = "block";
   
