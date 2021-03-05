@@ -4,7 +4,6 @@ const displayShows = document.getElementById('shows-page-wrapper');
 const displayEpisodes = document.getElementById('episodes-page-wrapper');
 const rootShows = document.getElementById("root-shows");
 const rootEpisodes = document.getElementById("root-episodes");
-const navLink = document.getElementById('navigation-link');
 const searchBar = document.querySelector(".search-bar");
 const searchForEpisodes = document.querySelector(".episodes-search-bar");
 const parentDiv = document.getElementsByTagName('div');
@@ -214,15 +213,22 @@ function episodesPage(data) {
     }
     expandingList.appendChild(img);
 
+    //Select an episode options
+    let select = document.getElementById('episodes');
+    let options = document.createElement('option');
+    options.innerHTML = `S0${content.season}E0${content.number} - ${content.name}`;
+    select.appendChild(options);
+
     // Truncated summary Text
     episodeSummary = document.createElement('p');
     episodeSummary.setAttribute('class', 'summary');
     expandingList.appendChild(episodeSummary);
     let truncatedText;
+
     if(content.summary) { 
-    truncatedText = content.summary.toString().split(' ').slice(0, 25).join(' ');
-    //Unused code that might be needed at some point
-    const truncatedText2 = content.summary.toString().split(' ').splice(25).join(' ');
+      truncatedText = content.summary.toString().split(' ').slice(0, 25).join(' ');
+      //Unused code that might be needed at some point
+      const truncatedText2 = content.summary.toString().split(' ').splice(25).join(' ');
     }
     episodeSummary.innerHTML = `${truncatedText} ...`;
     let span = document.createElement('span');
@@ -274,45 +280,39 @@ function episodesPage(data) {
 
     });
 
-    //Select an episode options
-    let select = document.getElementById('episodes');
-    let options = document.createElement('option');
-    options.innerHTML = `S0${content.season}E0${content.number} - ${content.name}`;
-    select.appendChild(options);
-
-    // Navigation link to go back to all shows
-    navLink.setAttribute('href', window.location.href);
-
-    // An event listener for select option box
-    select.addEventListener('change', function() {
-      searchForEpisodes.style.display = 'none';
-      let checker = document.createElement('option');
-      checker.innerHTML = (this.value).split(' ').slice(2).join(' ');
-      
-      for (let i = 4; i < parentDiv.length; i++) {
-        
-        if (!parentDiv[i].innerHTML.includes(checker.innerHTML)) {
-          parentDiv[i].style.display = "none";
-        } 
-          else if(parentDiv[i].innerHTML.includes(checker.innerHTML)) {
-
-            displayEpisodes.style.display = "block";
-            parentDiv[i].style.cssText = "display: flexbox; width: 90%; height: auto; margin: auto; margin-top: 1rem";
-            episodesLink.style.cssText = "display: inline-block; margin-right: 3rem";
-            navLink.style.display = "inline-block";
-           
-          } 
-
-      }
-
-    });
-
   });
 
 }
+
+// An event listener for episodes' select option box
+let select = document.getElementById('episodes');
+select.addEventListener('change', function() {
+      
+  searchForEpisodes.style.display = 'none';
+  let checker = document.createElement('option');
+  checker.innerHTML = (this.value).split(' ').slice(2).join(' ');
+      
+  for (let i = 0; i < parentDiv.length; i++) {
+        
+    if (!parentDiv[i].innerHTML.includes(checker.innerHTML)) {
+          parentDiv[i].style.display = "none";
+    } 
+    else {
+      episodesLink.style.display = "inline-block";
+      navLink.style.display = "inline-block";
+    } 
+
+  }
+
+});
+
+const navLink = document.getElementById('navigation-link');
 const episodesLink = document.getElementById('episodes-navigation-link');
 
-// Event listener to go back to episode's page
+// Navigation link to go back to shows home page
+navLink.setAttribute('href', window.location.href);
+
+// Event listener to go back to episodes page
 episodesLink.addEventListener('click', function() {
   loadEpisodes();
     while(rootEpisodes.firstChild) {
@@ -324,7 +324,7 @@ episodesLink.addEventListener('click', function() {
   
 });
 
-// A function consisting of an listener to dynamically update the web page based on the user input 
+// A function consisting of an event listener and a filter to dynamically update the web page based on the user input 
 function episodeSearch() {
   
   //Search result information
