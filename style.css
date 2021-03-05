@@ -38,6 +38,7 @@
 .select-episodes option {
   height: 30px;
   color: darkcyan;
+  width: auto;
 }
 
 /* Search bar settings */
@@ -135,6 +136,11 @@
   display: block;
   margin-top: 10px;
 }
+.episodes-expanding-div {
+  width: 100%;
+  display: block;
+  margin-top: 10px;
+}
 
 .show-name {
   font-family: 'Rye', cursive;
@@ -142,7 +148,8 @@
   display: block;
   text-align: center;
 }
-.name {
+.name,
+.episode-name {
   display: block;
   margin: auto;
   text-align: center;
@@ -237,7 +244,7 @@ h4 {
     padding: 1.7% 0%;
   }
   .root-shows .expanding-div,
-  .root-episodes .expanding-div {
+  .root-episodes .episodes-expanding-div {
     width: 50%;
     margin-top: 15px;
   }
@@ -256,7 +263,7 @@ h4 {
 /* Small screen Laptops/Desktops */
 @media screen and (min-width: 1025px) {
   .root-shows .expanding-div,
-  .root-episodes .expanding-div {
+  .root-episodes .episodes-expanding-div {
     height: auto;
     width: 33%;
     margin-top: 15px;
@@ -294,7 +301,7 @@ h4 {
 /* Larger screen Devices - Laptops/Desktops */
 @media screen and (min-width: 1340px) {
   .root-shows .expanding-div,
-  .root-episodes .expanding-div {
+  .root-episodes .episodes-expanding-div {
     width: 24%;
   }
   h4 {
@@ -314,7 +321,7 @@ h4 {
 /* High resolution screens - Laptops/Desktops */
 @media screen and (min-width: 1920px) {
   .root-shows .expanding-div,
-  .root-episodes .expanding-div {
+  .root-episodes .episodes-expanding-div {
     width: 19%;
   }
   .search-bar,

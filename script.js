@@ -12,6 +12,7 @@ const parentDiv = document.getElementsByTagName('div');
 //Declaring variables for accessability
 let data = [];
 let parsedData = [];
+let showID = 82;
 
 //Getting data from API and passing it as a parameter
 const loadShows = async () => {
@@ -190,50 +191,50 @@ function showSearch () {
 }
 
 // Populating the episodes' page
-function episodesPage(obj) {
+function episodesPage(data) {
 
-  obj.forEach(element => {
+  data.forEach(content => {
     
     //Creating and appending elements
     const expandingList = document.createElement('div', { is : 'expanding-list' });
     expandingList.setAttribute('id', 'episodesDiv');
-    expandingList.setAttribute('class', 'expanding-div');
+    expandingList.setAttribute('class', 'episodes-expanding-div');
     rootEpisodes.appendChild(expandingList);
-    header = document.createElement('h2');
-    expandingList.appendChild(header);
-    header.innerHTML = `${element.name} S0${element.season}E0${element.number}`;
-    header.setAttribute('class', 'name')
+    title = document.createElement('h2');
+    expandingList.appendChild(title);
+    title.innerHTML = `${content.name} S0${content.season}E0${content.number}`;
+    title.setAttribute('class', 'episode-name')
     img = document.createElement('img');
     img.setAttribute('class', 'episodeImage');
   
-    if(element.image) {
-      img.src = element.image.medium;
+    if(content.image) {
+      img.src = content.image.medium;
     } else {
       img.src = "https://upload.wikimedia.org/wikipedia/commons/2/26/512pxIcon-sunset_photo_not_found.png";
     }
     expandingList.appendChild(img);
 
     // Truncated summary Text
-    paragraph = document.createElement('p');
-    paragraph.setAttribute('class', 'summary');
-    expandingList.appendChild(paragraph);
+    episodeSummary = document.createElement('p');
+    episodeSummary.setAttribute('class', 'summary');
+    expandingList.appendChild(episodeSummary);
     let truncatedText;
-    if(element.summary) { 
-    truncatedText = element.summary.toString().split(' ').slice(0, 25).join(' ');
+    if(content.summary) { 
+    truncatedText = content.summary.toString().split(' ').slice(0, 25).join(' ');
     //Unused code that might be needed at some point
-    const truncatedText2 = element.summary.toString().split(' ').splice(25).join(' ');
+    const truncatedText2 = content.summary.toString().split(' ').splice(25).join(' ');
     }
-    paragraph.innerHTML = `${truncatedText} ...`;
+    episodeSummary.innerHTML = `${truncatedText} ...`;
     let span = document.createElement('span');
     span.setAttribute('class', 'more-text summary');
-    span.innerHTML =`${element.summary}`;
+    span.innerHTML =`${content.summary}`;
 
     //A read more button
     let readMore = document.createElement('button');
     readMore.setAttribute('class', 'read-more');
     readMore.innerHTML = `Read more`;
-    expandingList.append(paragraph);
-    paragraph.appendChild(readMore); 
+    expandingList.append(episodeSummary);
+    episodeSummary.appendChild(readMore); 
     
     //A read less button
     let readLess = document.createElement('button');
@@ -241,12 +242,11 @@ function episodesPage(obj) {
     readLess.setAttribute('class', 'read-less');
     
     //A condition in which the buttons won't be necessary
-    
-    if (element.summary && element.summary.length <= truncatedText.length) {
-      paragraph.innerHTML = `${truncatedText}`;
+    if (content.summary && content.summary.length <= truncatedText.length) {
+      episodeSummary.innerHTML = `${truncatedText}`;
       readMore.style.display = "none";
-    } else if (!element.summary) {
-      paragraph.innerHTML = "";
+    } else if (!content.summary) {
+      episodeSummary.innerHTML = "";
       readMore.style.display = "none";
     }
     
@@ -259,24 +259,25 @@ function episodesPage(obj) {
       span.style.display = 'flex';
       span.appendChild(readLess);
 
-    })
+    });
 
     //An event listener to collapse the summary
     readLess.addEventListener('click', () => {
 
       expandingList.removeChild(expandingList.lastChild);
-      let paragraph = document.createElement('p');
-      expandingList.append(paragraph);
-      paragraph.setAttribute('class', 'summary')
-      paragraph.innerHTML = `${truncatedText}...`;
-      paragraph.appendChild(readMore);
+      let fullEpisodeSummary = document.createElement('p');
+      expandingList.append(fullEpisodeSummary);
+      fullEpisodeSummary.setAttribute('class', 'summary')
+      fullEpisodeSummary.innerHTML = `${truncatedText}...`;
+      fullEpisodeSummary.appendChild(readMore);
       span.style.display = 'none';
 
-    })
-    //Select options
+    });
+
+    //Select an episode options
     let select = document.getElementById('episodes');
     let options = document.createElement('option');
-    options.innerHTML = `S0${element.season}E0${element.number} - ${element.name}`;
+    options.innerHTML = `S0${content.season}E0${content.number} - ${content.name}`;
     select.appendChild(options);
 
     // Navigation link to go back to all shows
@@ -304,12 +305,11 @@ function episodesPage(obj) {
 
       }
 
-    })
+    });
 
   });
 
 }
-console.log(displayEpisodes)
 const episodesLink = document.getElementById('episodes-navigation-link');
 
 // Event listener to go back to episode's page
@@ -322,7 +322,7 @@ episodesLink.addEventListener('click', function() {
     searchForEpisodes.style.display = "block";
     document.getElementById('episodes').selectedIndex = 0;
   
-})
+});
 
 // A function consisting of an listener to dynamically update the web page based on the user input 
 function episodeSearch() {
@@ -340,7 +340,9 @@ function episodeSearch() {
 
     //Filtering the search
     const searchFilter = parsedData.filter((elem) => {
-      return (elem.name.toLowerCase().includes(searchInput) || elem.summary.toLowerCase().includes(searchInput));
+      if (elem.name && elem.summary) { 
+        return (elem.name.toLowerCase().includes(searchInput) || elem.summary.toLowerCase().includes(searchInput));
+      }
 
     })
     episodeSearchInfo.innerHTML = `Displaying ${searchFilter.length}/${parsedData.length} Episodes`;
