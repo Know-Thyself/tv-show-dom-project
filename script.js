@@ -18,7 +18,6 @@ const loadShows = async () => {
   try {
     const response = await fetch('https://api.tvmaze.com/shows');
     data = await response.json();
-    console.log(data);
     allShows(data);
     showSearch(data)
   } catch (err){
@@ -31,7 +30,6 @@ const loadEpisodes = async () => {
   try {
     const response = fetch("https://api.tvmaze.com/shows/"+showID+"/episodes");
     parsedData = await (await response).json();
-    console.log(parsedData);
     episodesPage(parsedData);
     episodeSearch(parsedData);
   } catch (err) {
@@ -48,10 +46,28 @@ function allShows(obj) {
     let expandingList = document.createElement('div', { is : 'expanding-list' });
     expandingList.setAttribute('class', 'expanding-div');
     rootShows.appendChild(expandingList);
-    header = document.createElement('h2');
-    header.setAttribute('class', 'name');
-    expandingList.appendChild(header);
-    header.innerHTML = `${element.name}` 
+    showName = document.createElement('h2');
+    showName.setAttribute('class', 'name');
+    expandingList.appendChild(showName);
+    showName.innerHTML = `${element.name}`;
+    let aTag = document.createElement('a');
+    aTag.setAttribute('href', `#${element.id}`);
+    aTag.setAttribute('id', `${element.id}`)
+    aTag.setAttribute('class', 'a-tag');
+    showName.append(aTag);
+    
+    //An event listener to make name of shows clickable
+    showName.addEventListener('click', () => {
+      displayShows.style.display = 'none';
+      displayEpisodes.style.display = 'block';
+      showID = aTag.id;
+      loadEpisodes();
+      navLink.style.display = 'block';
+      document.getElementById('show-episodes').innerHTML = `Select from the list of ${element.name} episodes`;
+      document.getElementById('show-name').innerHTML = `${element.name}`;
+      searchForEpisodes.style.display = 'block';
+    });
+
     img = document.createElement('img');
     img.setAttribute('class', 'episodeImage');
     img.src = element.image.medium; 
@@ -95,7 +111,7 @@ function allShows(obj) {
     readLess.innerHTML = `Read less`;
     readLess.setAttribute('class', 'read-less');
     
-    //A condition in which the button won't be necessary
+    //A condition in which read more button won't be necessary
     if (element.summary.length <= truncatedText.length) {
       paragraph.innerHTML = `${truncatedText}`;
       readMore.style.display = "none";
