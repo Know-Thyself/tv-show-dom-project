@@ -68,7 +68,6 @@ function allShows(obj) {
     });
 
     img = document.createElement('img');
-    img.setAttribute('class', 'episodeImage');
     img.src = element.image.medium; 
     expandingList.appendChild(img);
 
@@ -141,9 +140,11 @@ function allShows(obj) {
     //Select a show options
     let selectShows = document.querySelector('#shows');
     let options = document.createElement('option');
+    options.setAttribute('id', `${element.id}`);
+    options.setAttribute('class', 'show-options');
     options.innerHTML = `${element.name}`;
     selectShows.appendChild(options);
-
+    
     // An event listener to fetch a show's episodes data when selected
     selectShows.addEventListener('change', function(){
 
@@ -152,9 +153,10 @@ function allShows(obj) {
       while(rootEpisodes.firstChild) {
         rootEpisodes.removeChild(rootEpisodes.firstChild)
       }
-      `${element.id}`;
-      showID =`${element.id}`;
-      if (`${element.name}` === this.value) { 
+     
+      if (`${element.name}` === this.value && showID <= 249) { 
+         `${element.id}`;
+         showID =`${element.id}`;
         loadEpisodes();
         navLink.style.display = 'block';
         document.getElementById('show-episodes').innerHTML = `Select from the list of ${element.name} episodes`;
@@ -206,32 +208,33 @@ function showSearch () {
 // Populating the episodes' page
 function episodesPage(data) {
 
-  data.forEach(content => {
+  data.forEach(elem => {
     
     //Creating and appending elements
     const expandingList = document.createElement('div', { is : 'expanding-list' });
     expandingList.setAttribute('id', 'episodesDiv');
     expandingList.setAttribute('class', 'episodes-expanding-div');
     rootEpisodes.appendChild(expandingList);
-    title = document.createElement('h2');
-    expandingList.appendChild(title);
-    title.innerHTML = `${content.name} S0${content.season}E0${content.number}`;
-    title.setAttribute('class', 'episode-name')
+    episodesName = document.createElement('h2');
+    expandingList.appendChild(episodesName);
+    let formattedSeasonNumber = (`0${elem.season}`).slice(-2);
+    let formattedEpisodeNumber = (`0${elem.number}`).slice(-2);
+    episodesName.innerHTML = `${elem.name} - S${formattedSeasonNumber}E${formattedEpisodeNumber}`;
+    episodesName.setAttribute('class', 'episode-name')
     img = document.createElement('img');
-    img.setAttribute('class', 'episodeImage');
   
-    if(content.image) {
-      img.src = content.image.medium;
-    } else {
+    if(elem.image) {
+      img.src = elem.image.medium;
+    } else if (elem.image === null) {
       img.src = "https://upload.wikimedia.org/wikipedia/commons/2/26/512pxIcon-sunset_photo_not_found.png";
     }
     expandingList.appendChild(img);
 
     //Select an episode options
-    let select = document.getElementById('episodes');
+    let selectEpisode = document.getElementById('episodes');
     let options = document.createElement('option');
-    options.innerHTML = `S0${content.season}E0${content.number} - ${content.name}`;
-    select.appendChild(options);
+    options.innerHTML = `S${formattedSeasonNumber}E${formattedEpisodeNumber} - ${elem.name}`;
+    selectEpisode.appendChild(options);
 
     // Truncated summary Text
     episodeSummary = document.createElement('p');
@@ -239,15 +242,15 @@ function episodesPage(data) {
     expandingList.appendChild(episodeSummary);
     let truncatedText;
 
-    if(content.summary) { 
-      truncatedText = content.summary.toString().split(' ').slice(0, 25).join(' ');
+    if(elem.summary) { 
+      truncatedText = elem.summary.toString().split(' ').slice(0, 25).join(' ');
       //Unused code that might be needed at some point
-      const truncatedText2 = content.summary.toString().split(' ').splice(25).join(' ');
+      const truncatedText2 = elem.summary.toString().split(' ').splice(25).join(' ');
     }
     episodeSummary.innerHTML = `${truncatedText} ...`;
     let span = document.createElement('span');
     span.setAttribute('class', 'more-text summary');
-    span.innerHTML =`${content.summary}`;
+    span.innerHTML =`${elem.summary}`;
 
     //A read more button
     let readMore = document.createElement('button');
@@ -262,10 +265,10 @@ function episodesPage(data) {
     readLess.setAttribute('class', 'read-less');
     
     //A condition in which the buttons won't be necessary
-    if (content.summary && content.summary.length <= truncatedText.length) {
+    if (elem.summary && elem.summary.length <= truncatedText.length) {
       episodeSummary.innerHTML = `${truncatedText}`;
       readMore.style.display = "none";
-    } else if (!content.summary) {
+    } else if (!elem.summary) {
       episodeSummary.innerHTML = "";
       readMore.style.display = "none";
     }
@@ -299,8 +302,8 @@ function episodesPage(data) {
 }
 
 // An event listener for episodes' select option box
-let select = document.getElementById('episodes');
-select.addEventListener('change', function() {
+let selectEpisode = document.getElementById('episodes');
+selectEpisode.addEventListener('change', function() {
       
   searchForEpisodes.style.display = 'none';
   let checker = document.createElement('option');
@@ -329,13 +332,13 @@ navLink.setAttribute('href', window.location.href);
 // Event listener to go back to episodes page
 episodesLink.addEventListener('click', function() {
   loadEpisodes();
-    while(rootEpisodes.firstChild) {
-      rootEpisodes.removeChild(rootEpisodes.firstChild);
-    }
-    episodesLink.style.display = "none";
-    searchForEpisodes.style.display = "block";
-    document.getElementById('episodes').selectedIndex = 0;
-  
+  while(rootEpisodes.firstChild) {
+    rootEpisodes.removeChild(rootEpisodes.firstChild);
+  }
+  episodesLink.style.display = "none";
+  searchForEpisodes.style.display = "block";
+  document.getElementById('episodes').selectedIndex = 0;
+
 });
 
 // A function consisting of an event listener and a filter to dynamically update the web page based on the user input 
