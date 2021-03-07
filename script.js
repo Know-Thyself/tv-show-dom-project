@@ -26,18 +26,6 @@ const loadShows = async () => {
    
 }
 
-const loadEpisodes = async () => {
-  try {
-    const response = fetch("https://api.tvmaze.com/shows/"+showID+"/episodes");
-    parsedData = await (await response).json();
-    episodesPage(parsedData);
-    episodeSearch(parsedData);
-  } catch (err) {
-    console.error(err);
-  }
-    
-}
-
 // A function to extract data and populate the webpage. 
 function allShows(obj) {
   obj.forEach(element => {
@@ -55,7 +43,7 @@ function allShows(obj) {
     aTag.setAttribute('id', `${element.id}`);
     showName.append(aTag);
     
-    //An event listener to make name of shows clickable
+    //An event listener to link names of shows to their episodes pages
     showName.addEventListener('click', () => {
       displayShows.style.display = 'none';
       displayEpisodes.style.display = 'block';
@@ -153,23 +141,34 @@ function allShows(obj) {
       while(rootEpisodes.firstChild) {
         rootEpisodes.removeChild(rootEpisodes.firstChild)
       }
-     
-      if (`${element.name}` === this.value && showID <= 249) { 
-         `${element.id}`;
-         showID =`${element.id}`;
+      if (`${element.name}` === this.value) { 
+        `${element.id}`;
+        showID =`${element.id}`;
         loadEpisodes();
         navLink.style.display = 'block';
         document.getElementById('show-episodes').innerHTML = `Select from the list of ${element.name} episodes`;
         document.getElementById('show-name').innerHTML = `${element.name}`;
         searchForEpisodes.style.display = 'block';
       }
-      
+
     })
 
   });
  
 }
 
+//Async function to fetch episodes' data 
+const loadEpisodes = async () => {
+  try {
+    const response = fetch("https://api.tvmaze.com/shows/"+showID+"/episodes");
+    parsedData = await (await response).json();
+    episodesPage(parsedData);
+    episodeSearch(parsedData);
+  } catch (err) {
+    console.error(err);
+  }
+    
+}
 
 // An event listener wrapped inside a function to dynamically update the web page while a user is typing in the search bar.
 function showSearch () { 
