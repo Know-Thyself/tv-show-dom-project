@@ -51,9 +51,8 @@ function allShows(obj) {
     expandingList.appendChild(showName);
     showName.innerHTML = `${element.name}`;
     let aTag = document.createElement('a');
-    aTag.setAttribute('href', `#${element.id}`);
-    aTag.setAttribute('id', `${element.id}`)
-    aTag.setAttribute('class', 'a-tag');
+    aTag.setAttribute('href', '#');
+    aTag.setAttribute('id', `${element.id}`);
     showName.append(aTag);
     
     //An event listener to make name of shows clickable
@@ -144,26 +143,25 @@ function allShows(obj) {
     let options = document.createElement('option');
     options.innerHTML = `${element.name}`;
     selectShows.appendChild(options);
-    let anchorTag = document.createElement('a');
-    anchorTag.setAttribute('href', '#');
-    options.appendChild(anchorTag);
 
     // An event listener to fetch a show's episodes data when selected
     selectShows.addEventListener('change', function(){
 
       displayShows.style.display = 'none';
       displayEpisodes.style.display = 'block';
-      
-      if (`${element.name}` === this.value) { 
-          `${element.id}`;
-          showID =`${element.id}`;
-          loadEpisodes();
-          navLink.style.display = 'block';
-          document.getElementById('show-episodes').innerHTML = `Select from the list of ${element.name} episodes`;
-          document.getElementById('show-name').innerHTML = `${element.name}`;
-          searchForEpisodes.style.display = 'block';
+      while(rootEpisodes.firstChild) {
+        rootEpisodes.removeChild(rootEpisodes.firstChild)
       }
-
+      `${element.id}`;
+      showID =`${element.id}`;
+      if (`${element.name}` === this.value) { 
+        loadEpisodes();
+        navLink.style.display = 'block';
+        document.getElementById('show-episodes').innerHTML = `Select from the list of ${element.name} episodes`;
+        document.getElementById('show-name').innerHTML = `${element.name}`;
+        searchForEpisodes.style.display = 'block';
+      }
+      
     })
 
   });
@@ -332,7 +330,7 @@ navLink.setAttribute('href', window.location.href);
 episodesLink.addEventListener('click', function() {
   loadEpisodes();
     while(rootEpisodes.firstChild) {
-      rootEpisodes.removeChild(rootEpisodes.firstChild)
+      rootEpisodes.removeChild(rootEpisodes.firstChild);
     }
     episodesLink.style.display = "none";
     searchForEpisodes.style.display = "block";
