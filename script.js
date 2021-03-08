@@ -18,7 +18,7 @@ const loadShows = async () => {
   try {
     const response = await fetch('https://api.tvmaze.com/shows');
     data = await response.json();
-    allShows(data);
+    populateShowsPage(data);
     showSearch(data)
   } catch (err){
       console.error(err);
@@ -27,7 +27,7 @@ const loadShows = async () => {
 }
 
 // A function to extract data and populate the webpage. 
-function allShows(obj) {
+function populateShowsPage(obj) {
   obj.forEach(element => {
     
     //Creating elements
@@ -37,7 +37,7 @@ function allShows(obj) {
     showName = document.createElement('h2');
     showName.setAttribute('class', 'name');
     expandingList.appendChild(showName);
-    showName.innerHTML = `${element.name}`;
+    showName.innerHTML = element.name;
     let aTag = document.createElement('a');
     aTag.setAttribute('href', '#');
     aTag.setAttribute('id', `${element.id}`);
@@ -51,7 +51,7 @@ function allShows(obj) {
       loadEpisodes();
       navLink.style.display = 'block';
       document.getElementById('show-episodes').innerHTML = `Select from the list of ${element.name} episodes`;
-      document.getElementById('show-name').innerHTML = `${element.name}`;
+      document.getElementById('show-name').innerHTML = element.name;
       searchForEpisodes.style.display = 'block';
     });
 
@@ -83,7 +83,7 @@ function allShows(obj) {
     paragraph.innerHTML = `${truncatedText} ...`;
     let span = document.createElement('span');
     span.setAttribute('class', 'more-text summary');
-    span.innerHTML =`${element.summary}`;
+    span.innerHTML = element.summary;
     
     //Read more button
     let readMore = document.createElement('button');
@@ -130,7 +130,7 @@ function allShows(obj) {
     let options = document.createElement('option');
     options.setAttribute('id', `${element.id}`);
     options.setAttribute('class', 'show-options');
-    options.innerHTML = `${element.name}`;
+    options.innerHTML = element.name;
     selectShows.appendChild(options);
     
     // An event listener to fetch a show's episodes data when selected
@@ -142,12 +142,12 @@ function allShows(obj) {
         rootEpisodes.removeChild(rootEpisodes.firstChild)
       }
       if (`${element.name}` === this.value) { 
-        `${element.id}`;
-        showID =`${element.id}`;
+        element.id;
+        showID = element.id;
         loadEpisodes();
         navLink.style.display = 'block';
         document.getElementById('show-episodes').innerHTML = `Select from the list of ${element.name} episodes`;
-        document.getElementById('show-name').innerHTML = `${element.name}`;
+        document.getElementById('show-name').innerHTML = element.name;
         searchForEpisodes.style.display = 'block';
       }
 
@@ -162,7 +162,7 @@ const loadEpisodes = async () => {
   try {
     const response = fetch("https://api.tvmaze.com/shows/"+showID+"/episodes");
     parsedData = await (await response).json();
-    episodesPage(parsedData);
+    populateEpisodesPage(parsedData);
     episodeSearch(parsedData);
   } catch (err) {
     console.error(err);
@@ -170,11 +170,11 @@ const loadEpisodes = async () => {
     
 }
 
+const searchInfo = document.querySelector('.search-info');
+const searchInfo2 = document.querySelector('.search-info2');
+
 // An event listener wrapped inside a function to dynamically update the web page while a user is typing in the search bar.
 function showSearch () { 
-
-  const searchInfo = document.querySelector('.search-info');
-  const searchInfo2 = document.querySelector('.search-info2');
   
   searchBar.addEventListener('keyup', (e) => {
 
@@ -191,7 +191,7 @@ function showSearch () {
     while(rootShows.firstChild) {
       rootShows.removeChild(rootShows.firstChild)
     }
-    allShows(searchResult)
+    populateShowsPage(searchResult)
   
     if (searchValue === "") {
       searchInfo.style.display = "none";
@@ -205,7 +205,7 @@ function showSearch () {
 }
 
 // Populating the episodes' page
-function episodesPage(data) {
+function populateEpisodesPage(data) {
 
   data.forEach(elem => {
     
@@ -224,7 +224,7 @@ function episodesPage(data) {
   
     if(elem.image) {
       img.src = elem.image.medium;
-    } else if (elem.image === null) {
+    } else {
       img.src = "https://upload.wikimedia.org/wikipedia/commons/2/26/512pxIcon-sunset_photo_not_found.png";
     }
     expandingList.appendChild(img);
@@ -249,7 +249,7 @@ function episodesPage(data) {
     episodeSummary.innerHTML = `${truncatedText} ...`;
     let span = document.createElement('span');
     span.setAttribute('class', 'more-text summary');
-    span.innerHTML =`${elem.summary}`;
+    span.innerHTML = elem.summary;
 
     //A read more button
     let readMore = document.createElement('button');
@@ -267,7 +267,7 @@ function episodesPage(data) {
     if (elem.summary && elem.summary.length <= truncatedText.length) {
       episodeSummary.innerHTML = `${truncatedText}`;
       readMore.style.display = "none";
-    } else if (!elem.summary) {
+    } else {
       episodeSummary.innerHTML = "";
       readMore.style.display = "none";
     }
@@ -337,15 +337,18 @@ episodesLink.addEventListener('click', function() {
   episodesLink.style.display = "none";
   searchForEpisodes.style.display = "block";
   document.getElementById('episodes').selectedIndex = 0;
+  episodeSearchInfo.style.display = "none";
+  episodeSearchInfo2.style.display = "none";
+  searchForEpisodes.value = "";
 
 });
 
+//Search result information
+const episodeSearchInfo = document.querySelector('.episode-search-info');
+const episodeSearchInfo2 = document.querySelector('.episode-search-info2');
+
 // A function consisting of an event listener and a filter to dynamically update the web page based on the user input 
 function episodeSearch() {
-  
-  //Search result information
-  const episodeSearchInfo = document.querySelector('.episode-search-info');
-  const episodeSearchInfo2 = document.querySelector('.episode-search-info2');
   
   searchForEpisodes.addEventListener('keyup', (e) => {
 
@@ -366,7 +369,7 @@ function episodeSearch() {
     while(rootEpisodes.firstChild) {
       rootEpisodes.removeChild(rootEpisodes.firstChild);
     }
-    episodesPage(searchFilter);
+    populateEpisodesPage(searchFilter);
 
     if (searchInput === "") {
       episodeSearchInfo.style.display = "none";

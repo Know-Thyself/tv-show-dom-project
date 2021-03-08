@@ -45,7 +45,7 @@
 .select-shows option,
 .select-episodes option {
   height: 30px;
-  color: rgb(0, 5, 8);
+  color: aliceblue;
   width: auto;
 }
 
@@ -71,7 +71,6 @@
   border: none;
   height: 35px;
   width: 60%;
-
 }
 
 /* Shows how many search results have been found */
@@ -82,11 +81,14 @@
   color: aliceblue;
   display: none;
   text-align: center;
-  background-color: rgb(51, 46, 46);
+  width: 100%;
+  padding: 00.25rem 0 0 0;
 }
-.search-info,
+.search-info {
+  margin: -0.5rem 0 -0.3rem 0;
+}
 .episode-search-info {
-  margin-top: 1rem;
+  margin-top: -1.7rem;
 }
 
 /* Navigation links */
@@ -160,7 +162,6 @@
   cursor: pointer;
   color: aliceblue;
   background-color: rgb(0, 5, 8);
-
 }
 .name:hover {
   background-color: aliceblue;
@@ -223,7 +224,7 @@ h4 {
 
 /* Footer */
 .footer {
-  height: 70px;
+  height: 10vh;
   background-color: rgb(0, 5, 8);
 }
 .data-info {
@@ -231,7 +232,7 @@ h4 {
   text-align: center;
   margin-top: 20px;
   padding-top: 10px;
-  color: antiquewhite;
+  color: aliceblue;
   font-size: large;
 }
 
