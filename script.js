@@ -5,7 +5,7 @@ const displayEpisodes = document.getElementById('episodes-page-wrapper');
 const rootShows = document.getElementById("root-shows");
 const rootEpisodes = document.getElementById("root-episodes");
 const searchBar = document.querySelector(".search-bar");
-const searchForEpisodes = document.querySelector(".search-episode");
+const searchForEpisodes = document.querySelector(".episodes-search-bar");
 const parentDiv = document.getElementsByTagName('div');
 
 //Declaring variables for accessability
@@ -50,9 +50,10 @@ function populateShowsPage(obj) {
       showID = aTag.id;
       loadEpisodes();
       navLink.style.display = 'block';
-      document.getElementById('show-episodes').innerHTML = `Select from the list of ${element.name} episodes`;
+      document.getElementById('show-episodes').innerHTML = `Episodes of ${element.name}`;
       document.getElementById('show-name').innerHTML = element.name;
       searchForEpisodes.style.display = 'block';
+      searchForEpisodes.placeholder = `Search for ${element.name}'s episodes`;
     });
 
     img = document.createElement('img');
@@ -99,7 +100,7 @@ function populateShowsPage(obj) {
     
     //A condition in which read more button won't be necessary
     if (element.summary.length <= truncatedText.length) {
-      paragraph.innerHTML = `${truncatedText}`;
+      paragraph.innerHTML = truncatedText;
       readMore.style.display = "none";
     }
     
@@ -141,13 +142,14 @@ function populateShowsPage(obj) {
       while(rootEpisodes.firstChild) {
         rootEpisodes.removeChild(rootEpisodes.firstChild)
       }
-      if (`${element.name}` === this.value) { 
+      if (element.name === this.value) { 
         element.id;
         showID = element.id;
         loadEpisodes();
         navLink.style.display = 'block';
-        document.getElementById('show-episodes').innerHTML = `Select from the list of ${element.name} episodes`;
+        document.getElementById('show-episodes').innerHTML = `Episodes of ${element.name}`;
         document.getElementById('show-name').innerHTML = element.name;
+        searchForEpisodes.placeholder = `Search for ${element.name}'s episodes`;
         searchForEpisodes.style.display = 'block';
       }
 
@@ -196,7 +198,7 @@ function showSearch () {
     if (searchValue === "") {
       searchInfo.style.display = "none";
       searchInfo2.style.display = "none";
-      window.location.reload();
+      loadShows();
     }
       searchInfo.innerHTML = `Displaying ${searchResult.length}/${data.length} Shows`;
       loadEpisodes();
@@ -318,6 +320,7 @@ selectEpisode.addEventListener('change', function() {
     else {
       episodesLink.style.display = "inline-block";
       navLink.style.display = "inline-block";
+      
     } 
 
   }
