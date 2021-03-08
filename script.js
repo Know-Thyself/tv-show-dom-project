@@ -5,7 +5,7 @@ const displayEpisodes = document.getElementById('episodes-page-wrapper');
 const rootShows = document.getElementById("root-shows");
 const rootEpisodes = document.getElementById("root-episodes");
 const searchBar = document.querySelector(".search-bar");
-const searchForEpisodes = document.querySelector(".episodes-search-bar");
+const searchForEpisodes = document.querySelector(".search-episode");
 const parentDiv = document.getElementsByTagName('div');
 
 //Declaring variables for accessability
@@ -303,9 +303,11 @@ function populateEpisodesPage(data) {
 // An event listener for episodes' select option box
 let selectEpisode = document.getElementById('episodes');
 selectEpisode.addEventListener('change', function() {
-      
+
+  searchForEpisodes.value = "";
   searchForEpisodes.style.display = 'none';
   let checker = document.createElement('option');
+  
   checker.innerHTML = (this.value).split(' ').slice(2).join(' ');
       
   for (let i = 0; i < parentDiv.length; i++) {
@@ -319,6 +321,7 @@ selectEpisode.addEventListener('change', function() {
     } 
 
   }
+  selectEpisode.style.display = "none";
 
 });
 
@@ -331,15 +334,14 @@ navLink.setAttribute('href', window.location.href);
 // Event listener to go back to episodes page
 episodesLink.addEventListener('click', function() {
   loadEpisodes();
-  while(rootEpisodes.firstChild) {
-    rootEpisodes.removeChild(rootEpisodes.firstChild);
-  }
+  document.getElementById('episodes').selectedIndex = 0;
   episodesLink.style.display = "none";
   searchForEpisodes.style.display = "block";
-  document.getElementById('episodes').selectedIndex = 0;
   episodeSearchInfo.style.display = "none";
   episodeSearchInfo2.style.display = "none";
   searchForEpisodes.value = "";
+  selectEpisode.style.display = "block";
+  document.querySelector('.episode-search-container').style.display = "block";
 
 });
 
