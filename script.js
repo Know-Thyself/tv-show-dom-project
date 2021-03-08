@@ -265,9 +265,9 @@ function populateEpisodesPage(data) {
     
     //A condition in which the buttons won't be necessary
     if (elem.summary && elem.summary.length <= truncatedText.length) {
-      episodeSummary.innerHTML = `${truncatedText}`;
+      episodeSummary.innerHTML = truncatedText;
       readMore.style.display = "none";
-    } else {
+    } else if (!elem.summary) {
       episodeSummary.innerHTML = "";
       readMore.style.display = "none";
     }
