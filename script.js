@@ -46,13 +46,13 @@ function populateShowsPage(obj) {
     showName.addEventListener('click', () => {
       showID = aTag.id;
       loadEpisodes();
-      displayShows.style.display = 'none';
       displayEpisodes.style.display = 'block';
       searchForEpisodes.style.display = 'block';
       navLink.style.display = 'block';
       document.getElementById('show-episodes').innerHTML = `Episodes of ${show.name}`;
       document.getElementById('show-name').innerHTML = show.name;
       searchForEpisodes.placeholder = `Search for ${show.name}'s episodes`;
+      displayShows.style.display = 'none';
     });
 
     img = document.createElement('img');
@@ -147,9 +147,9 @@ function populateShowsPage(obj) {
       navLink.style.display = 'block';
       searchForEpisodes.style.display = 'block';
       searchBar.value = "";
-      displayShows.style.display = 'none';
       displayEpisodes.style.display = 'block';
       rootEpisodes.innerHTML = "";
+      displayShows.style.display = 'none';
 
     })
 
@@ -194,9 +194,9 @@ function showSearch () {
     populateShowsPage(searchResult)
   
     if (searchValue === "") {
+      loadShows();
       searchInfo.style.display = "none";
       searchInfo2.style.display = "none";
-      loadShows();
     }
     searchInfo.innerHTML = `Displaying ${searchResult.length}/${data.length} Shows`;
 
@@ -206,10 +206,6 @@ function showSearch () {
 // Navigation link to go back to shows home page. NB: the link works without the event listener. I added the event listener for the sake of speed.
 const navLink = document.getElementById('navigation-link');
 navLink.setAttribute('href', window.location.href);
-navLink.addEventListener('click', () => {
-  loadShows();
-  searchForEpisodes.value = "";
-})
 
 // Populating the episodes' page
 function populateEpisodesPage(data) {
@@ -313,23 +309,23 @@ let selectEpisode = document.getElementById('episodes');
 selectEpisode.addEventListener('change', function() {
 
   searchForEpisodes.value = "";
-  searchForEpisodes.style.display = 'none';
   let checker = document.createElement('option');
   
   checker.innerHTML = (this.value).split(' ').slice(2).join(' ');
       
   for (let i = 0; i < parentDiv.length; i++) {
         
-    if (!parentDiv[i].innerHTML.includes(checker.innerHTML)) {
-          parentDiv[i].style.display = "none";
+    if (parentDiv[i].innerHTML.includes(checker.innerHTML)) {
+      episodesLink.style.display = "inline-block";
+      navLink.style.display = "inline-block";  
     } 
     else {
-      episodesLink.style.display = "inline-block";
-      navLink.style.display = "inline-block";
+      parentDiv[i].style.display = "none";
     } 
 
   }
   selectEpisode.style.display = "none";
+  searchForEpisodes.style.display = 'none';
 
 });
 
@@ -341,14 +337,14 @@ episodesLink.addEventListener('click', function() {
         rootEpisodes.removeChild(rootEpisodes.firstChild)
   }
   loadEpisodes();
-  document.getElementById('episodes').selectedIndex = 0;
-  episodesLink.style.display = "none";
   searchForEpisodes.style.display = "block";
-  episodeSearchInfo.style.display = "none";
-  episodeSearchInfo2.style.display = "none";
   searchForEpisodes.value = "";
   selectEpisode.style.display = "block";
   document.querySelector('.episode-search-container').style.display = "block";
+  document.getElementById('episodes').selectedIndex = 0;
+  episodeSearchInfo.style.display = "none";
+  episodeSearchInfo2.style.display = "none";
+  episodesLink.style.display = "none";
 
 });
 
@@ -381,9 +377,9 @@ function episodeSearch() {
     populateEpisodesPage(searchFilter);
 
     if (searchInput === "") {
+      navLink.style.display = "inline-block";
       episodeSearchInfo.style.display = "none";
       episodeSearchInfo2.style.display = "none";
-      navLink.style.display = "inline-block";
     }
 
   });
