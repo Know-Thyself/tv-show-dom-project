@@ -11,7 +11,6 @@ const parentDiv = document.getElementsByTagName('div');
 //Declaring variables for accessability
 let data = [];
 let parsedData = [];
-let showID = 82;
 
 //Getting data from API and passing it as a parameter
 const loadShows = async () => {
@@ -136,7 +135,7 @@ function populateShowsPage(obj) {
     
     // An event listener to fetch a show's episodes data when selected
     selectShows.addEventListener('change', function(){
-
+      searchBar.value = "";
       displayShows.style.display = 'none';
       displayEpisodes.style.display = 'block';
       while(rootEpisodes.firstChild) {
@@ -151,6 +150,7 @@ function populateShowsPage(obj) {
         document.getElementById('show-name').innerHTML = element.name;
         searchForEpisodes.placeholder = `Search for ${element.name}'s episodes`;
         searchForEpisodes.style.display = 'block';
+        
       }
 
     })
@@ -200,8 +200,8 @@ function showSearch () {
       searchInfo2.style.display = "none";
       loadShows();
     }
-      searchInfo.innerHTML = `Displaying ${searchResult.length}/${data.length} Shows`;
-      loadEpisodes();
+    searchInfo.innerHTML = `Displaying ${searchResult.length}/${data.length} Shows`;
+    loadShows();
   });
 
 }
@@ -234,6 +234,7 @@ function populateEpisodesPage(data) {
     //Select an episode options
     let selectEpisode = document.getElementById('episodes');
     let options = document.createElement('option');
+    options.setAttribute('class', 'episodes-option');
     options.innerHTML = `S${formattedSeasonNumber}E${formattedEpisodeNumber} - ${elem.name}`;
     selectEpisode.appendChild(options);
 
@@ -336,6 +337,9 @@ navLink.setAttribute('href', window.location.href);
 
 // Event listener to go back to episodes page
 episodesLink.addEventListener('click', function() {
+  while(rootEpisodes.firstChild) {
+        rootEpisodes.removeChild(rootEpisodes.firstChild)
+  }
   loadEpisodes();
   document.getElementById('episodes').selectedIndex = 0;
   episodesLink.style.display = "none";

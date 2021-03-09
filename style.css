@@ -358,9 +358,6 @@ h4 {
     width: 25%;
     height: 2em;
   }
-  .select-episodes {
-    margin-top: 1.2em;
-  }
   .name,
   .episode-name {
     width: 99%;
@@ -395,7 +392,7 @@ h4 {
     height: 2.2em;
   }
   .select-episodes {
-    margin-top: auto;
+    margin-top: 1.25em;
     font-size: 1.1rem;
     height: 2.2rem;
   }
