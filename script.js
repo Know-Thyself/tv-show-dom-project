@@ -27,7 +27,7 @@ const loadShows = async () => {
 
 // A function to extract data and populate the webpage. 
 function populateShowsPage(obj) {
-  obj.forEach(element => {
+  obj.forEach(show => {
     
     //Creating elements
     let expandingList = document.createElement('div', { is : 'expanding-list' });
@@ -36,10 +36,10 @@ function populateShowsPage(obj) {
     showName = document.createElement('h2');
     showName.setAttribute('class', 'name');
     expandingList.appendChild(showName);
-    showName.innerHTML = element.name;
+    showName.innerHTML = show.name;
     let aTag = document.createElement('a');
     aTag.setAttribute('href', '#');
-    aTag.setAttribute('id', `${element.id}`);
+    aTag.setAttribute('id', `${show.id}`);
     showName.append(aTag);
     
     //An event listener to link names of shows to their episodes pages
@@ -49,14 +49,14 @@ function populateShowsPage(obj) {
       showID = aTag.id;
       loadEpisodes();
       navLink.style.display = 'block';
-      document.getElementById('show-episodes').innerHTML = `Episodes of ${element.name}`;
-      document.getElementById('show-name').innerHTML = element.name;
+      document.getElementById('show-episodes').innerHTML = `Episodes of ${show.name}`;
+      document.getElementById('show-name').innerHTML = show.name;
       searchForEpisodes.style.display = 'block';
-      searchForEpisodes.placeholder = `Search for ${element.name}'s episodes`;
+      searchForEpisodes.placeholder = `Search for ${show.name}'s episodes`;
     });
 
     img = document.createElement('img');
-    img.src = element.image.medium; 
+    img.src = show.image.medium; 
     expandingList.appendChild(img);
 
     //Genres, Status, Rating and Runtime
@@ -67,23 +67,23 @@ function populateShowsPage(obj) {
     expandingList.appendChild(rating);
 
     // Giving a bit of space between words and after commas
-    let corrected = element.genres.toString().split(',').join(', ');
+    let corrected = show.genres.toString().split(',').join(', ');
     genres.innerHTML = `Genres: ${corrected}`
-    rating.innerHTML = `Status: ${element.status}   Rating: ${element.rating.average} Runtime: ${element.runtime}`; 
+    rating.innerHTML = `Status: ${show.status}   Rating: ${show.rating.average} Runtime: ${show.runtime}`; 
     genres.style.wordSpacing = "5px";
     rating.style.wordSpacing = "5px";
     
     //Truncated summary text
-    const truncatedText = element.summary.toString().split(' ').slice(0, 25).join(' ');
+    const truncatedText = show.summary.toString().split(' ').slice(0, 25).join(' ');
     //Unused code, perhaps to be used at some point
-    const truncatedText2 = element.summary.toString().split(' ').splice(25).join(' ');
+    const truncatedText2 = show.summary.toString().split(' ').splice(25).join(' ');
     
     paragraph = document.createElement('p');
     paragraph.setAttribute('class', 'summary');
     paragraph.innerHTML = `${truncatedText} ...`;
     let span = document.createElement('span');
     span.setAttribute('class', 'more-text summary');
-    span.innerHTML = element.summary;
+    span.innerHTML = show.summary;
     
     //Read more button
     let readMore = document.createElement('button');
@@ -98,7 +98,7 @@ function populateShowsPage(obj) {
     readLess.setAttribute('class', 'read-less');
     
     //A condition in which read more button won't be necessary
-    if (element.summary.length <= truncatedText.length) {
+    if (show.summary.length <= truncatedText.length) {
       paragraph.innerHTML = truncatedText;
       readMore.style.display = "none";
     }
@@ -128,9 +128,9 @@ function populateShowsPage(obj) {
     //Select a show options
     let selectShows = document.querySelector('#shows');
     let options = document.createElement('option');
-    options.setAttribute('id', `${element.id}`);
+    options.setAttribute('id', `${show.id}`);
     options.setAttribute('class', 'show-options');
-    options.innerHTML = element.name;
+    options.innerHTML = show.name;
     selectShows.appendChild(options);
     
     // An event listener to fetch a show's episodes data when selected
@@ -141,14 +141,14 @@ function populateShowsPage(obj) {
       while(rootEpisodes.firstChild) {
         rootEpisodes.removeChild(rootEpisodes.firstChild)
       }
-      if (element.name === this.value) { 
-        element.id;
-        showID = element.id;
+      if (show.name === this.value) { 
+        show.id;
+        showID = show.id;
         loadEpisodes();
         navLink.style.display = 'block';
-        document.getElementById('show-episodes').innerHTML = `Episodes of ${element.name}`;
-        document.getElementById('show-name').innerHTML = element.name;
-        searchForEpisodes.placeholder = `Search for ${element.name}'s episodes`;
+        document.getElementById('show-episodes').innerHTML = `Episodes of ${show.name}`;
+        document.getElementById('show-name').innerHTML = show.name;
+        searchForEpisodes.placeholder = `Search for ${show.name}'s episodes`;
         searchForEpisodes.style.display = 'block';
         
       }
@@ -187,8 +187,8 @@ function showSearch () {
     //Filtering search results
     let searchValue = e.target.value.toLowerCase();
    
-    let searchResult = data.filter((element) => {
-      return (element.name.toLowerCase().includes(searchValue) || element.summary.toLowerCase().includes(searchValue) || element.genres.toString().toLowerCase().includes(searchValue));
+    let searchResult = data.filter((show) => {
+      return (show.name.toLowerCase().includes(searchValue) || show.summary.toLowerCase().includes(searchValue) || show.genres.toString().toLowerCase().includes(searchValue));
     })  
     while(rootShows.firstChild) {
       rootShows.removeChild(rootShows.firstChild)
@@ -205,11 +205,14 @@ function showSearch () {
   });
 
 }
+// Navigation link to go back to shows home page
+const navLink = document.getElementById('navigation-link');
+navLink.setAttribute('href', window.location.href);
 
 // Populating the episodes' page
 function populateEpisodesPage(data) {
 
-  data.forEach(elem => {
+  data.forEach(episode => {
     
     //Creating and appending elements
     const expandingList = document.createElement('div', { is : 'expanding-list' });
@@ -218,14 +221,14 @@ function populateEpisodesPage(data) {
     rootEpisodes.appendChild(expandingList);
     episodesName = document.createElement('h2');
     expandingList.appendChild(episodesName);
-    let formattedSeasonNumber = (`0${elem.season}`).slice(-2);
-    let formattedEpisodeNumber = (`0${elem.number}`).slice(-2);
-    episodesName.innerHTML = `${elem.name} - S${formattedSeasonNumber}E${formattedEpisodeNumber}`;
+    let formattedSeasonNumber = (`0${episode.season}`).slice(-2);
+    let formattedEpisodeNumber = (`0${episode.number}`).slice(-2);
+    episodesName.innerHTML = `${episode.name} - S${formattedSeasonNumber}E${formattedEpisodeNumber}`;
     episodesName.setAttribute('class', 'episode-name')
     img = document.createElement('img');
   
-    if(elem.image) {
-      img.src = elem.image.medium;
+    if(episode.image) {
+      img.src = episode.image.medium;
     } else {
       img.src = "https://upload.wikimedia.org/wikipedia/commons/2/26/512pxIcon-sunset_photo_not_found.png";
     }
@@ -235,7 +238,7 @@ function populateEpisodesPage(data) {
     let selectEpisode = document.getElementById('episodes');
     let options = document.createElement('option');
     options.setAttribute('class', 'episodes-option');
-    options.innerHTML = `S${formattedSeasonNumber}E${formattedEpisodeNumber} - ${elem.name}`;
+    options.innerHTML = `S${formattedSeasonNumber}E${formattedEpisodeNumber} - ${episode.name}`;
     selectEpisode.appendChild(options);
 
     // Truncated summary Text
@@ -244,15 +247,15 @@ function populateEpisodesPage(data) {
     expandingList.appendChild(episodeSummary);
     let truncatedText;
 
-    if(elem.summary) { 
-      truncatedText = elem.summary.toString().split(' ').slice(0, 25).join(' ');
+    if(episode.summary) { 
+      truncatedText = episode.summary.toString().split(' ').slice(0, 25).join(' ');
       //Unused code that might be needed at some point
-      const truncatedText2 = elem.summary.toString().split(' ').splice(25).join(' ');
+      const truncatedText2 = episode.summary.toString().split(' ').splice(25).join(' ');
     }
     episodeSummary.innerHTML = `${truncatedText} ...`;
     let span = document.createElement('span');
     span.setAttribute('class', 'more-text summary');
-    span.innerHTML = elem.summary;
+    span.innerHTML = episode.summary;
 
     //A read more button
     let readMore = document.createElement('button');
@@ -267,10 +270,10 @@ function populateEpisodesPage(data) {
     readLess.setAttribute('class', 'read-less');
     
     //A condition in which the buttons won't be necessary
-    if (elem.summary && elem.summary.length <= truncatedText.length) {
+    if (episode.summary && episode.summary.length <= truncatedText.length) {
       episodeSummary.innerHTML = truncatedText;
       readMore.style.display = "none";
-    } else if (!elem.summary) {
+    } else if (!episode.summary) {
       episodeSummary.innerHTML = "";
       readMore.style.display = "none";
     }
@@ -329,11 +332,7 @@ selectEpisode.addEventListener('change', function() {
 
 });
 
-const navLink = document.getElementById('navigation-link');
 const episodesLink = document.getElementById('episodes-navigation-link');
-
-// Navigation link to go back to shows home page
-navLink.setAttribute('href', window.location.href);
 
 // Event listener to go back to episodes page
 episodesLink.addEventListener('click', function() {
@@ -367,9 +366,9 @@ function episodeSearch() {
     const searchInput = e.target.value.toLowerCase();
 
     //Filtering the search
-    const searchFilter = parsedData.filter((elem) => {
-      if (elem.name && elem.summary) { 
-        return (elem.name.toLowerCase().includes(searchInput) || elem.summary.toLowerCase().includes(searchInput));
+    const searchFilter = parsedData.filter((episode) => {
+      if (episode.name && episode.summary) { 
+        return (episode.name.toLowerCase().includes(searchInput) || episode.summary.toLowerCase().includes(searchInput));
       }
 
     })
