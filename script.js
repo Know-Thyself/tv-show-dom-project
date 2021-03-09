@@ -44,14 +44,14 @@ function populateShowsPage(obj) {
     
     //An event listener to link names of shows to their episodes pages
     showName.addEventListener('click', () => {
-      displayShows.style.display = 'none';
-      displayEpisodes.style.display = 'block';
       showID = aTag.id;
       loadEpisodes();
+      displayShows.style.display = 'none';
+      displayEpisodes.style.display = 'block';
+      searchForEpisodes.style.display = 'block';
       navLink.style.display = 'block';
       document.getElementById('show-episodes').innerHTML = `Episodes of ${show.name}`;
       document.getElementById('show-name').innerHTML = show.name;
-      searchForEpisodes.style.display = 'block';
       searchForEpisodes.placeholder = `Search for ${show.name}'s episodes`;
     });
 
@@ -135,23 +135,21 @@ function populateShowsPage(obj) {
     
     // An event listener to fetch a show's episodes data when selected
     selectShows.addEventListener('change', function(){
+    
+      if (show.name === this.value) { 
+        showID = show.id;
+        loadEpisodes();
+        document.getElementById('show-episodes').innerHTML = `Episodes of ${show.name}`;
+        document.getElementById('show-name').innerHTML = show.name;
+        searchForEpisodes.placeholder = `Search for ${show.name}'s episodes`; 
+      }
+
+      navLink.style.display = 'block';
+      searchForEpisodes.style.display = 'block';
       searchBar.value = "";
       displayShows.style.display = 'none';
       displayEpisodes.style.display = 'block';
-      while(rootEpisodes.firstChild) {
-        rootEpisodes.removeChild(rootEpisodes.firstChild)
-      }
-      if (show.name === this.value) { 
-        show.id;
-        showID = show.id;
-        loadEpisodes();
-        navLink.style.display = 'block';
-        document.getElementById('show-episodes').innerHTML = `Episodes of ${show.name}`;
-        document.getElementById('show-name').innerHTML = show.name;
-        searchForEpisodes.placeholder = `Search for ${show.name}'s episodes`;
-        searchForEpisodes.style.display = 'block';
-        
-      }
+      rootEpisodes.innerHTML = "";
 
     })
 
@@ -201,13 +199,17 @@ function showSearch () {
       loadShows();
     }
     searchInfo.innerHTML = `Displaying ${searchResult.length}/${data.length} Shows`;
-    loadShows();
+
   });
 
 }
-// Navigation link to go back to shows home page
+// Navigation link to go back to shows home page. NB: the link works without the event listener. I added the event listener for the sake of speed.
 const navLink = document.getElementById('navigation-link');
 navLink.setAttribute('href', window.location.href);
+navLink.addEventListener('click', () => {
+  loadShows();
+  searchForEpisodes.value = "";
+})
 
 // Populating the episodes' page
 function populateEpisodesPage(data) {
@@ -324,7 +326,6 @@ selectEpisode.addEventListener('change', function() {
     else {
       episodesLink.style.display = "inline-block";
       navLink.style.display = "inline-block";
-      
     } 
 
   }
