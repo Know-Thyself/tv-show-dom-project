@@ -1,6 +1,7 @@
 /* Mobile first Responsive Web Design */
 * {
-  background-color: rgb(55, 72, 90);
+  background-color: rgb(119, 122, 126);
+  font-family: 'Lato', sans-serif !important;
   box-sizing: border-box;
 }
 .display-shows {
@@ -8,6 +9,7 @@
 }
 .display-episodes {
   display: none;
+  background-color: rgb(55, 72, 90);
 }
 
 /* logo, select options and search bar */
@@ -33,8 +35,8 @@
   margin: 0.8% 1.5% 0 0.25%;
 }
 .epi-logo {
-  height: 110px;
-  width: 180px;
+  height: 98px;
+  width: 160px;
   float: left;
   margin: 0.6% 1.5% 0 0.4%;
 }
@@ -43,14 +45,14 @@
   margin: 1rem;
   margin-left: 0;
   background: aliceblue;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   border: none;
   max-width: 60%;
   align-items: center;
 }
 .select-shows option,
 .select-episodes option {
-  height: 2rem;
+  height: 1.5rem;
   color: aliceblue;
   width: auto;
   font-size: 1rem;
@@ -155,16 +157,18 @@
   display: block;
 }
 .show-name {
-  font-family: 'Rye', cursive;
+  font-family: 'Lato', sans-serif;
   color: aliceblue;
   display: block;
   text-align: center;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   background-color: rgb(0, 5, 8);
+  font-size: x-large;
 }
 .name,
 .episode-name {
+  font-family: 'Lato', sans-serif;
   display: block;
   margin: auto;
   text-align: center;
@@ -172,6 +176,7 @@
   width: 98%;
   border-radius: 8px;
   background-color: rgb(218, 217, 223);
+  font-size: large;
 }
 .name {
   cursor: pointer;
@@ -198,7 +203,8 @@ img {
   text-align: justify;
   width: 95%;
   color:  rgb(255, 255, 255);
-  
+  color:rgb(0, 5, 8);
+  font-weight: 700;
 }
 .more-text {
   display: none;
@@ -211,9 +217,10 @@ img {
   cursor: pointer;
   color: rgb(255, 255, 255);
   font-weight: 500;
-  background-color:rgb(71, 94, 116);
+  background-color: darkred;
   font-size: 1rem;
   margin-top: -0.7rem;
+  border-radius: 7%;
 }
 .read-more:hover,
 .read-less:hover {
@@ -224,7 +231,7 @@ img {
 /* Genres, status, rating and runtime */
 h4 {
   display: block;
-  font-size: medium;
+  font-family: 'Lato', sans-serif !important;
   color: aliceblue;
   width: 95%;
   justify-content: center;
@@ -248,7 +255,7 @@ h4 {
   text-align: center;
   margin-top: 20px;
   padding-top: 10px;
-  color: aliceblue;
+  color: darkred;
   font-size: large;
 }
 
