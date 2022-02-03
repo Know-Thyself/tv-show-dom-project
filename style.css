@@ -44,7 +44,6 @@
 .select-episodes  {
   margin: 1rem;
   margin-left: 0;
-  background: aliceblue;
   font-size: 1.2rem;
   border: none;
   max-width: 60%;
@@ -53,7 +52,7 @@
 .select-shows option,
 .select-episodes option {
   height: 1.5rem;
-  color: aliceblue;
+  color: black;
   width: auto;
   font-size: 1rem;
 }
@@ -73,14 +72,35 @@
 .episodes-search-bar {
   float: right;
   padding: 6px;
-  background: aliceblue;
   font-size: 1rem;
   margin: 0 12px 20px 0;
   border: none;
   height: 35px;
   width: 50%;
+  background-color: rgb(119, 122, 126);
+  color: aliceblue;
+}
+input.search-bar,
+input.episodes-search-bar {
+  color: bisque;
+}
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: black;
+  font-size: 1.2em;
+  opacity: 1; /* Firefox */
 }
 
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: black;
+  font-size: 1.2em;
+ 
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: black;
+  font-size: 1.2em;
+
+}
 /* Shows how many search results have been found */
 .search-info,
 .search-info2,
@@ -184,8 +204,8 @@
   background-color: rgb(0, 5, 8);
 }
 .name:hover {
-  background-color: aliceblue;
-  color:rgb(0, 5, 8);
+  background-color: rgb(210, 218, 224) !important;
+  color:rgb(0, 5, 8) !important;
 }
 .episode-name {
   color: rgb(0, 5, 8);

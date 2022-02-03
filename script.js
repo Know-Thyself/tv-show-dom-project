@@ -1,4 +1,3 @@
-//You can edit ALL of the code here
 // Getting elements from the DOM 
 const displayShows = document.getElementById('shows-page-wrapper');
 const displayEpisodes = document.getElementById('episodes-page-wrapper');
@@ -8,7 +7,7 @@ const searchBar = document.querySelector(".search-bar");
 const searchForEpisodes = document.querySelector(".episodes-search-bar");
 const parentDiv = document.getElementsByTagName('div');
 
-//Declaring variables for accessability
+//Declaring variables where to store data
 let data = [];
 let parsedData = [];
 
