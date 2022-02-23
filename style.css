@@ -29,14 +29,14 @@
   margin-bottom: -20px;
 }
 .logo {
-  height: 64px;
-  width: 120px;
+  height: 54px;
+  width: auto;
   float: left;
   margin: 0.8% 1.5% 0 0.25%;
 }
 .epi-logo {
-  height: 98px;
-  width: 160px;
+  height: 84px;
+  width: auto;
   float: left;
   margin: 0.6% 1.5% 0 0.4%;
 }
