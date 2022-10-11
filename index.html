@@ -1,91 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Rye&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Lato&family=Montserrat:wght@300&family=Noto+Serif&family=Permanent+Marker&display=swap" rel="stylesheet">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TV Show Project | Biruk (Know-Thyself)</title>
-    <link href="style.css" rel="stylesheet" />
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-  </head>
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Rye&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Lato&family=Montserrat:wght@300&family=Noto+Serif&family=Permanent+Marker&display=swap"
+			rel="stylesheet"
+		/>
+		<!-- <link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+		/> -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>TV Show Project | Biruk (Know-Thyself)</title>
+		<link href="style.css" rel="stylesheet" />
+		<link rel="icon" href="/favicon.ico" type="image/x-icon" />
+	</head>
 
-  <body>
-    <div id="main-container"> 
-      <!-- The header consisting of logo, select box and search bar  -->
-      <div id="shows-page-wrapper" class="display-shows"> 
-        <div class="header">
-          <img class="logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShJCE1Rrwq34w4XC8ADT39lxxk51z1zxaQow&usqp=CAU" alt="logo-image">
+	<body>
+		<div id="main-container">
+			<!-- The header consisting of logo, select box and search bar  -->
+			<div id="shows-page-wrapper" class="display-shows">
+				<div class="header">
+					<img
+						class="logo"
+						src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShJCE1Rrwq34w4XC8ADT39lxxk51z1zxaQow&usqp=CAU"
+						alt="logo-image"
+					/>
+					<!-- Search bar to search for shows -->
+					<div class="search-container">
+							<i class="fa-solid fa-magnifying-glass fa-xlg icon"></i>
+							<input
+								class="search-bar"
+								type="text"
+								placeholder="Search for shows"
+								name="search"
+							/>
+					</div>
+				</div>
+				<section class="custom-select-wrapper">
+					<div class="custom-select" style="width: 300px">
+						<select name="shows" id="shows" class="select-shows">
+							<option value="shows" class="dropdown-menu">Select a Show</option>
+						</select>
+					</div>
+				</section>
 
-          <!-- Select box to pick a show -->
-          <select name="shows" id="shows" class="select-shows">
-            <option value="shows" class="dropdown-menu">Select from our list of Shows</option>
-          </select>
-       
-          <!-- Search bar to search for shows -->
-          <div class="search-container">
-            <form action="">
-              <input class="search-bar" type="text" placeholder="Search for shows" name="search"> 
-            </form>
-          </div>
-        </div>
+				<!-- A root container for all shows generated using an api and DOM manipulation  -->
+				<div class="shows-wrapper">
+					<h4 class="search-info"></h4>
+					<h4 class="search-info2">
+						Clear the search bar to go back to all shows
+					</h4>
+					<div class="root-shows" id="root-shows"></div>
+				</div>
 
-        <!-- A root container for all shows generated using an api and DOM manipulation  -->
-        <div class="shows-wrapper">
-          <h4 class="search-info"></h4>
-          <h4 class="search-info2">Clear the search bar to go back to all shows</h4>
-          <div class="root-shows" id="root-shows">
-          </div>
-        </div>
+				<!-- Footer just to show where the data is originated from -->
+				<footer class="footer">
+					<a class="data-info" href="https://www.tvmaze.com/"
+						>The data on this app is originated from TVMaze.com</a
+					>
+				</footer>
+			</div>
 
-        <!-- Footer just to show where the data is originated from -->
-        <footer class="footer">
-          <a class="data-info" href="https://www.tvmaze.com/">The data on this app is originated from TVMaze.com</a>
-        </footer>
-      </div>
+			<!-- Episodes page -->
+			<div id="episodes-page-wrapper" class="display-episodes">
+				<div class="episodes-header">
+					<img
+						class="epi-logo"
+						src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShJCE1Rrwq34w4XC8ADT39lxxk51z1zxaQow&usqp=CAU"
+						alt="logo-image"
+					/>
+					<a id="navigation-link" class="nav-link">Shows Home</a>
+					<a id="episodes-navigation-link" class="nav-link episodes-link"
+						>Back To Episodes</a
+					>
 
-      <!-- Episodes page -->
-      <div id="episodes-page-wrapper" class="display-episodes">
-        <div class="episodes-header">
-          <img class="epi-logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShJCE1Rrwq34w4XC8ADT39lxxk51z1zxaQow&usqp=CAU" alt="logo-image">
-          <a id="navigation-link" class="nav-link">Shows Home</a>
-          <a id="episodes-navigation-link" class="nav-link episodes-link">Back To Episodes</a>
+					<!-- Select box to pick an episode -->
+					<select name="episodes" id="episodes" class="select-episodes">
+						<option value="episodes" id="show-episodes" class="dropdown-menu">
+							Select from our list of Episodes
+						</option>
+					</select>
 
-          <!-- Select box to pick an episode -->
-          <select name="episodes" id="episodes" class="select-episodes">
-            <option value="episodes" id="show-episodes" class="dropdown-menu">Select from our list of Episodes</option>
-          </select>
-        
-          <div class="episode-search-container">
-            <form action="" class="search-episode">
-              <input class="episodes-search-bar" type="text" placeholder="Search for episodes" name="search-episodes">
-            </form>
-          </div>
-        </div> 
-        
-        <!-- A root container for all episodes generated using an api and DOM manipulation  -->
-        <div id="episodes-wrapper">
-          <h1 id="show-name" class="show-name"></h1> 
-          <h4 class="episode-search-info"></h4>
-          <h4 class="episode-search-info2">Clear the search bar to go back to all episodes</h4>
-          <div class="root-episodes" id="root-episodes">
-          </div>
-        </div>
+					<div class="episode-search-container">
+						<form action="" class="search-episode">
+							<input
+								class="episodes-search-bar"
+								type="text"
+								placeholder="Search for episodes"
+								name="search-episodes"
+							/>
+						</form>
+					</div>
+				</div>
 
-        <!-- Footer just to show where the data is originated from -->
-        <footer class="footer">
-          <a class="data-info" href="https://www.tvmaze.com/">The data on this app is originated from TVMaze.com</a>
-        </footer>
-      </div>
-    </div>
+				<!-- A root container for all episodes generated using an api and DOM manipulation  -->
+				<div id="episodes-wrapper">
+					<h1 id="show-name" class="show-name"></h1>
+					<h4 class="episode-search-info"></h4>
+					<h4 class="episode-search-info2">
+						Clear the search bar to go back to all episodes
+					</h4>
+					<div class="root-episodes" id="root-episodes"></div>
+				</div>
 
-    <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
-    <script src="episodes.js"></script>
-    <!-- Loads YOUR javascript code -->
-    <script src="script.js"></script>
-    <script src="shows.js"></script>
-  </body>
+				<!-- Footer just to show where the data is originated from -->
+				<footer class="footer">
+					<a class="data-info" href="https://www.tvmaze.com/"
+						>The data on this app is originated from TVMaze.com</a
+					>
+				</footer>
+			</div>
+		</div>
+
+		<!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
+		<script src="episodes.js"></script>
+		<!-- Loads YOUR javascript code -->
+		<script src="script.js"></script>
+		<script src="shows.js"></script>
+	</body>
 </html>

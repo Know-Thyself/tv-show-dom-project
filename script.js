@@ -6,6 +6,7 @@ const rootEpisodes = document.getElementById("root-episodes");
 const searchBar = document.querySelector(".search-bar");
 const searchForEpisodes = document.querySelector(".episodes-search-bar");
 const parentDiv = document.getElementsByTagName('div');
+let showID;
 
 //Declaring variables where to store data
 let data = [];
@@ -18,6 +19,7 @@ const loadShows = async () => {
     data = await response.json();
     populateShowsPage(data);
     showSearch(data)
+		createCustomSelect();
   } catch (err){
       console.error(err);
     }
@@ -25,8 +27,8 @@ const loadShows = async () => {
 }
 
 // A function to extract data and populate the webpage. 
-function populateShowsPage(obj) {
-  obj.forEach(show => {
+function populateShowsPage(arr) {
+  arr.forEach(show => {
     
     //Creating elements
     let expandingList = document.createElement('div', { is : 'expanding-list' });
@@ -129,11 +131,11 @@ function populateShowsPage(obj) {
     let options = document.createElement('option');
     options.setAttribute('id', `${show.id}`);
     options.setAttribute('class', 'show-options');
-    options.innerHTML = show.name;
+    options.innerText = show.name;
     selectShows.appendChild(options);
     
     // An event listener to fetch a show's episodes data when selected
-    selectShows.addEventListener('change', function(){
+    /* selectShows.addEventListener('change', function(){
     
       if (show.name === this.value) { 
         showID = show.id;
@@ -150,7 +152,7 @@ function populateShowsPage(obj) {
       rootEpisodes.innerHTML = "";
       displayShows.style.display = 'none';
 
-    })
+    }) */
 
   });
  
@@ -176,7 +178,8 @@ const searchInfo2 = document.querySelector('.search-info2');
 function showSearch () { 
   
   searchBar.addEventListener('keyup', (e) => {
-
+    // e.stopPropagation();
+		// e.preventDefault()
     // Revealing the hidden information lines
     searchInfo.style.display = "block";
     searchInfo2.style.display = "block";
@@ -193,13 +196,13 @@ function showSearch () {
     populateShowsPage(searchResult)
   
     if (searchValue === "") {
-      loadShows();
-      searchInfo.style.display = "none";
-      searchInfo2.style.display = "none";
-    }
+			searchInfo.style.display = "none";
+			searchInfo2.style.display = "none";
+		}
     searchInfo.innerHTML = `Displaying ${searchResult.length}/${data.length} Shows`;
 
   });
+	
 
 }
 // Navigation link to go back to shows home page. NB: the link works without the event listener. I added the event listener for the sake of speed.
@@ -384,5 +387,116 @@ function episodeSearch() {
   });
   
 } 
+
+const createCustomSelect = () => {
+	let i, j, l, ll, selectElement, selectedDiv, selectHide, selectOption;
+	/*look for any elements with the class "custom-select":*/
+	const customSelect = document.getElementsByClassName("custom-select");
+	l = customSelect.length;
+	for (i = 0; i < l; i++) {
+		selectElement = customSelect[i].getElementsByTagName("select")[0];
+		ll = selectElement.length;
+		/*for each element, create a new DIV that will act as the selected item:*/
+		selectedDiv = document.createElement("div");
+		selectedDiv.setAttribute("class", "select-selected");
+		selectedDiv.innerHTML =
+			selectElement.options[selectElement.selectedIndex].innerHTML;
+		customSelect[i].appendChild(selectedDiv);
+		//selectedDiv.id = selectElement.options[selectElement];
+		
+		/*for each element, create a new DIV that will contain the option list:*/
+		selectHide = document.createElement("div");
+		selectHide.setAttribute("class", "select-items select-hide");
+		for (j = 1; j < ll; j++) {
+			/*for each option in the original select element,
+    create a new div that will act as an option item:*/
+			selectOption = document.createElement("div");
+			selectOption.innerHTML = selectElement.options[j].innerHTML;
+			selectOption.addEventListener("click", function (e) {
+				/*when an item is clicked, update the original select box,
+        and the selected item:*/
+				let y, i, k, s, h, sl, yl;
+				s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+				sl = s.length;
+				h = this.parentNode.previousSibling;
+				for (i = 0; i < sl; i++) {
+					if (s.options[i].innerHTML == this.innerHTML) {
+						s.selectedIndex = i;
+						h.innerHTML = this.innerHTML;
+						y = this.parentNode.getElementsByClassName("same-as-selected");
+						yl = y.length;
+						for (k = 0; k < yl; k++) {
+							y[k].removeAttribute("class");
+						}
+						this.setAttribute("class", "same-as-selected");
+						break;
+					}
+				}
+				h.click();
+			});
+			selectHide.appendChild(selectOption);
+		}
+		customSelect[i].appendChild(selectHide);
+		selectedDiv.addEventListener("click", function (e) {
+			/*when the select box is clicked, close any other select boxes,
+      and open/close the current select box:*/
+			// e.stopPropagation();
+			e.stopImmediatePropagation();
+			// e.preventDefault();
+			closeAllSelect(this);
+			this.nextSibling.classList.toggle("select-hide");
+			this.classList.toggle("select-arrow-active");
+			let thisId;
+			data
+				.filter((v) => v.name === this.innerHTML)
+				.forEach((el) => (thisId = el.id));
+      if (thisId) {
+				showID = thisId;
+				loadEpisodes();
+				document.getElementById(
+					"show-episodes"
+				).innerHTML = `Episodes of ${this.innerHTML}`;
+				document.getElementById("show-name").innerHTML = this.innerHTML;
+				searchForEpisodes.placeholder = `Search for ${this.innerHTML}'s episodes`; 
+				navLink.style.display = "block";
+				searchForEpisodes.style.display = "block";
+				// searchBar.value = "";
+				displayEpisodes.style.display = "block";
+				rootEpisodes.innerHTML = "";
+				displayShows.style.display = "none";
+			}
+
+		});
+	}
+	function closeAllSelect(elm) {
+		/*a function that will close all select boxes in the document,
+  except the current select box:*/
+		let x,
+			y,
+			i,
+			xl,
+			yl,
+			arrNo = [];
+		x = document.getElementsByClassName("select-items");
+		y = document.getElementsByClassName("select-selected");
+		xl = x.length;
+		yl = y.length;
+		for (i = 0; i < yl; i++) {
+			if (elm == y[i]) {
+				arrNo.push(i);
+			} else {
+				y[i].classList.remove("select-arrow-active");
+			}
+		}
+		for (i = 0; i < xl; i++) {
+			if (arrNo.indexOf(i)) {
+				x[i].classList.add("select-hide");
+			}
+		}
+	}
+	/*if the user clicks anywhere outside the select box,
+then close all select boxes:*/
+	document.addEventListener("click", closeAllSelect);
+};
 
 window.onload = loadShows;
