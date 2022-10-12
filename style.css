@@ -15,9 +15,9 @@ body {
 	gap: 2rem;
 	height: 44px;
 	background-image: linear-gradient(
-		rgb(128, 118, 104),
+		rgb(5, 72, 114),
 		rgb(79, 150, 221),
-		rgb(5, 72, 114)
+		rgb(128, 118, 104)
 	);
 	width: 100%;
 	color: antiquewhite;
@@ -291,7 +291,7 @@ body {
 	color: aliceblue;
 }
 
-@media screen and (min-width: 640px) {
+@media screen and (min-width: 690px) {
 	.root-shows {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
