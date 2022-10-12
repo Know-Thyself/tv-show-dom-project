@@ -17,6 +17,7 @@ const loadShows = async () => {
 	try {
 		const response = await fetch("https://api.tvmaze.com/shows");
 		data = await response.json();
+		console.log(data)
 		populateShowsPage(data);
 		showSearch(data);
 		createCustomSelect();
@@ -29,8 +30,8 @@ const loadShows = async () => {
 function populateShowsPage(arr) {
 	arr.forEach((show) => {
 		//Creating elements
-		let expandingList = document.createElement("div", { is: "expanding-list" });
-		expandingList.setAttribute("class", "expanding-div");
+		let expandingList = document.createElement("div");
+		expandingList.setAttribute("class", "show-wrapper");
 		rootShows.appendChild(expandingList);
 		showName = document.createElement("h2");
 		showName.setAttribute("class", "name");
@@ -65,15 +66,25 @@ function populateShowsPage(arr) {
 		genres.setAttribute("class", "genres");
 		let status = document.createElement("h4");
 		status.className = "status";
+		let rating = document.createElement("h4");
+		rating.className="rating";
+		rating.innerText = `Rating: ${show.rating.average}    `;
+		let runtime = document.createElement("h4");
+		runtime.className="runtime";
+		runtime.innerText = `Runtime: ${show.runtime}`;
 		expandingList.appendChild(genres);
 		expandingList.appendChild(status);
+		expandingList.appendChild(rating);
+		expandingList.appendChild(runtime);
 
 		// Giving a bit of space between words and after commas
 		let corrected = show.genres.toString().split(",").join(", ");
 		genres.innerHTML = `Genres: ${corrected}`;
-		status.innerHTML = `Status: ${show.status}  Rating: ${show.rating.average} Runtime: ${show.runtime}`;
+		status.innerHTML = `Status: ${show.status}`;
 		genres.style.wordSpacing = "5px";
 		status.style.wordSpacing = "5px";
+		rating.style.wordSpacing = "5px";
+		runtime.style.wordSpacing = "5px";
 
 		//Truncated summary text
 		const truncatedText = show.summary
@@ -162,19 +173,18 @@ const searchInfo2 = document.querySelector(".search-info2");
 // An event listener wrapped inside a function to dynamically update the web page while a user is typing in the search bar.
 function showSearch() {
 	searchBar.addEventListener("keyup", (e) => {
-		// e.stopPropagation();
-		// e.preventDefault()
+		e.preventDefault()
 		// Revealing the hidden information lines
 		searchInfo.style.display = "block";
 		searchInfo2.style.display = "block";
 
 		//Filtering search results
 		let searchValue = e.target.value.toLowerCase();
-
+    
 		let searchResult = data.filter((show) => {
 			return (
 				show.name.toLowerCase().includes(searchValue) ||
-				show.summary.toLowerCase().includes(searchValue) ||
+				show.summary.replace( /(<([^>]+)>)/ig, '').toLowerCase().includes(searchValue) ||
 				show.genres.toString().toLowerCase().includes(searchValue)
 			);
 		});

@@ -7,10 +7,6 @@ body {
 	padding: 0;
 	box-sizing: border-box;
 }
-/* .display-shows {
-	margin: auto;
-	text-align: center;
-} */
 
 .header,
 .episodes-header {
@@ -18,33 +14,40 @@ body {
 	align-items: center;
 	gap: 2rem;
 	height: 44px;
-	background-image: linear-gradient(rgb(128, 118, 104), whitesmoke, rgb(79, 150, 221));
+	background-image: linear-gradient(
+		rgb(128, 118, 104),
+		rgb(79, 150, 221),
+		rgb(5, 72, 114)
+	);
 	width: 100%;
 	color: antiquewhite;
-
 	font-family: "Alfa Slab One", cursive;
 	font-family: "Lato", sans-serif;
 	font-family: "Poppins", sans-serif;
 	font-family: "Merriweather", serif;
 	font-family: "Montserrat", sans-serif;
-	/* height: 10vh; */
-	/* margin-bottom: 5rem; */
 }
 
 .logo {
 	height: 44px;
-	width: 64px;
+	width: auto;
 	float: left;
 }
 
 .epi-logo {
-	height: 84px;
+	height: 44px;
 	width: auto;
 	float: left;
 	margin: 0.6% 1.5% 0 0.4%;
 }
+
 .custom-select-wrapper {
+	display: flex;
 	text-align: center;
+	justify-content: center;
+	align-items: center;
+	width: 80%;
+	margin: 1rem auto;
 }
 
 .custom-select {
@@ -53,16 +56,10 @@ body {
 }
 
 .custom-select select {
-	display: none; /*hide original SELECT element:*/
+	display: none; /*hide original select element:*/
 }
 
 .select-selected {
-	background-color: rgb(139, 127, 127);
-	background-color: DodgerBlue;
-	background-color: rgb(128, 118, 104);
-	background-color: rgb(48, 89, 136);
-	background-color: rgb(79, 150, 221);
-	background-color: rgb(80, 78, 78);
 	background-color: rgb(5, 58, 92);
 	border-radius: 4px;
 }
@@ -89,7 +86,7 @@ body {
 .select-items div,
 .select-selected {
 	color: #ffffff;
-	padding: 8px 16px;
+	padding: 6px 12px;
 	border: 1px solid transparent;
 	border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
 	cursor: pointer;
@@ -99,11 +96,7 @@ body {
 /*style items (options):*/
 .select-items {
 	position: absolute;
-	
-	background-color: rgb(41, 40, 40);
-	background-color: rgb(139, 127, 127);
 	background-color: rgb(80, 78, 78);
-	
 	top: 100%;
 	left: 0;
 	right: 0;
@@ -123,32 +116,20 @@ body {
 .display-shows {
 	display: block;
 }
+
 .display-episodes {
 	display: none;
 	background-color: rgb(55, 72, 90);
 }
+
 .episodes-header {
 	margin-bottom: -20px;
 }
 
-.custom-select-wrapper {
-	display: flex;
-	text-align: center;
-	justify-content: center;
-	align-items: center;
-	width: 90%;
-	margin: 1rem auto;
-}
-
-/* option {
-	font-family: "Lato", sans-serif;
-		font-family: "Alfa Slab One", cursive;
-	font-size: 2.5rem;
-} */
-
 .search-container {
 	border-radius: 7px;
 }
+
 .search-container i {
 	position: absolute;
 }
@@ -162,7 +143,7 @@ body {
 .search-bar {
 	padding: 4px 4px 4px 40px;
 	font-family: "Merriweather", serif;
-	width: 60%;
+	width: 65%;
 	font-size: 1rem;
 	border: 1px solid white;
 	border-radius: 4px;
@@ -175,77 +156,29 @@ body {
 	opacity: 1;
 }
 
-:-ms-input-placeholder {
-	font-size: 1rem;
-	color: rgb(76, 76, 78);
-}
-
-::-ms-input-placeholder {
-	font-size: 1rem;
-	color: rgb(76, 76, 78);
-}
-
-/* .search-container {
-	float: right;
-	margin-bottom: 10px;
-}
-.episode-search-container {
-	float: right;
-	margin-bottom: 10px;
-}
-
-.search-bar,
-.episodes-search-bar {
-	float: right;
-	padding: 6px;
-	font-size: 1rem;
-	margin: 0 12px 20px 0;
-	border: none;
-	height: 35px;
-	width: 50%;
-	background-color: rgb(213, 217, 219);
-	color: aliceblue;
-}
-input.search-bar,
-input.episodes-search-bar {
-	color: bisque;
-}
-::placeholder {
-	color: black;
-	font-size: 1.2em;
-	opacity: 1;
-}
-
-:-ms-input-placeholder {
-	color: black;
-	font-size: 1.2em;
-}
-
-::-ms-input-placeholder {
-	color: black;
-	font-size: 1.2em;
-} */
-
 .search-info,
 .search-info2,
 .episode-search-info,
 .episode-search-info2 {
-	color: aliceblue;
+	color: rgb(41, 40, 40);
 	display: none;
 	text-align: center;
 }
+
 .search-info {
-	margin-top: 100px;
-	padding-top: 1em;
+	margin: -8px 0 -20px 0;
 }
+
 .search-info2 {
 	margin-bottom: 0.7em;
-	padding-top: 0.5em;
-	padding-bottom: 0.4em;
+	/* padding-top: 0.5em;
+	padding-bottom: 0.4em; */
 }
+
 .episode-search-info {
 	margin-top: 1.5em;
 }
+
 .episode-search-info2 {
 	margin-bottom: -0.5em;
 	margin-top: -0.5em;
@@ -279,24 +212,24 @@ input.episodes-search-bar {
 	width: 90%;
 	margin: auto;
 }
-.expanding-div {
-	height: fit-content;
+
+.show-wrapper {
+	/* height: max-content; */
+	height: 100%;
 	text-align: center;
 	background-color: rgb(248, 251, 252);
 	padding-bottom: 0.5rem;
 	margin: auto auto 1.5rem auto;
-	/* margin-bottom: 1.5rem; */
 	border-radius: 8px;
 }
 
-.expanding-div .name,
-.expanding-div .episode-name {
-	font-family: "Montserrat", sans-serif;
+.show-wrapper .name,
+.show-wrapper .episode-name {
 	font-family: "Lato", sans-serif;
-	display: block;
+	width: 100%;
 	margin: auto;
 	text-align: center;
-	padding: 7px;
+	padding: 7px 0;
 	border-radius: 8px;
 	background-color: rgb(41, 40, 40);
 	color: aliceblue;
@@ -308,21 +241,19 @@ input.episodes-search-bar {
 	background-color: rgb(73, 71, 71);
 }
 
-.genres, .status {
-	
-	font-family: "Merriweather", serif;
+.genres,
+.status,
+.rating,
+.runtime {
 	font-family: "Lato", sans-serif;
-	/* font-family: "Montserrat", sans-serif; */
 	font-size: 0.75rem;
-	width: 70%;
 	margin: auto;
-	text-align: left;
 	font-weight: 600;
 	color: rgb(103, 103, 104);
 }
+
 .genres {
 	padding-top: 6px;
-
 }
 
 .summary {
@@ -337,6 +268,7 @@ input.episodes-search-bar {
 .more-text {
 	display: none;
 }
+
 .read-more,
 .read-less {
 	font-family: "Merriweather", serif;
@@ -352,11 +284,55 @@ input.episodes-search-bar {
 	margin-top: -0.7rem;
 	border-radius: 7%;
 }
+
 .read-more:hover,
 .read-less:hover {
 	background-color: rgb(5, 72, 114);
 	color: aliceblue;
 }
+
+@media screen and (min-width: 640px) {
+	.root-shows {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		/* grid-auto-rows: 1fr; */
+		/* grid-auto-flow: column; */
+		/* grid-template-rows: auto; */
+		gap: 1.5rem;
+	}
+	.show-wrapper {
+		width: 100%;
+		margin: auto;
+	}
+}
+
+@media screen and (min-width: 1040px) {
+	.root-shows {
+		grid-template-columns: repeat(3, 1fr);
+	}
+	.search-bar {
+		width: 75%;
+	}
+	.custom-select {
+		position: absolute;
+		top: 7px;
+		right: 3.5rem;
+		/* margin-top: 10px; */
+	}
+	.select-selected {
+		background-color: rgb(5, 58, 92); 
+	}
+	.select-items {
+		background-color: rgb(80, 78, 78);
+	}
+}
+
+@media screen and (min-width: 1340px) {
+	.root-shows {
+		grid-template-columns: repeat(4, 1fr);
+	}
+}
+
 /*
 .root-shows {
 	display: flex;
@@ -372,7 +348,7 @@ input.episodes-search-bar {
 	width: 100%;
 	justify-content: space-evenly;
 }
-.expanding-div {
+.show-wrapper {
 	width: 100%;
 	display: block;
 	margin-top: 1rem;
@@ -381,7 +357,7 @@ input.episodes-search-bar {
 	background-color: rgb(5, 58, 92);
 	border-radius: 8px;
 }
-.episodes-expanding-div {
+.episodes-show-wrapper {
 	width: 100%;
 	display: block;
 }
@@ -500,8 +476,8 @@ img {
 	.episode-search-info2 {
 		margin-bottom: 0.5em;
 	}
-	.root-shows .expanding-div,
-	.root-episodes .episodes-expanding-div {
+	.root-shows .show-wrapper,
+	.root-episodes .episodes-show-wrapper {
 		width: 50%;
 		margin-top: 15px;
 	}
@@ -515,8 +491,8 @@ img {
 	.logo {
 		margin: 0.3% 0 0 0.25%;
 	}
-	.root-shows .expanding-div,
-	.root-episodes .episodes-expanding-div {
+	.root-shows .show-wrapper,
+	.root-episodes .episodes-show-wrapper {
 		height: auto;
 		width: 33%;
 		margin-top: 15px;
@@ -533,8 +509,8 @@ img {
 
 /* Larger screen Devices - Laptops/Desktops */
 /* @media screen and (min-width: 1340px) {
-	.root-shows .expanding-div,
-	.root-episodes .episodes-expanding-div {
+	.root-shows .show-wrapper,
+	.root-episodes .episodes-show-wrapper {
 		width: 18%;
 	}
 	.select-shows {
@@ -567,8 +543,8 @@ img {
 
 /* High resolution screens - Laptops/Desktops */
 /* @media screen and (min-width: 1920px) {
-	.root-shows .expanding-div,
-	.root-episodes .episodes-expanding-div {
+	.root-shows .show-wrapper,
+	.root-episodes .episodes-show-wrapper {
 		width: 19%;
 	}
 	.search-bar,
