@@ -14,7 +14,7 @@ body {
 	display: flex;
 	align-items: center;
 	gap: 2rem;
-	height: 44px;
+	height: 64px;
 	background-image: linear-gradient(
 		rgb(128, 118, 104),
 		/* rgb(79, 150, 221) */ rgb(138, 173, 209),
@@ -32,13 +32,13 @@ body {
 
 .logo,
 .epi-logo {
-	height: 44px;
+	height: 64px;
 	width: auto;
 	float: left;
 }
 
 /* .epi-logo {
-	height: 44px;
+	height: 64px;
 	width: auto;
 	float: left;
 	margin: 0.6% 1.5% 0 0.4%;
@@ -388,7 +388,7 @@ body {
 	.custom-select,
 	.custom-select-episode {
 		position: absolute;
-		top: 6px;
+		top: 1rem;
 		right: 3.5rem;
 		/* margin-top: 10px; */
 	}
