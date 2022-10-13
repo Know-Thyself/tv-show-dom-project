@@ -17,7 +17,6 @@ const loadShows = async () => {
 	try {
 		const response = await fetch("https://api.tvmaze.com/shows");
 		data = await response.json();
-		console.log(data)
 		populateShowsPage(data);
 		showSearch(data);
 		createCustomSelect();
@@ -30,12 +29,12 @@ const loadShows = async () => {
 function populateShowsPage(arr) {
 	arr.forEach((show) => {
 		//Creating elements
-		let expandingList = document.createElement("div");
-		expandingList.setAttribute("class", "show-wrapper");
-		rootShows.appendChild(expandingList);
-		showName = document.createElement("h2");
+		let showWrapper = document.createElement("div");
+		showWrapper.setAttribute("class", "show-wrapper");
+		rootShows.appendChild(showWrapper);
+		showName = document.createElement("h3");
 		showName.setAttribute("class", "name");
-		expandingList.appendChild(showName);
+		showWrapper.appendChild(showName);
 		showName.innerHTML = show.name;
 		let aTag = document.createElement("a");
 		aTag.setAttribute("href", "#");
@@ -49,9 +48,7 @@ function populateShowsPage(arr) {
 			displayEpisodes.style.display = "block";
 			searchForEpisodes.style.display = "block";
 			navLink.style.display = "block";
-			document.getElementById(
-				"show-episodes"
-			).innerHTML = `Episodes of ${show.name}`;
+			document.getElementById("show-episodes").innerHTML = show.name;
 			document.getElementById("show-name").innerHTML = show.name;
 			searchForEpisodes.placeholder = `Search for ${show.name}'s episodes`;
 			displayShows.style.display = "none";
@@ -59,7 +56,7 @@ function populateShowsPage(arr) {
 
 		img = document.createElement("img");
 		img.src = show.image.medium;
-		expandingList.appendChild(img);
+		showWrapper.appendChild(img);
 
 		//Genres, Status, Rating and Runtime
 		let genres = document.createElement("h4");
@@ -67,15 +64,19 @@ function populateShowsPage(arr) {
 		let status = document.createElement("h4");
 		status.className = "status";
 		let rating = document.createElement("h4");
-		rating.className="rating";
+		rating.className = "rating";
 		rating.innerText = `Rating: ${show.rating.average}    `;
 		let runtime = document.createElement("h4");
-		runtime.className="runtime";
+		runtime.className = "runtime";
 		runtime.innerText = `Runtime: ${show.runtime}`;
-		expandingList.appendChild(genres);
-		expandingList.appendChild(status);
-		expandingList.appendChild(rating);
-		expandingList.appendChild(runtime);
+		let showInfo = document.createElement("section");
+		showInfo.className = "show-info";
+		showWrapper.appendChild(showInfo);
+
+		showInfo.appendChild(genres);
+		showInfo.appendChild(status);
+		showInfo.appendChild(rating);
+		showInfo.appendChild(runtime);
 
 		// Giving a bit of space between words and after commas
 		let corrected = show.genres.toString().split(",").join(", ");
@@ -110,7 +111,7 @@ function populateShowsPage(arr) {
 		let readMore = document.createElement("button");
 		readMore.setAttribute("class", "read-more");
 		readMore.innerHTML = `Read more`;
-		expandingList.append(paragraph);
+		showWrapper.append(paragraph);
 		paragraph.appendChild(readMore);
 
 		//Read less button
@@ -126,17 +127,17 @@ function populateShowsPage(arr) {
 
 		//An event listener to expand the summary text
 		readMore.addEventListener("click", () => {
-			expandingList.removeChild(expandingList.lastChild);
-			expandingList.appendChild(p2);
+			showWrapper.removeChild(showWrapper.lastChild);
+			showWrapper.appendChild(p2);
 			p2.classList.toggle("more-text");
 			p2.appendChild(readLess);
 		});
 
 		//An event listener to collapse the summary text
 		readLess.addEventListener("click", () => {
-			expandingList.removeChild(expandingList.lastChild);
+			showWrapper.removeChild(showWrapper.lastChild);
 			let paragraph = document.createElement("p");
-			expandingList.append(paragraph);
+			showWrapper.append(paragraph);
 			paragraph.setAttribute("class", "summary");
 			paragraph.innerHTML = `${truncatedText}...`;
 			paragraph.appendChild(readMore);
@@ -173,18 +174,21 @@ const searchInfo2 = document.querySelector(".search-info2");
 // An event listener wrapped inside a function to dynamically update the web page while a user is typing in the search bar.
 function showSearch() {
 	searchBar.addEventListener("keyup", (e) => {
-		e.preventDefault()
+		e.preventDefault();
 		// Revealing the hidden information lines
 		searchInfo.style.display = "block";
 		searchInfo2.style.display = "block";
 
 		//Filtering search results
 		let searchValue = e.target.value.toLowerCase();
-    
+
 		let searchResult = data.filter((show) => {
 			return (
 				show.name.toLowerCase().includes(searchValue) ||
-				show.summary.replace( /(<([^>]+)>)/ig, '').toLowerCase().includes(searchValue) ||
+				show.summary
+					.replace(/(<([^>]+)>)/gi, "")
+					.toLowerCase()
+					.includes(searchValue) ||
 				show.genres.toString().toLowerCase().includes(searchValue)
 			);
 		});
@@ -208,14 +212,14 @@ navLink.setAttribute("href", window.location.href);
 function populateEpisodesPage(data) {
 	data.forEach((episode) => {
 		//Creating and appending elements
-		const expandingList = document.createElement("div", {
+		const episodeWrapper = document.createElement("div", {
 			is: "expanding-list",
 		});
-		expandingList.setAttribute("id", "episodesDiv");
-		expandingList.setAttribute("class", "episodes-expanding-div");
-		rootEpisodes.appendChild(expandingList);
+		episodeWrapper.setAttribute("id", "episodesDiv");
+		episodeWrapper.setAttribute("class", "episode-wrapper");
+		rootEpisodes.appendChild(episodeWrapper);
 		episodesName = document.createElement("h2");
-		expandingList.appendChild(episodesName);
+		episodeWrapper.appendChild(episodesName);
 		let formattedSeasonNumber = `0${episode.season}`.slice(-2);
 		let formattedEpisodeNumber = `0${episode.number}`.slice(-2);
 		episodesName.innerHTML = `${episode.name} - S${formattedSeasonNumber}E${formattedEpisodeNumber}`;
@@ -228,10 +232,10 @@ function populateEpisodesPage(data) {
 			img.src =
 				"https://upload.wikimedia.org/wikipedia/commons/2/26/512pxIcon-sunset_photo_not_found.png";
 		}
-		expandingList.appendChild(img);
+		episodeWrapper.appendChild(img);
 
 		//Select an episode options
-		let selectEpisode = document.getElementById("episodes");
+		let selectEpisode = document.getElementById("select-episode");
 		let options = document.createElement("option");
 		options.setAttribute("class", "episodes-option");
 		options.innerHTML = `S${formattedSeasonNumber}E${formattedEpisodeNumber} - ${episode.name}`;
@@ -240,7 +244,7 @@ function populateEpisodesPage(data) {
 		// Truncated summary Text
 		episodeSummary = document.createElement("p");
 		episodeSummary.setAttribute("class", "summary");
-		expandingList.appendChild(episodeSummary);
+		episodeWrapper.appendChild(episodeSummary);
 		let truncatedText;
 
 		if (episode.summary) {
@@ -265,7 +269,7 @@ function populateEpisodesPage(data) {
 		let readMore = document.createElement("button");
 		readMore.setAttribute("class", "read-more");
 		readMore.innerHTML = `Read more`;
-		expandingList.append(episodeSummary);
+		episodeWrapper.append(episodeSummary);
 		episodeSummary.appendChild(readMore);
 
 		//A read less button
@@ -284,29 +288,31 @@ function populateEpisodesPage(data) {
 
 		//An event listener to expand the summary
 		readMore.addEventListener("click", () => {
-			expandingList.removeChild(expandingList.lastChild);
-			expandingList.appendChild(span);
+			episodeWrapper.removeChild(episodeWrapper.lastChild);
+			episodeWrapper.appendChild(span);
 			span.setAttribute("class", "more-text summary");
-			span.style.display = "flex";
+			span.style.display = "block";
 			span.appendChild(readLess);
 		});
 
 		//An event listener to collapse the summary
 		readLess.addEventListener("click", () => {
-			expandingList.removeChild(expandingList.lastChild);
+			episodeWrapper.removeChild(episodeWrapper.lastChild);
 			let fullEpisodeSummary = document.createElement("p");
-			expandingList.append(fullEpisodeSummary);
+			episodeWrapper.append(fullEpisodeSummary);
 			fullEpisodeSummary.setAttribute("class", "summary");
 			fullEpisodeSummary.innerHTML = `${truncatedText}...`;
 			fullEpisodeSummary.appendChild(readMore);
 			span.style.display = "none";
 		});
 	});
+
+	createCustomSelectEpisode();
 }
 
 // An event listener for episodes' select option box
-let selectEpisode = document.getElementById("episodes");
-selectEpisode.addEventListener("change", function () {
+let selectEpisode = document.getElementById("select-episode");
+/* selectEpisode.addEventListener("change", function () {
 	searchForEpisodes.value = "";
 	let checker = document.createElement("option");
 
@@ -322,7 +328,7 @@ selectEpisode.addEventListener("change", function () {
 	}
 	selectEpisode.style.display = "none";
 	searchForEpisodes.style.display = "none";
-});
+}); */
 
 const episodesLink = document.getElementById("episodes-navigation-link");
 
@@ -443,9 +449,7 @@ const createCustomSelect = () => {
 			if (thisId) {
 				showID = thisId;
 				loadEpisodes();
-				document.getElementById(
-					"show-episodes"
-				).innerHTML = `Episodes of ${this.innerHTML}`;
+				document.getElementById("show-episodes").innerHTML = this.innerHTML;
 				document.getElementById("show-name").innerHTML = this.innerHTML;
 				searchForEpisodes.placeholder = `Search for ${this.innerHTML}'s episodes`;
 				navLink.style.display = "block";
@@ -455,6 +459,126 @@ const createCustomSelect = () => {
 				rootEpisodes.innerHTML = "";
 				displayShows.style.display = "none";
 			}
+		});
+	}
+	function closeAllSelect(elm) {
+		/*a function that will close all select boxes in the document,
+  except the current select box:*/
+		let x,
+			y,
+			i,
+			xl,
+			yl,
+			arrNo = [];
+		x = document.getElementsByClassName("select-items");
+		y = document.getElementsByClassName("select-selected");
+		xl = x.length;
+		yl = y.length;
+		for (i = 0; i < yl; i++) {
+			if (elm == y[i]) {
+				arrNo.push(i);
+			} else {
+				y[i].classList.remove("select-arrow-active");
+			}
+		}
+		for (i = 0; i < xl; i++) {
+			if (arrNo.indexOf(i)) {
+				x[i].classList.add("select-hide");
+			}
+		}
+	}
+	/*if the user clicks anywhere outside the select box,
+then close all select boxes:*/
+	document.addEventListener("click", closeAllSelect);
+};
+
+const createCustomSelectEpisode = () => {
+	let i, j, l, ll, selectElement, selectedDiv, selectHide, selectOption;
+	/*look for any elements with the class "custom-select-episode":*/
+	const customSelect = document.getElementsByClassName("custom-select-episode");
+	l = customSelect.length;
+	for (i = 0; i < l; i++) {
+		// selectElement = customSelect[i].getElementsByTagName("select")[0];
+		selectElement = customSelect[i].querySelectorAll(".select-episode")[0];
+		ll = selectElement.length;
+		/*for each element, create a new DIV that will act as the selected item:*/
+		selectedDiv = document.createElement("div");
+		selectedDiv.setAttribute("class", "select-selected");
+		selectedDiv.innerHTML =
+			selectElement.options[selectElement.selectedIndex].innerHTML;
+		customSelect[i].appendChild(selectedDiv);
+		//selectedDiv.id = selectElement.options[selectElement];
+
+		/*for each element, create a new DIV that will contain the option list:*/
+		selectHide = document.createElement("div");
+		selectHide.setAttribute("class", "select-items select-hide");
+		for (j = 1; j < ll; j++) {
+			/*for each option in the original select element,
+    create a new div that will act as an option item:*/
+			selectOption = document.createElement("div");
+			selectOption.innerHTML = selectElement.options[j].innerHTML;
+			selectOption.addEventListener("click", function (e) {
+				/*when an item is clicked, update the original select box,
+        and the selected item:*/
+				let y, i, k, s, h, sl, yl;
+				// s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+				s = this.parentNode.parentNode.querySelectorAll(".select-episode")[0];
+				sl = s.length;
+				h = this.parentNode.previousSibling;
+				for (i = 0; i < sl; i++) {
+					if (s.options[i].innerHTML == this.innerHTML) {
+						s.selectedIndex = i;
+						h.innerHTML = this.innerHTML;
+						y = this.parentNode.getElementsByClassName("same-as-selected");
+						yl = y.length;
+						for (k = 0; k < yl; k++) {
+							y[k].removeAttribute("class");
+						}
+						this.setAttribute("class", "same-as-selected");
+						break;
+					}
+				}
+				h.click();
+			});
+			selectHide.appendChild(selectOption);
+		}
+		customSelect[i].appendChild(selectHide);
+		let selectedShow = selectedDiv.innerHTML.split(" ").slice(2).join(" ");
+		selectedDiv.addEventListener("click", function (e) {
+			/*when the select box is clicked, close any other select boxes,
+      and open/close the current select box:*/
+			e.stopPropagation();
+			e.preventDefault();
+
+			searchForEpisodes.value = "";
+			let episode = document.querySelectorAll(".episode-wrapper");
+
+			let checkerShow = this.textContent.split(" ").slice(2).join(" ");
+			for (let i = 0; i < episode.length; i++) {
+				let checker = this.textContent.split(" ").slice(2).join(" ");
+				let currentElement = episode[i].firstChild.innerHTML
+					.split(" ")
+					.slice(0, -2)
+					.join(" ");
+				if (currentElement === checker) {
+					episode[i].style.display = "block";
+					episode[i].classList.add('only-child')
+					episodesLink.style.display = "inline-block";
+					navLink.style.display = "inline-block";
+					rootEpisodes.style.display = 'block';
+					episode[i].children[1].style.width = "400px";
+					episode[i].children[1].style.height = "300px";
+				} else if (checker !== selectedShow) {
+					episode[i].style.display = "none";
+					episode[i].classList.remove('only-child');
+				}
+			}
+			// selectEpisode.style.display = "none";
+			// searchForEpisodes.style.display = "none";
+
+			closeAllSelect(this);
+			this.nextSibling.classList.toggle("select-hide");
+			this.classList.toggle("select-arrow-active");
 		});
 	}
 	function closeAllSelect(elm) {

@@ -17,7 +17,13 @@
 			rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
 		/> -->
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+			integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>TV Show Project | Biruk (Know-Thyself)</title>
 		<link href="style.css" rel="stylesheet" />
@@ -36,13 +42,13 @@
 					/>
 					<!-- Search bar to search for shows -->
 					<div class="search-container">
-							<i class="fa-solid fa-magnifying-glass fa-xlg icon"></i>
-							<input
-								class="search-bar"
-								type="text"
-								placeholder="Search for shows"
-								name="search"
-							/>
+						<i class="fa-solid fa-magnifying-glass fa-xlg icon"></i>
+						<input
+							class="search-bar"
+							type="text"
+							placeholder="Search for shows"
+							name="search"
+						/>
 					</div>
 				</div>
 				<section class="custom-select-wrapper">
@@ -78,19 +84,7 @@
 						src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShJCE1Rrwq34w4XC8ADT39lxxk51z1zxaQow&usqp=CAU"
 						alt="logo-image"
 					/>
-					<a id="navigation-link" class="nav-link">Shows Home</a>
-					<a id="episodes-navigation-link" class="nav-link episodes-link"
-						>Back To Episodes</a
-					>
-
-					<!-- Select box to pick an episode -->
-					<select name="episodes" id="episodes" class="select-episodes">
-						<option value="episodes" id="show-episodes" class="dropdown-menu">
-							Select from our list of Episodes
-						</option>
-					</select>
-
-					<div class="episode-search-container">
+					<!-- <div class="episode-search-container">
 						<form action="" class="search-episode">
 							<input
 								class="episodes-search-bar"
@@ -99,12 +93,47 @@
 								name="search-episodes"
 							/>
 						</form>
+					</div> -->
+					<div class="episode-search-container">
+						<i class="fa-solid fa-magnifying-glass fa-xlg icon"></i>
+						<input
+							class="episodes-search-bar"
+							type="text"
+							placeholder="Search for episodes"
+							name="search-episodes"
+						/>
 					</div>
 				</div>
-
+				<h1 id="show-name" class="show-name"></h1>
+				<section class="episodes-page-navigation">
+					<div class="anchor-tags">
+						<a id="navigation-link" class="nav-link">All Shows</a>
+						<a id="episodes-navigation-link" class="nav-link episodes-link"
+							>All Episodes</a
+						>
+					</div>
+					<!-- Select box to pick an episode -->
+					<div class="custom-select-wrapper">
+						<div class="custom-select-episode" style="min-width: 300px">
+							<select
+								name="episodes"
+								id="select-episode"
+								class="select-episode"
+							>
+								<option
+									id="show-episodes"
+									value="episodes"
+									class="dropdown-menu"
+								>
+									Select an episode
+								</option>
+							</select>
+						</div>
+					</div>
+				</section>
 				<!-- A root container for all episodes generated using an api and DOM manipulation  -->
 				<div id="episodes-wrapper">
-					<h1 id="show-name" class="show-name"></h1>
+					<!-- <h1 id="show-name" class="show-name"></h1> -->
 					<h4 class="episode-search-info"></h4>
 					<h4 class="episode-search-info2">
 						Clear the search bar to go back to all episodes
