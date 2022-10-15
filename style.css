@@ -4,6 +4,7 @@ body {
 	background-color: rgb(213, 217, 219);
 	background-color: rgb(202, 201, 201);
 	background-color: rgb(191, 198, 202);
+	background-color: rgb(206, 210, 211);
 	font-family: "Lato", sans-serif;
 	margin: 0;
 	padding: 0;
@@ -183,9 +184,49 @@ body {
 	margin-top: -0.5em; */
 	margin-bottom: 0.7em;
 }
+/* episodes  */
+.episodes-page-navigation {
+	width: 90%;
+	margin: auto;
+	display: grid;
+	grid-template-columns: repeat(1, 1fr);
+}
 
+.nav-links-plus-name {
+	display: flex;
+	width: 100%;
+	margin: auto;
+	justify-content: space-around;
+	align-items: center;
+	background-color: rgb(5, 58, 92);
+	background-color: rgb(0, 26, 35);
+	background-color: rgb(97, 96, 96);
+}
+
+.nav-link {
+	padding: 0.34rem;
+	/* background-color: rgb(5, 58, 92); */
+	text-decoration: none;
+	text-align: center;
+	width: fit-content;
+	color: aliceblue;
+	background-color: rgb(5, 58, 92);
+	display: inline-flex;
+	/* position: relative; */
+	border-radius: 4px;
+	cursor: pointer;
+	white-space: nowrap;
+	text-decoration: none;
+	border: none;
+}
+
+.nav-link:hover,
+.episodes-link:hover {
+	background-color: rgb(4, 42, 66);
+	color: aliceblue;
+}
 .episodes-link {
-	width: 9.3rem;
+	/* width: 9.3rem; */
 	display: none;
 }
 
@@ -193,6 +234,7 @@ body {
 .root-episodes {
 	display: grid;
 	grid-template-columns: repeat(1, 1fr);
+	place-items: center center;
 	gap: 2rem;
 	width: 85%;
 	margin: auto;
@@ -210,6 +252,7 @@ body {
 .episode-wrapper {
 	/* height: max-content; */
 	height: 100%;
+	width: 100%;
 	text-align: center;
 	background-color: rgb(248, 251, 252);
 	padding-bottom: 0.3rem;
@@ -230,10 +273,11 @@ body {
 	color: aliceblue;
 	font-size: 1rem;
 	cursor: pointer;
+	margin-top: 0;
 }
 .episode-wrapper .episode-name {
-	background-color: rgb(73, 71, 71);
 	background-color: darkred;
+	background-color: rgb(73, 71, 71);
 }
 
 .name:hover,
@@ -255,6 +299,7 @@ body {
 	margin: 0;
 	font-weight: 600;
 	color: rgb(103, 103, 104);
+	color: darkred;
 	text-align: left;
 }
 
@@ -281,13 +326,14 @@ body {
 .read-more,
 .read-less {
 	font-family: "Merriweather", serif;
-	padding: 5px 10px;
+	padding: 4px 8px;
 	border: none;
 	outline: none;
 	cursor: pointer;
 	font-weight: 500;
 	color: darkred;
 	background-color: rgb(5, 58, 92);
+	background-color: darkred;
 	color: white;
 	font-size: 1rem;
 	margin-top: -0.7rem;
@@ -299,7 +345,10 @@ body {
 	background-color: rgb(41, 40, 40);
 	background-color: rgb(73, 71, 71);
 	background-color: rgb(184, 189, 194);
-	color: black;
+	background-color: rgb(0, 26, 35);
+	background-color: rgb(0, 26, 62);
+	background-color: darkred;
+	color: aliceblue;
 }
 
 .read-more:hover,
@@ -307,39 +356,8 @@ body {
 	background-color: rgb(5, 72, 114);
 	color: aliceblue;
 }
-
-/* episodes  */
-.episodes-page-navigation {
-	width: 90%;
-	margin: auto;
-	display: grid;
-	grid-template-columns: repeat(1, 1fr);
-}
-
-.anchor-tags {
-	display: flex;
-	width: 100%;
-	margin: auto;
-	justify-content: space-around;
-	align-items: center;
-	background-color: rgb(5, 58, 92);
-}
-.nav-link {
-	padding: 0.45rem;
-	background-color: rgb(5, 58, 92);
-	text-decoration: none;
-	text-align: center;
-	width: fit-content;
-	color: white;
-	display: inline-flex;
-	position: relative;
-	border-radius: 5px;
-	cursor: pointer;
-	white-space: nowrap;
-}
-.nav-link:hover {
-	background-color: rgb(13, 65, 97);
-	color: aliceblue;
+.episode-wrapper .read-more:hover {
+	background-color: rgb(114, 5, 5);
 }
 
 @media screen and (min-width: 690px) {
