@@ -137,11 +137,23 @@ function populateShowsPage(arr) {
 		}
 
 		//An event listener to expand the summary text
-		readMore.addEventListener("click", () => {
+		readMore.addEventListener("click", (e) => {
 			showWrapper.removeChild(showWrapper.lastChild);
 			showWrapper.appendChild(p2);
 			p2.classList.toggle("more-text");
 			p2.appendChild(readLess);
+			let parentContainer = document.querySelectorAll(".show-wrapper");
+			for(let i = 0; i < parentContainer.length; i++) {
+				let isIdentified = Array.from(parentContainer[i].children[4].lastChild.classList).includes('read-less');
+				console.log(isIdentified)
+				//TODO - increase the height of this container
+				if (isIdentified) {
+					console.log(parentContainer[i]);
+					parentContainer[i].style.height = '100%'
+				} else {
+					parentContainer[i].style.height = "fit-content";
+				}
+			}
 		});
 
 		//An event listener to collapse the summary text
@@ -153,6 +165,10 @@ function populateShowsPage(arr) {
 			paragraph.innerHTML = `${truncatedText}...`;
 			paragraph.appendChild(readMore);
 			p2.classList.toggle("more-text");
+			let parentContainer = document.querySelectorAll(".show-wrapper");
+			for (let i = 0; i < parentContainer.length; i++) {
+					parentContainer[i].style.height = "100%";
+			}
 		});
 
 		//Select a show options
@@ -341,6 +357,7 @@ episodesLink.addEventListener("click", function (e) {
 		rootEpisodes.removeChild(rootEpisodes.firstChild);
 	}
 	searchForEpisodes.value = "";
+	rootEpisodes.style.display = 'grid';
 	episodeSearchInfo.style.display = "none";
 	episodeSearchInfo2.style.display = "none";
 	episodesLink.disabled = true;
@@ -587,7 +604,7 @@ const createCustomSelectEpisode = () => {
 						this.style.backgroundColor = "rgb(5, 58, 92)";
 					};
 					navLink.style.display = "block";
-					rootEpisodes.style.gridTemplateColumns = "repeat(1, 1fr)";
+					rootEpisodes.style.display = "block";
 					rootEpisodes.style.width = "90%";
 					rootEpisodes.style.minHeight = "400px";
 					if(window.innerWidth >= 500) {
