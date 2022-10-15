@@ -8,30 +8,37 @@ const searchForEpisodes = document.querySelector(".episodes-search-bar");
 const parentDiv = document.getElementsByTagName("div");
 let showID;
 
-//Declaring variables where to store data
-let data = [];
-let parsedData = [];
+//Storing data in variables to minimize api calls
+let shows = [];
+let episodes = [];
 
-//Getting data from API and passing it as a parameter
+//Getting shows from API and passing it as a parameter
 const loadShows = async () => {
 	try {
 		const response = await fetch("https://api.tvmaze.com/shows");
-		data = await response.json();
-		populateShowsPage(data);
-		showSearch(data);
+		shows = await response.json();
+		populateShowsPage(shows);
+		showSearch(shows);
 		createCustomSelect();
 	} catch (err) {
 		console.error(err);
 	}
 };
 
-// A function to extract data and populate the webpage.
+// A function to extract shows and populate the webpage.
 function populateShowsPage(arr) {
 	arr.forEach((show) => {
 		//Creating elements
 		let showWrapper = document.createElement("div");
 		showWrapper.setAttribute("class", "show-wrapper");
 		rootShows.appendChild(showWrapper);
+		if (arr.length === 1) {
+			rootShows.style.display = "block";
+			rootShows.style.width = "70%";
+		} else {
+			rootShows.style.display = "grid";
+			rootShows.style.width = "90%";
+		}
 		showName = document.createElement("h3");
 		showName.setAttribute("class", "name");
 		showWrapper.appendChild(showName);
@@ -50,7 +57,7 @@ function populateShowsPage(arr) {
 			navLink.style.display = "block";
 			document.getElementById("show-episodes").innerHTML = show.name;
 			document.getElementById("show-name").innerHTML = show.name;
-			searchForEpisodes.placeholder = `Search for ${show.name}'s episodes`;
+			searchForEpisodes.placeholder = `${show.name}'s episodes`;
 			displayShows.style.display = "none";
 		});
 
@@ -86,6 +93,10 @@ function populateShowsPage(arr) {
 		status.style.wordSpacing = "5px";
 		rating.style.wordSpacing = "5px";
 		runtime.style.wordSpacing = "5px";
+
+		let emptyDiv = document.createElement("div");
+		emptyDiv.className = "empty-div";
+		showWrapper.appendChild(emptyDiv);
 
 		//Truncated summary text
 		const truncatedText = show.summary
@@ -154,15 +165,16 @@ function populateShowsPage(arr) {
 	});
 }
 
-//Async function to fetch episodes' data
+//Async function to fetch episodes' shows
 const loadEpisodes = async () => {
 	try {
 		const response = fetch(
 			"https://api.tvmaze.com/shows/" + showID + "/episodes"
 		);
-		parsedData = await (await response).json();
-		populateEpisodesPage(parsedData);
-		episodeSearch(parsedData);
+		episodes = await (await response).json();
+		populateEpisodesPage(episodes);
+		createCustomSelectEpisode();
+		episodeSearch(episodes);
 	} catch (err) {
 		console.error(err);
 	}
@@ -182,7 +194,7 @@ function showSearch() {
 		//Filtering search results
 		let searchValue = e.target.value.toLowerCase();
 
-		let searchResult = data.filter((show) => {
+		let searchResult = shows.filter((show) => {
 			return (
 				show.name.toLowerCase().includes(searchValue) ||
 				show.summary
@@ -196,12 +208,11 @@ function showSearch() {
 			rootShows.removeChild(rootShows.firstChild);
 		}
 		populateShowsPage(searchResult);
-
 		if (searchValue === "") {
 			searchInfo.style.display = "none";
 			searchInfo2.style.display = "none";
 		}
-		searchInfo.innerHTML = `Displaying ${searchResult.length}/${data.length} Shows`;
+		searchInfo.innerHTML = `Displaying ${searchResult.length}/${shows.length} Shows`;
 	});
 }
 // Navigation link to go back to shows home page. NB: the link works without the event listener. I added the event listener for the sake of speed.
@@ -209,8 +220,12 @@ const navLink = document.getElementById("navigation-link");
 navLink.setAttribute("href", window.location.href);
 
 // Populating the episodes' page
-function populateEpisodesPage(data) {
-	data.forEach((episode) => {
+function populateEpisodesPage(arr) {
+	if (shows.length < arr.length) {
+		shows.push(arr);
+	}
+
+	arr.forEach((episode) => {
 		//Creating and appending elements
 		const episodeWrapper = document.createElement("div", {
 			is: "expanding-list",
@@ -218,6 +233,14 @@ function populateEpisodesPage(data) {
 		episodeWrapper.setAttribute("id", "episodesDiv");
 		episodeWrapper.setAttribute("class", "episode-wrapper");
 		rootEpisodes.appendChild(episodeWrapper);
+		// centering the last child after search and select
+		if (arr.length === 1) {
+			rootEpisodes.style.display = "block";
+			rootEpisodes.style.width = "70%";
+		} else {
+			rootEpisodes.style.display = "grid";
+			rootEpisodes.style.width = "90%";
+		}
 		episodesName = document.createElement("h2");
 		episodeWrapper.appendChild(episodesName);
 		let formattedSeasonNumber = `0${episode.season}`.slice(-2);
@@ -306,47 +329,66 @@ function populateEpisodesPage(data) {
 			span.style.display = "none";
 		});
 	});
-
-	createCustomSelectEpisode();
+	createCustomSelect();
 }
 
-// An event listener for episodes' select option box
-let selectEpisode = document.getElementById("select-episode");
-/* selectEpisode.addEventListener("change", function () {
-	searchForEpisodes.value = "";
-	let checker = document.createElement("option");
-
-	checker.innerHTML = this.value.split(" ").slice(2).join(" ");
-
-	for (let i = 0; i < parentDiv.length; i++) {
-		if (parentDiv[i].innerHTML.includes(checker.innerHTML)) {
-			episodesLink.style.display = "inline-block";
-			navLink.style.display = "inline-block";
-		} else {
-			parentDiv[i].style.display = "none";
-		}
-	}
-	selectEpisode.style.display = "none";
-	searchForEpisodes.style.display = "none";
-}); */
-
 const episodesLink = document.getElementById("episodes-navigation-link");
-
 // Event listener to go back to episodes page
-episodesLink.addEventListener("click", function () {
+episodesLink.addEventListener("click", function (e) {
+	e.preventDefault();
 	while (rootEpisodes.firstChild) {
 		rootEpisodes.removeChild(rootEpisodes.firstChild);
 	}
-	loadEpisodes();
-	searchForEpisodes.style.display = "block";
+	let customSelectEpisode = document.getElementsByClassName(
+		"custom-select-episode"
+	);
+	let actualSelectElement =
+		customSelectEpisode[0].querySelectorAll(".select-episode")[0];
+	let selectedDiv = document.querySelectorAll(".select-selected");
+	let selectHideDiv = document.querySelectorAll(".select-hide");
+	let sameAsSelected = document.getElementsByClassName("same-as-selected"); //contains both the current and previous selections
+
+	let arr = Array.from(actualSelectElement);
+	for (let i = 0; i < selectedDiv.length; i++) {
+		if (arr.indexOf(arr[i]) === actualSelectElement.selectedIndex) {
+			selectedDiv[i].innerHTML =
+				actualSelectElement.options[
+					actualSelectElement.selectedIndex
+				].innerHTML;
+			//selectedDiv[i].innerHTML = actualSelectElement[0].innerHTML;
+			selectedDiv[i].classList.toggle("select-hide");
+			selectedDiv[i].classList.toggle("select-arrow-active");
+		}
+	}
+	actualSelectElement.selectedIndex = 0;
+
 	searchForEpisodes.value = "";
-	selectEpisode.style.display = "block";
-	document.querySelector(".episode-search-container").style.display = "block";
-	document.getElementById("episodes").selectedIndex = 0;
 	episodeSearchInfo.style.display = "none";
 	episodeSearchInfo2.style.display = "none";
-	episodesLink.style.display = "none";
+	// episodesLink.style.display = "none";
+	episodesLink.style.pointerEvents = 'none';
+	populateEpisodesPage(episodes);
 });
+
+// function setSelectedIndex(s, i) {
+// 	s.options[i - 1].selected = true;
+// 	return;
+// }
+function setSelectedIndex(s, v) {
+	for (var i = 0; i < s.length; i++) {
+		if (s.options[i].text == v) {
+			s.options[i].selected = true;
+			createCustomSelectEpisode();
+
+			return;
+		}
+		// if (s[i].innerHTML === v) {
+		// 	// createCustomSelectEpisode();
+		// 	closeAllSelect(s[i]);
+
+		// }
+	}
+}
 
 //Search result information
 const episodeSearchInfo = document.querySelector(".episode-search-info");
@@ -361,7 +403,7 @@ function episodeSearch() {
 		const searchInput = e.target.value.toLowerCase();
 
 		//Filtering the search
-		const searchFilter = parsedData.filter((episode) => {
+		const searchFilter = episodes.filter((episode) => {
 			if (episode.name && episode.summary) {
 				return (
 					episode.name.toLowerCase().includes(searchInput) ||
@@ -369,7 +411,7 @@ function episodeSearch() {
 				);
 			}
 		});
-		episodeSearchInfo.innerHTML = `Displaying ${searchFilter.length}/${parsedData.length} Episodes`;
+		episodeSearchInfo.innerHTML = `Displaying ${searchFilter.length}/${episodes.length} Episodes`;
 
 		while (rootEpisodes.firstChild) {
 			rootEpisodes.removeChild(rootEpisodes.firstChild);
@@ -436,14 +478,14 @@ const createCustomSelect = () => {
 		selectedDiv.addEventListener("click", function (e) {
 			/*when the select box is clicked, close any other select boxes,
       and open/close the current select box:*/
-			// e.stopPropagation();
+			e.stopPropagation();
 			e.stopImmediatePropagation();
-			// e.preventDefault();
+			e.preventDefault();
 			closeAllSelect(this);
 			this.nextSibling.classList.toggle("select-hide");
 			this.classList.toggle("select-arrow-active");
 			let thisId;
-			data
+			shows
 				.filter((v) => v.name === this.innerHTML)
 				.forEach((el) => (thisId = el.id));
 			if (thisId) {
@@ -451,7 +493,7 @@ const createCustomSelect = () => {
 				loadEpisodes();
 				document.getElementById("show-episodes").innerHTML = this.innerHTML;
 				document.getElementById("show-name").innerHTML = this.innerHTML;
-				searchForEpisodes.placeholder = `Search for ${this.innerHTML}'s episodes`;
+				searchForEpisodes.placeholder = `${this.innerHTML}'s episodes`;
 				navLink.style.display = "block";
 				searchForEpisodes.style.display = "block";
 				// searchBar.value = "";
@@ -518,6 +560,9 @@ const createCustomSelectEpisode = () => {
 			selectOption = document.createElement("div");
 			selectOption.innerHTML = selectElement.options[j].innerHTML;
 			selectOption.addEventListener("click", function (e) {
+				e.stopPropagation();
+				e.stopImmediatePropagation();
+				e.preventDefault();
 				/*when an item is clicked, update the original select box,
         and the selected item:*/
 				let y, i, k, s, h, sl, yl;
@@ -549,6 +594,7 @@ const createCustomSelectEpisode = () => {
       and open/close the current select box:*/
 			e.stopPropagation();
 			e.preventDefault();
+			episodesLink.style.pointerEvents = "auto";
 
 			searchForEpisodes.value = "";
 			let episode = document.querySelectorAll(".episode-wrapper");
@@ -562,54 +608,52 @@ const createCustomSelectEpisode = () => {
 					.join(" ");
 				if (currentElement === checker) {
 					episode[i].style.display = "block";
-					episode[i].classList.add('only-child')
 					episodesLink.style.display = "inline-block";
 					navLink.style.display = "inline-block";
-					rootEpisodes.style.display = 'block';
-					episode[i].children[1].style.width = "400px";
-					episode[i].children[1].style.height = "300px";
+					rootEpisodes.style.display = "block";
+					rootEpisodes.style.width = "50%";
+					rootEpisodes.style.height = '600px';
 				} else if (checker !== selectedShow) {
 					episode[i].style.display = "none";
-					episode[i].classList.remove('only-child');
 				}
 			}
 			// selectEpisode.style.display = "none";
 			// searchForEpisodes.style.display = "none";
-
 			closeAllSelect(this);
 			this.nextSibling.classList.toggle("select-hide");
 			this.classList.toggle("select-arrow-active");
 		});
 	}
-	function closeAllSelect(elm) {
-		/*a function that will close all select boxes in the document,
-  except the current select box:*/
-		let x,
-			y,
-			i,
-			xl,
-			yl,
-			arrNo = [];
-		x = document.getElementsByClassName("select-items");
-		y = document.getElementsByClassName("select-selected");
-		xl = x.length;
-		yl = y.length;
-		for (i = 0; i < yl; i++) {
-			if (elm == y[i]) {
-				arrNo.push(i);
-			} else {
-				y[i].classList.remove("select-arrow-active");
-			}
-		}
-		for (i = 0; i < xl; i++) {
-			if (arrNo.indexOf(i)) {
-				x[i].classList.add("select-hide");
-			}
-		}
-	}
+
 	/*if the user clicks anywhere outside the select box,
 then close all select boxes:*/
 	document.addEventListener("click", closeAllSelect);
 };
+function closeAllSelect(elm) {
+	/*a function that will close all select boxes in the document,
+  except the current select box:*/
+	let x,
+		y,
+		i,
+		xl,
+		yl,
+		arrNo = [];
+	x = document.getElementsByClassName("select-items");
+	y = document.getElementsByClassName("select-selected");
+	xl = x.length;
+	yl = y.length;
+	for (i = 0; i < yl; i++) {
+		if (elm == y[i]) {
+			arrNo.push(i);
+		} else {
+			y[i].classList.remove("select-arrow-active");
+		}
+	}
+	for (i = 0; i < xl; i++) {
+		if (arrNo.indexOf(i)) {
+			x[i].classList.add("select-hide");
+		}
+	}
+}
 
 window.onload = loadShows;

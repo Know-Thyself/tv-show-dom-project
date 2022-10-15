@@ -3,6 +3,7 @@
 body {
 	background-color: rgb(213, 217, 219);
 	background-color: rgb(202, 201, 201);
+	background-color: rgb(191, 198, 202);
 	font-family: "Lato", sans-serif;
 	margin: 0;
 	padding: 0;
@@ -36,13 +37,6 @@ body {
 	width: auto;
 	float: left;
 }
-
-/* .epi-logo {
-	height: 64px;
-	width: auto;
-	float: left;
-	margin: 0.6% 1.5% 0 0.4%;
-} */
 
 .custom-select-wrapper {
 	display: flex;
@@ -123,9 +117,8 @@ body {
 	display: block;
 }
 
-.display-episodes {
+.hide {
 	display: none;
-	/* background-color: rgb(55, 72, 90); */
 }
 
 .search-container,
@@ -181,27 +174,36 @@ body {
 }
 
 .episode-search-info {
-	margin-top: 1.5em;
+	/* margin-top: 1.5em; */
+	margin: -20px 0 -20px 0;
 }
 
 .episode-search-info2 {
-	margin-bottom: -0.5em;
-	margin-top: -0.5em;
+	/* margin-bottom: -0.5em;
+	margin-top: -0.5em; */
+	margin-bottom: 0.7em;
 }
 
 .episodes-link {
 	width: 9.3rem;
 	display: none;
 }
-.nav-link:hover {
-	background-color: rgb(0, 5, 8);
-	color: aliceblue;
-}
 
 .root-shows,
 .root-episodes {
-	width: 90%;
+	display: grid;
+	grid-template-columns: repeat(1, 1fr);
+	gap: 2rem;
+	width: 85%;
 	margin: auto;
+}
+
+.show-name {
+	font-family: "Lato", sans-serif;
+	color: aliceblue;
+	text-align: center;
+	/* padding: 0.35rem 0; */
+	font-size: large;
 }
 
 .show-wrapper,
@@ -210,8 +212,9 @@ body {
 	height: 100%;
 	text-align: center;
 	background-color: rgb(248, 251, 252);
-	padding-bottom: 0.5rem;
-	margin: auto auto 1.5rem auto;
+	padding-bottom: 0.3rem;
+	margin: auto auto 2.5rem auto;
+	margin: 0 auto;
 	border-radius: 8px;
 }
 
@@ -228,10 +231,14 @@ body {
 	font-size: 1rem;
 	cursor: pointer;
 }
+.episode-wrapper .episode-name {
+	background-color: rgb(73, 71, 71);
+	background-color: darkred;
+}
 
 .name:hover,
 .episode-name:hover {
-	background-color: rgb(73, 71, 71);
+	background-color: rgb(97, 96, 96);
 }
 
 .show-info {
@@ -251,6 +258,13 @@ body {
 	text-align: left;
 }
 
+.empty-div {
+	width: 100%;
+	margin-top: 4px;
+	background-color: darkred;
+	border: ridge 1px black;
+	height: 1px;
+}
 .summary {
 	font-family: "Merriweather", serif;
 	text-align: left;
@@ -280,6 +294,14 @@ body {
 	border-radius: 7%;
 }
 
+.episode-wrapper .read-more,
+.episode-wrapper .read-less {
+	background-color: rgb(41, 40, 40);
+	background-color: rgb(73, 71, 71);
+	background-color: rgb(184, 189, 194);
+	color: black;
+}
+
 .read-more:hover,
 .read-less:hover {
 	background-color: rgb(5, 72, 114);
@@ -298,12 +320,13 @@ body {
 	display: flex;
 	width: 100%;
 	margin: auto;
-	justify-content: space-between;
+	justify-content: space-around;
 	align-items: center;
+	background-color: rgb(5, 58, 92);
 }
 .nav-link {
 	padding: 0.45rem;
-	background-color: rgb(80, 78, 78);
+	background-color: rgb(5, 58, 92);
 	text-decoration: none;
 	text-align: center;
 	width: fit-content;
@@ -314,25 +337,14 @@ body {
 	cursor: pointer;
 	white-space: nowrap;
 }
-.show-name {
-	font-family: "Lato", sans-serif;
+.nav-link:hover {
+	background-color: rgb(13, 65, 97);
 	color: aliceblue;
-	display: block;
-	text-align: center;
-	padding: 0.35rem 0;
-	background-color: rgb(5, 58, 92);
-	background-color: darkred;
-	font-size: large;
-	margin-top: 0;
 }
-/* .only-child {
-	background-color: red;
-	width: 100%;
-} */
+
 @media screen and (min-width: 690px) {
 	.root-shows,
 	.root-episodes {
-		display: grid;
 		grid-template-columns: repeat(2, 1fr);
 		/* grid-auto-rows: 1fr; */
 		/* grid-auto-flow: column; */
@@ -353,6 +365,9 @@ body {
 	min-height: 100vh;
 	padding-bottom: 13rem;
 }
+.display-episodes {
+	display: none;
+}
 
 .footer {
 	display: flex;
@@ -365,18 +380,15 @@ body {
 	height: 7vh;
 	background-color: rgb(5, 58, 92);
 	right: 0;
-  bottom: 0;
-  left: 0;
-  /* padding: 1rem; */
+	bottom: 0;
+	left: 0;
 }
 .data-info {
-	/* margin-top: 20px;
-	padding-top: 10px; */
 	color: aliceblue;
 	font-size: large;
 }
 
-@media screen and (min-width: 1040px) {
+@media screen and (min-width: 1140px) {
 	.root-shows,
 	.root-episodes {
 		grid-template-columns: repeat(3, 1fr);
@@ -404,14 +416,14 @@ body {
 		background-color: rgb(128, 118, 104);
 	}
 	.select-selected:after {
-		border-color: rgb(5, 58, 92) transparent transparent transparent;
+		border-color: rgb(41, 40, 40) transparent transparent transparent;
 	}
 	.select-selected.select-arrow-active:after {
 		border-color: transparent transparent rgb(41, 40, 40) transparent;
 	}
 }
 
-@media screen and (min-width: 1340px) {
+@media screen and (min-width: 1540px) {
 	.root-shows,
 	.root-episodes {
 		grid-template-columns: repeat(4, 1fr);
@@ -424,202 +436,3 @@ body {
 		grid-template-columns: repeat(4, 1fr);
 	}
 }
-
-/*
-.root-shows {
-	display: flex;
-	flex-wrap: wrap;
-	flex-direction: row;
-	width: 100%;
-	justify-content: space-evenly;
-}
-.root-episodes {
-	display: flex;
-	flex-wrap: wrap;
-	flex-direction: row;
-	width: 100%;
-	justify-content: space-evenly;
-}
-.show-wrapper {
-	width: 100%;
-	display: block;
-	margin-top: 1rem;
-	background-color: aqua;
-	background-color: rgb(194, 195, 196);
-	background-color: rgb(5, 58, 92);
-	border-radius: 8px;
-}
-.episodes-show-wrapper {
-	width: 100%;
-	display: block;
-}
-
-.episode-name {
-	color: rgb(0, 5, 8);
-}
-img {
-	display: block;
-	margin: auto;
-}
-
-.summary {
-	text-align: left;
-	display: flex;
-	flex-wrap: wrap;
-	margin-left: 8px;
-}
-
-
-
-
- */
-
-/* For medium screen sizes like iPad/tablets */
-/* @media screen and (min-width: 760px) {
-	.header {
-		margin-bottom: 0.5em;
-	}
-	.header,
-	.episodes-header {
-		flex-direction: row;
-	}
-	.episodes-header {
-		margin-bottom: -1.4em;
-	}
-	.select-shows {
-		margin-top: 0.85em;
-		margin-left: 0%;
-		width: 30%;
-		font: 1.2em sans-serif;
-		height: 2.1em;
-	}
-	.nav-link {
-		margin-top: 1em;
-		padding: 0.7% 0%;
-		margin: 1.5rem 0.5rem 0 0;
-	}
-	.episodes-link {
-		margin-right: 30px;
-	}
-	.select-episodes {
-		height: 1.6em;
-		margin-top: 0.85em;
-		width: 30%;
-		font: 0.8em;
-	}
-	.search-container {
-		background-color: rgb(5, 58, 92);
-	}
-	.search-episode {
-		margin-top: 0.5em;
-	}
-	.episode-search-container {
-		background-color: rgb(5, 58, 92);
-	}
-	.search-bar {
-		margin-top: 1rem;
-		font-size: 1em;
-		width: 100%;
-		height: 2.2em;
-	}
-	.episodes-search-bar {
-		height: 2.5em;
-		margin-top: 0.5rem;
-		width: 100%;
-	}
-	.search-info,
-	.search-info2,
-	.episode-search-info,
-	.episode-search-info2 {
-		color: aliceblue;
-		display: none;
-		text-align: center;
-		width: 100%;
-		padding: 00.25rem 0 0 0;
-	}
-	.search-info {
-		margin: -0.5rem 0 -0.2rem 0;
-	}
-	.episode-search-info {
-		margin-top: -1.7rem;
-		margin-bottom: 00.3em;
-	}
-	.episode-search-info2 {
-		margin-bottom: 0.5em;
-	}
-	.root-shows .show-wrapper,
-	.root-episodes .episodes-show-wrapper {
-		width: 50%;
-		margin-top: 15px;
-	}
-	.summary {
-		text-align: left;
-	}
-} */
-
-/* Small screen Laptops/Desktops */
-/* @media screen and (min-width: 1025px) {
-	.logo {
-		margin: 0.3% 0 0 0.25%;
-	}
-	.root-shows .show-wrapper,
-	.root-episodes .episodes-show-wrapper {
-		height: auto;
-		width: 33%;
-		margin-top: 15px;
-	}
-	.select-shows,
-	.select-episodes {
-		width: 25%;
-		height: 2em;
-	}
-	.summary {
-		text-align: left;
-	}
-} */
-
-/* Larger screen Devices - Laptops/Desktops */
-/* @media screen and (min-width: 1340px) {
-	.root-shows .show-wrapper,
-	.root-episodes .episodes-show-wrapper {
-		width: 18%;
-	}
-	.select-shows {
-		height: 1.8em;
-	}
-	.search-bar {
-		height: 2.2em;
-	}
-	.select-episodes {
-		margin-top: 1.25em;
-		font-size: 1.1rem;
-		height: 2.2rem;
-	}
-	.nav-link {
-		margin-top: 1.5rem;
-		padding: 0.6% 0%;
-		height: 2.5rem;
-		margin-right: 2rem;
-	}
-	.search-bar,
-	.episodes-search-bar {
-		margin-right: 1.3rem;
-		width: 20vw;
-	}
-	.episodes-search-bar {
-		height: 2.2em;
-		margin-top: 0.9em;
-	}
-} */
-
-/* High resolution screens - Laptops/Desktops */
-/* @media screen and (min-width: 1920px) {
-	.root-shows .show-wrapper,
-	.root-episodes .episodes-show-wrapper {
-		width: 19%;
-	}
-	.search-bar,
-	.episodes-search-bar {
-		margin-right: 2rem;
-	}
-} */
