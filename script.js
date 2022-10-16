@@ -56,7 +56,7 @@ function populateShowsPage(arr) {
 			navLink.style.display = "block";
 			document.getElementById("show-episodes").innerHTML = show.name;
 			document.getElementById("show-name").innerHTML = show.name;
-			searchForEpisodes.placeholder = `${show.name}'s episodes`;
+			searchForEpisodes.placeholder = show.name;
 			displayShows.style.display = "none";
 		});
 
@@ -136,7 +136,6 @@ function populateShowsPage(arr) {
 					parentContainer[i].children[4].lastChild.classList
 				).includes("read-less");
 				if (isIdentified) {
-					console.log(parentContainer[i]);
 					parentContainer[i].style.height = "100%";
 				} else {
 					parentContainer[i].style.height = "fit-content";
@@ -341,6 +340,8 @@ episodesLink.addEventListener("click", function (e) {
 	episodesLink.disabled = true;
 	episodesLink.style.backgroundColor = "gray";
 	rootEpisodes.style.marginTop = "auto";
+	let currentShowName = document.querySelector(".show-name").innerText;
+	searchForEpisodes.placeholder = currentShowName;
 	document.querySelector(".episode-custom-select-wrapper").style.display =
 		"flex";
 	episodesLink.onmouseenter = function () {
@@ -358,7 +359,10 @@ const episodeSearchInfo = document.querySelector(".episode-search-info");
 const episodeSearchInfo2 = document.querySelector(".episode-search-info2");
 
 // A function consisting of an event listener and a filter to dynamically update the web page based on the user input
-function episodeSearch() {
+const clearPlaceholder = () => {
+	searchForEpisodes.placeholder = "";
+};
+function episodeSearch(e) {
 	searchForEpisodes.addEventListener("keyup", (e) => {
 		episodeSearchInfo.style.display = "block";
 		episodeSearchInfo2.style.display = "block";
@@ -366,8 +370,10 @@ function episodeSearch() {
 		const searchInput = e.target.value.toLowerCase();
 
 		//Filtering the search
+		let originalImage;
 		const searchFilter = episodes.filter((episode) => {
 			if (episode.name && episode.summary) {
+				originalImage = episode.image.original;
 				return (
 					episode.name.toLowerCase().includes(searchInput) ||
 					episode.summary.toLowerCase().includes(searchInput)
@@ -380,11 +386,40 @@ function episodeSearch() {
 			rootEpisodes.removeChild(rootEpisodes.firstChild);
 		}
 		populateEpisodesPage(searchFilter);
+		episodesLink.disabled = false;
+		episodesLink.style.opacity = "1";
+		rootEpisodes.style.margin = "auto";
+		episodeSearchInfo.style.marginTop = "0.25rem";
+		if (searchFilter.length === 1) {
+			rootEpisodes.style.display = "block";
+			rootEpisodes.style.width = "90%";
+			rootEpisodes.style.height = "auto";
+			document.querySelector(".episode-custom-select-wrapper").style.display =
+				"none";
+			let currentContainer = rootEpisodes.querySelector(".episode-wrapper");
+			currentContainer.style.width = "80%";
+			if (window.innerWidth >= 500) {
+				currentContainer.querySelector("img").style.objectFit = "contain";
+				currentContainer.querySelector("img").style.width = "90%";
+				currentContainer.querySelector("img").src = originalImage;
+			}
+		}
 
 		if (searchInput === "") {
 			navLink.style.display = "inline-block";
 			episodeSearchInfo.style.display = "none";
 			episodeSearchInfo2.style.display = "none";
+			rootEpisodes.style.height = "auto";
+			episodesLink.disabled = true;
+			episodesLink.onmouseenter = function () {
+				this.style.backgroundColor = "gray";
+			};
+			episodesLink.onmouseleave = function () {
+				this.style.backgroundColor = "gray";
+			};
+			episodesLink.style.cursor = "auto";
+			let currentShowName = document.querySelector(".show-name").innerText;
+			searchForEpisodes.placeholder = currentShowName;
 		}
 	});
 }
@@ -395,20 +430,18 @@ episodeNameEvent = (e) => {
 			episode.name === e.target.innerText.split(" ").slice(0, -2).join(" ")
 		);
 	});
-	console.log(episodes.indexOf(clickedEpisode));
 	while (rootEpisodes.firstChild) {
 		rootEpisodes.removeChild(rootEpisodes.firstChild);
 	}
 	populateEpisodesPage(clickedEpisode);
 	episodesLink.style.opacity = "1";
-	rootEpisodes.style.marginTop = '2rem';
+	rootEpisodes.style.marginTop = "2rem";
 	rootEpisodes.style.display = "block";
 	rootEpisodes.style.width = "90%";
 	rootEpisodes.style.height = "auto";
-	
+
 	document.querySelector(".episode-custom-select-wrapper").style.display =
 		"none";
-	console.log(this);
 	let currentContainer = rootEpisodes.querySelector(".episode-wrapper");
 	currentContainer.style.width = "80%";
 	if (window.innerWidth >= 500) {
@@ -488,7 +521,7 @@ const createCustomSelect = () => {
 				loadEpisodes();
 				document.getElementById("show-episodes").innerHTML = this.innerHTML;
 				document.getElementById("show-name").innerHTML = this.innerHTML;
-				searchForEpisodes.placeholder = `${this.innerHTML}'s episodes`;
+				searchForEpisodes.placeholder = this.innerHTML;
 				navLink.style.display = "block";
 				searchForEpisodes.style.display = "block";
 				// searchBar.value = "";
@@ -595,6 +628,8 @@ const createCustomSelectEpisode = () => {
 			this.nextSibling.classList.toggle("select-hide");
 			this.classList.toggle("select-arrow-active");
 			searchForEpisodes.value = "";
+			episodeSearchInfo.style.display = "none";
+			episodeSearchInfo2.style.display = "none";
 			let episode = document.querySelectorAll(".episode-wrapper");
 			let checkerShow = this.textContent.split(" ").slice(2).join(" ");
 			for (let i = 0; i < episode.length; i++) {
