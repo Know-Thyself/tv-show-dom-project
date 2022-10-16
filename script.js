@@ -6,11 +6,10 @@ const rootEpisodes = document.getElementById("root-episodes");
 const searchBar = document.querySelector(".search-bar");
 const searchForEpisodes = document.querySelector(".episodes-search-bar");
 const parentDiv = document.getElementsByTagName("div");
-let showID;
+let showID, episodeNameEvent;
 
-//Storing data in variables to minimize api calls
-let shows = [];
-let episodes = [];
+//Variables to store data and minimize api calls
+let shows, episodes;
 
 //Getting shows from API and passing it as a parameter
 const loadShows = async () => {
@@ -99,18 +98,7 @@ function populateShowsPage(arr) {
 		showWrapper.appendChild(emptyDiv);
 
 		//Truncated summary text
-		const truncatedText = show.summary
-			.toString()
-			.split(" ")
-			.slice(0, 25)
-			.join(" ");
-		//Unused code, perhaps to be used at some point
-		const truncatedText2 = show.summary
-			.toString()
-			.split(" ")
-			.splice(25)
-			.join(" ");
-
+		const truncatedText = show.summary.split(" ").slice(0, 25).join(" ");
 		paragraph = document.createElement("p");
 		paragraph.setAttribute("class", "summary");
 		paragraph.innerHTML = `${truncatedText} ...`;
@@ -143,13 +131,13 @@ function populateShowsPage(arr) {
 			p2.classList.toggle("more-text");
 			p2.appendChild(readLess);
 			let parentContainer = document.querySelectorAll(".show-wrapper");
-			for(let i = 0; i < parentContainer.length; i++) {
-				let isIdentified = Array.from(parentContainer[i].children[4].lastChild.classList).includes('read-less');
-				console.log(isIdentified)
-				//TODO - increase the height of this container
+			for (let i = 0; i < parentContainer.length; i++) {
+				let isIdentified = Array.from(
+					parentContainer[i].children[4].lastChild.classList
+				).includes("read-less");
 				if (isIdentified) {
 					console.log(parentContainer[i]);
-					parentContainer[i].style.height = '100%'
+					parentContainer[i].style.height = "100%";
 				} else {
 					parentContainer[i].style.height = "fit-content";
 				}
@@ -167,7 +155,7 @@ function populateShowsPage(arr) {
 			p2.classList.toggle("more-text");
 			let parentContainer = document.querySelectorAll(".show-wrapper");
 			for (let i = 0; i < parentContainer.length; i++) {
-					parentContainer[i].style.height = "100%";
+				parentContainer[i].style.height = "100%";
 			}
 		});
 
@@ -234,7 +222,7 @@ function showSearch() {
 // Navigation link to go back to shows home page. NB: the link works without the event listener. I added the event listener for the sake of speed.
 const navLink = document.getElementById("navigation-link");
 navLink.setAttribute("href", window.location.href);
-navLink.addEventListener('click', () => window.location.reload())
+navLink.addEventListener("click", () => window.location.reload());
 
 // Populating the episodes' page
 function populateEpisodesPage(arr) {
@@ -258,14 +246,15 @@ function populateEpisodesPage(arr) {
 			rootEpisodes.style.display = "grid";
 			rootEpisodes.style.width = "90%";
 		}
-		episodesName = document.createElement("h2");
-		episodeWrapper.appendChild(episodesName);
+		let episodeName = document.createElement("h2");
+		episodeWrapper.appendChild(episodeName);
 		let formattedSeasonNumber = `0${episode.season}`.slice(-2);
 		let formattedEpisodeNumber = `0${episode.number}`.slice(-2);
-		episodesName.innerHTML = `${episode.name} - S${formattedSeasonNumber}E${formattedEpisodeNumber}`;
-		episodesName.setAttribute("class", "episode-name");
-		img = document.createElement("img");
+		episodeName.innerHTML = `${episode.name} - S${formattedSeasonNumber}E${formattedEpisodeNumber}`;
+		episodeName.setAttribute("class", "episode-name");
+		episodeName.addEventListener("click", episodeNameEvent);
 
+		let img = document.createElement("img");
 		if (episode.image) {
 			img.src = episode.image.medium;
 		} else {
@@ -286,19 +275,8 @@ function populateEpisodesPage(arr) {
 		episodeSummary.setAttribute("class", "summary");
 		episodeWrapper.appendChild(episodeSummary);
 		let truncatedText;
-
 		if (episode.summary) {
-			truncatedText = episode.summary
-				.toString()
-				.split(" ")
-				.slice(0, 25)
-				.join(" ");
-			//Unused code that might be needed at some point
-			const truncatedText2 = episode.summary
-				.toString()
-				.split(" ")
-				.splice(25)
-				.join(" ");
+			truncatedText = episode.summary.split(" ").slice(0, 25).join(" ");
 		}
 		episodeSummary.innerHTML = `${truncatedText} ...`;
 		let span = document.createElement("span");
@@ -357,11 +335,13 @@ episodesLink.addEventListener("click", function (e) {
 		rootEpisodes.removeChild(rootEpisodes.firstChild);
 	}
 	searchForEpisodes.value = "";
-	rootEpisodes.style.display = 'grid';
+	rootEpisodes.style.display = "grid";
 	episodeSearchInfo.style.display = "none";
 	episodeSearchInfo2.style.display = "none";
 	episodesLink.disabled = true;
-	episodesLink.style.backgroundColor = 'gray';
+	episodesLink.style.backgroundColor = "gray";
+	document.querySelector(".episode-custom-select-wrapper").style.display =
+		"flex";
 	episodesLink.onmouseenter = function () {
 		this.style.backgroundColor = "gray";
 	};
@@ -408,10 +388,32 @@ function episodeSearch() {
 	});
 }
 
+episodeNameEvent = (e) => {
+	console.log(e.target.innerText);
+	console.log(episodes);
+	let clickedName = episodes.filter((episode) => {
+		return (
+			episode.name === e.target.innerText.split(" ").slice(0, -2).join(" ")
+		);
+	});
+	console.log(episodes.indexOf(clickedName));
+	while (rootEpisodes.firstChild) {
+		rootEpisodes.removeChild(rootEpisodes.firstChild);
+	}
+	populateEpisodesPage(clickedName);
+	episodesLink.style.opacity = "1";
+	// rootEpisodes.style.display = "block";
+	// rootEpisodes.style.marginTop = '3rem';
+	document.querySelector(".episode-custom-select-wrapper").style.display =
+		"none";
+	//createCustomSelectEpisode();
+};
+
+
 const createCustomSelect = () => {
+	const customSelect = document.getElementsByClassName("custom-select");
 	let i, j, l, ll, selectElement, selectedDiv, selectHide, selectOption;
 	/*look for any elements with the class "custom-select":*/
-	const customSelect = document.getElementsByClassName("custom-select");
 	l = customSelect.length;
 	for (i = 0; i < l; i++) {
 		selectElement = customSelect[i].getElementsByTagName("select")[0];
@@ -593,9 +595,9 @@ const createCustomSelectEpisode = () => {
 					.join(" ");
 				if (currentElement === checker) {
 					// episode[i].style.display = "grid";
-					episodesLink.style.display = "block";
+					episodesLink.style.opacity = "1";
 					episodesLink.disabled = false;
-					episodesLink.style.cursor = 'pointer';
+					episodesLink.style.cursor = "pointer";
 					episodesLink.style.backgroundColor = "rgb(5, 58, 92)";
 					episodesLink.onmouseenter = function () {
 						this.style.backgroundColor = "rgb(4, 42, 66)";
@@ -607,7 +609,7 @@ const createCustomSelectEpisode = () => {
 					rootEpisodes.style.display = "block";
 					rootEpisodes.style.width = "90%";
 					rootEpisodes.style.minHeight = "400px";
-					if(window.innerWidth >= 500) {
+					if (window.innerWidth >= 500) {
 						episode[i].querySelector("img").style.width = "400px";
 					}
 					episode[i].querySelector("img").style.height = "auto";
@@ -615,9 +617,7 @@ const createCustomSelectEpisode = () => {
 					episode[i].style.display = "none";
 				}
 			}
-			// selectEpisode.style.display = "none";
 			// searchForEpisodes.style.display = "none";
-			
 		});
 	}
 

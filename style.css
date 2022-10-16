@@ -39,7 +39,8 @@ body {
 	float: left;
 }
 
-.custom-select-wrapper {
+.custom-select-wrapper,
+.episode-custom-select-wrapper {
 	display: flex;
 	text-align: center;
 	justify-content: center;
@@ -226,8 +227,7 @@ body {
 	color: aliceblue;
 }
 .episodes-link {
-	/* width: 9.3rem; */
-	display: none;
+	opacity: 0;
 }
 
 .root-shows,
