@@ -389,11 +389,11 @@ function episodeSearch(e) {
 		episodesLink.disabled = false;
 		episodesLink.style.opacity = "1";
 		rootEpisodes.style.margin = "auto";
-		episodeSearchInfo.style.marginTop = "0.25rem";
 		if (searchFilter.length === 1) {
 			rootEpisodes.style.display = "block";
 			rootEpisodes.style.width = "90%";
-			rootEpisodes.style.height = "auto";
+			// rootEpisodes.style.height = "auto";
+			episodeSearchInfo.style.marginTop = "2rem";
 			document.querySelector(".episode-custom-select-wrapper").style.display =
 				"none";
 			let currentContainer = rootEpisodes.querySelector(".episode-wrapper");
@@ -403,13 +403,15 @@ function episodeSearch(e) {
 				currentContainer.querySelector("img").style.width = "90%";
 				currentContainer.querySelector("img").src = originalImage;
 			}
-		}
-
+		} 
 		if (searchInput === "") {
 			navLink.style.display = "inline-block";
 			episodeSearchInfo.style.display = "none";
 			episodeSearchInfo2.style.display = "none";
-			rootEpisodes.style.height = "auto";
+			rootEpisodes.style.marginTop = "2rem";
+			// rootEpisodes.style.height = "auto";
+			rootEpisodes.style.display = "grid";
+			// episodeSearchInfo.style.marginTop = "auto";
 			episodesLink.disabled = true;
 			episodesLink.onmouseenter = function () {
 				this.style.backgroundColor = "gray";
@@ -434,11 +436,21 @@ episodeNameEvent = (e) => {
 		rootEpisodes.removeChild(rootEpisodes.firstChild);
 	}
 	populateEpisodesPage(clickedEpisode);
+	episodeSearchInfo.style.display = "none";
+	episodeSearchInfo2.style.display = "none";
 	episodesLink.style.opacity = "1";
 	rootEpisodes.style.marginTop = "2rem";
 	rootEpisodes.style.display = "block";
 	rootEpisodes.style.width = "90%";
 	rootEpisodes.style.height = "auto";
+	episodesLink.disabled = false;
+	episodesLink.onmouseenter = function () {
+		this.style.backgroundColor = "rgb(4, 42, 66)";
+	};
+	episodesLink.onmouseleave = function () {
+		this.style.backgroundColor = "rgb(5, 58, 92)";
+	};
+	episodesLink.style.cursor = "pointer";
 
 	document.querySelector(".episode-custom-select-wrapper").style.display =
 		"none";
