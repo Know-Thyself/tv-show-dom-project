@@ -47,6 +47,8 @@
 							class="search-bar"
 							type="text"
 							placeholder="Search for shows"
+							onfocus="clearPlaceholder()"
+							onblur="addPlaceholder()"
 							name="search"
 						/>
 					</div>
@@ -60,13 +62,13 @@
 				</section>
 
 				<!-- A root container for all shows generated using an api and DOM manipulation  -->
-				<div class="shows-wrapper">
+				<div class="shows-search-info-wrapper">
 					<h4 class="search-info"></h4>
 					<h4 class="search-info2">
 						Clear the search bar to go back to all shows
 					</h4>
-					<div class="root-shows" id="root-shows"></div>
 				</div>
+				<div class="root-shows" id="root-shows"></div>
 
 				<!-- Footer just to show where the data is originated from -->
 				<footer class="footer">
@@ -102,19 +104,19 @@
 							placeholder="Search for episodes"
 							name="search-episodes"
 							onfocus="clearPlaceholder()"
+							onblur="addPlaceholder()"
 						/>
 					</div>
 				</div>
-				
+
 				<div class="nav-links-plus-name">
-						<button id="navigation-link" class="nav-link">All Shows</button>
-						<h1 id="show-name" class="show-name"></h1>
-						<button id="episodes-navigation-link" class="nav-link episodes-link"
-							>All Episodes</button
-						>
-					</div>
+					<button id="navigation-link" class="nav-link">All Shows</button>
+					<h1 id="show-name" class="show-name"></h1>
+					<button id="episodes-navigation-link" class="nav-link episodes-link">
+						All Episodes
+					</button>
+				</div>
 				<section class="episodes-page-navigation">
-					
 					<!-- Select box to pick an episode -->
 					<div class="episode-custom-select-wrapper">
 						<div class="custom-select-episode" style="min-width: 300px">
@@ -136,14 +138,14 @@
 					</div>
 				</section>
 				<!-- A root container for all episodes generated using an api and DOM manipulation  -->
-				<div id="episodes-wrapper">
+				<div class="episodes-search-info-wrapper">
 					<!-- <h1 id="show-name" class="show-name"></h1> -->
-					<h4 class="episode-search-info"></h4>
-					<h4 class="episode-search-info2">
+					<h4 class="episodes-search-info"></h4>
+					<h4 class="episodes-search-info2">
 						Clear the search bar to go back to all episodes
 					</h4>
-					<div class="root-episodes" id="root-episodes"></div>
 				</div>
+				<div class="root-episodes" id="root-episodes"></div>
 
 				<!-- Footer just to show where the data is originated from -->
 				<footer class="footer">

@@ -6,7 +6,7 @@ const rootEpisodes = document.getElementById("root-episodes");
 const searchBar = document.querySelector(".search-bar");
 const searchForEpisodes = document.querySelector(".episodes-search-bar");
 const parentDiv = document.getElementsByTagName("div");
-let showID, episodeNameEvent;
+let showID, episodeNameEvent, currentShowName;
 
 //Variables to store data and minimize api calls
 let shows, episodes;
@@ -183,16 +183,17 @@ const loadEpisodes = async () => {
 	}
 };
 
-const searchInfo = document.querySelector(".search-info");
-const searchInfo2 = document.querySelector(".search-info2");
+//Shows search result information
+const showsSearchInfoWrapper = document.querySelector(".shows-search-info-wrapper");
+const showsSearchInfo = document.querySelector(".search-info");
 
 // An event listener wrapped inside a function to dynamically update the web page while a user is typing in the search bar.
 function showSearch() {
 	searchBar.addEventListener("keyup", (e) => {
 		e.preventDefault();
 		// Revealing the hidden information lines
-		searchInfo.style.display = "block";
-		searchInfo2.style.display = "block";
+		showsSearchInfoWrapper.style.display = "flex";
+		rootShows.style.margin = '2rem auto';
 
 		//Filtering search results
 		let searchValue = e.target.value.toLowerCase();
@@ -212,10 +213,10 @@ function showSearch() {
 		}
 		populateShowsPage(searchResult);
 		if (searchValue === "") {
-			searchInfo.style.display = "none";
-			searchInfo2.style.display = "none";
+			showsSearchInfoWrapper.style.display = "none";
+			rootShows.style.margin = "0 auto";
 		}
-		searchInfo.innerHTML = `Displaying ${searchResult.length}/${shows.length} Shows`;
+		showsSearchInfo.innerHTML = `Displaying ${searchResult.length}/${shows.length} Shows`;
 	});
 }
 // Navigation link to go back to shows home page. NB: the link works without the event listener. I added the event listener for the sake of speed.
@@ -335,13 +336,10 @@ episodesLink.addEventListener("click", function (e) {
 	}
 	searchForEpisodes.value = "";
 	rootEpisodes.style.display = "grid";
-	episodeSearchInfo.style.display = "none";
-	episodeSearchInfo2.style.display = "none";
+	episodesSearchInfoWrapper.style.display = "none";
 	episodesLink.disabled = true;
 	episodesLink.style.backgroundColor = "gray";
-	rootEpisodes.style.marginTop = "auto";
-	let currentShowName = document.querySelector(".show-name").innerText;
-	searchForEpisodes.placeholder = currentShowName;
+	// rootEpisodes.style.marginTop = "auto";
 	document.querySelector(".episode-custom-select-wrapper").style.display =
 		"flex";
 	episodesLink.onmouseenter = function () {
@@ -354,21 +352,29 @@ episodesLink.addEventListener("click", function (e) {
 	populateEpisodesPage(episodes);
 });
 
-//Search result information
-const episodeSearchInfo = document.querySelector(".episode-search-info");
-const episodeSearchInfo2 = document.querySelector(".episode-search-info2");
+//Episodes' Search result information
+const episodesSearchInfoWrapper = document.querySelector(
+	".episodes-search-info-wrapper"
+);
+const episodesSearchInfo = document.querySelector(".episodes-search-info");
 
 // A function consisting of an event listener and a filter to dynamically update the web page based on the user input
+// let currentShowName = document.querySelector(".show-name").innerText;
+console.log(currentShowName);
+
 const clearPlaceholder = () => {
+	searchBar.placeholder = '';
 	searchForEpisodes.placeholder = "";
 };
+
+const addPlaceholder = () => {
+	searchBar.placeholder = "Search for shows";
+	searchForEpisodes.placeholder = currentShowName;
+}
 function episodeSearch(e) {
 	searchForEpisodes.addEventListener("keyup", (e) => {
-		episodeSearchInfo.style.display = "block";
-		episodeSearchInfo2.style.display = "block";
-
+		episodesSearchInfoWrapper.style.display = "flex";
 		const searchInput = e.target.value.toLowerCase();
-
 		//Filtering the search
 		let originalImage;
 		const searchFilter = episodes.filter((episode) => {
@@ -380,7 +386,7 @@ function episodeSearch(e) {
 				);
 			}
 		});
-		episodeSearchInfo.innerHTML = `Displaying ${searchFilter.length}/${episodes.length} Episodes`;
+		episodesSearchInfo.innerHTML = `Displaying ${searchFilter.length}/${episodes.length} Episodes`;
 
 		while (rootEpisodes.firstChild) {
 			rootEpisodes.removeChild(rootEpisodes.firstChild);
@@ -388,12 +394,10 @@ function episodeSearch(e) {
 		populateEpisodesPage(searchFilter);
 		episodesLink.disabled = false;
 		episodesLink.style.opacity = "1";
-		rootEpisodes.style.margin = "auto";
+		rootEpisodes.style.margin = "2rem auto";
 		if (searchFilter.length === 1) {
 			rootEpisodes.style.display = "block";
 			rootEpisodes.style.width = "90%";
-			// rootEpisodes.style.height = "auto";
-			episodeSearchInfo.style.marginTop = "2rem";
 			document.querySelector(".episode-custom-select-wrapper").style.display =
 				"none";
 			let currentContainer = rootEpisodes.querySelector(".episode-wrapper");
@@ -406,12 +410,9 @@ function episodeSearch(e) {
 		} 
 		if (searchInput === "") {
 			navLink.style.display = "inline-block";
-			episodeSearchInfo.style.display = "none";
-			episodeSearchInfo2.style.display = "none";
-			rootEpisodes.style.marginTop = "2rem";
-			// rootEpisodes.style.height = "auto";
+			episodesSearchInfoWrapper.style.display = "none";
+			rootEpisodes.style.margin = "0 auto";
 			rootEpisodes.style.display = "grid";
-			// episodeSearchInfo.style.marginTop = "auto";
 			episodesLink.disabled = true;
 			episodesLink.onmouseenter = function () {
 				this.style.backgroundColor = "gray";
@@ -420,8 +421,8 @@ function episodeSearch(e) {
 				this.style.backgroundColor = "gray";
 			};
 			episodesLink.style.cursor = "auto";
-			let currentShowName = document.querySelector(".show-name").innerText;
-			searchForEpisodes.placeholder = currentShowName;
+			currentShowName = document.querySelector(".show-name").innerText;
+			// searchForEpisodes.placeholder = currentShowName;
 		}
 	});
 }
@@ -436,10 +437,8 @@ episodeNameEvent = (e) => {
 		rootEpisodes.removeChild(rootEpisodes.firstChild);
 	}
 	populateEpisodesPage(clickedEpisode);
-	episodeSearchInfo.style.display = "none";
-	episodeSearchInfo2.style.display = "none";
+	episodesSearchInfoWrapper.style.display = "none";
 	episodesLink.style.opacity = "1";
-	rootEpisodes.style.marginTop = "2rem";
 	rootEpisodes.style.display = "block";
 	rootEpisodes.style.width = "90%";
 	rootEpisodes.style.height = "auto";
@@ -640,8 +639,7 @@ const createCustomSelectEpisode = () => {
 			this.nextSibling.classList.toggle("select-hide");
 			this.classList.toggle("select-arrow-active");
 			searchForEpisodes.value = "";
-			episodeSearchInfo.style.display = "none";
-			episodeSearchInfo2.style.display = "none";
+			episodesSearchInfoWrapper.style.display = "none";
 			let episode = document.querySelectorAll(".episode-wrapper");
 			let checkerShow = this.textContent.split(" ").slice(2).join(" ");
 			for (let i = 0; i < episode.length; i++) {
