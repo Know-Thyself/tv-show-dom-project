@@ -6,7 +6,7 @@ const rootEpisodes = document.getElementById("root-episodes");
 const searchBar = document.querySelector(".search-bar");
 const searchForEpisodes = document.querySelector(".episodes-search-bar");
 const parentDiv = document.getElementsByTagName("div");
-let showID, episodeNameEvent, currentShowName;
+let showId, currentShowName;
 
 //Variables to store data and minimize api calls
 let shows, episodes;
@@ -30,35 +30,15 @@ function populateShowsPage(arr) {
 		//Creating elements
 		let showWrapper = document.createElement("div");
 		showWrapper.setAttribute("class", "show-wrapper");
+		showWrapper.id = show.id;
 		rootShows.appendChild(showWrapper);
-		if (arr.length === 1) {
-			rootShows.style.display = "block";
-			rootShows.style.width = "70%";
-		} else {
-			rootShows.style.display = "grid";
-			rootShows.style.width = "90%";
-		}
 		showName = document.createElement("h3");
 		showName.setAttribute("class", "name");
 		showWrapper.appendChild(showName);
 		showName.innerHTML = show.name;
-		let aTag = document.createElement("a");
-		aTag.setAttribute("href", "#");
-		aTag.setAttribute("id", `${show.id}`);
-		showName.append(aTag);
-
+		showName.id = show.id;
 		//An event listener to link names of shows to their episodes pages
-		showName.addEventListener("click", () => {
-			showID = aTag.id;
-			loadEpisodes();
-			displayEpisodes.style.display = "block";
-			searchForEpisodes.style.display = "block";
-			navLink.style.display = "block";
-			document.getElementById("show-episodes").innerHTML = show.name;
-			document.getElementById("show-name").innerHTML = show.name;
-			searchForEpisodes.placeholder = show.name;
-			displayShows.style.display = "none";
-		});
+		showName.addEventListener("click", showNameEvent);
 
 		img = document.createElement("img");
 		img.src = show.image.medium;
@@ -102,9 +82,6 @@ function populateShowsPage(arr) {
 		paragraph = document.createElement("p");
 		paragraph.setAttribute("class", "summary");
 		paragraph.innerHTML = `${truncatedText} ...`;
-		let p2 = document.createElement("p");
-		p2.setAttribute("class", "more-text summary");
-		p2.innerHTML = show.summary;
 
 		//Read more button
 		let readMore = document.createElement("button");
@@ -114,9 +91,9 @@ function populateShowsPage(arr) {
 		paragraph.appendChild(readMore);
 
 		//Read less button
-		let readLess = document.createElement("button");
-		readLess.innerHTML = `Read less`;
-		readLess.setAttribute("class", "read-less");
+		// let readLess = document.createElement("button");
+		// readLess.innerHTML = `Read less`;
+		// readLess.setAttribute("class", "read-less");
 
 		//A condition in which read more button won't be necessary
 		if (show.summary.length <= truncatedText.length) {
@@ -125,38 +102,22 @@ function populateShowsPage(arr) {
 		}
 
 		//An event listener to expand the summary text
-		readMore.addEventListener("click", (e) => {
-			showWrapper.removeChild(showWrapper.lastChild);
-			showWrapper.appendChild(p2);
-			p2.classList.toggle("more-text");
-			p2.appendChild(readLess);
-			let parentContainer = document.querySelectorAll(".show-wrapper");
-			for (let i = 0; i < parentContainer.length; i++) {
-				let isIdentified = Array.from(
-					parentContainer[i].children[4].lastChild.classList
-				).includes("read-less");
-				if (isIdentified) {
-					parentContainer[i].style.height = "100%";
-				} else {
-					parentContainer[i].style.height = "fit-content";
-				}
-			}
-		});
+		readMore.addEventListener("click", showsReadMore);
 
 		//An event listener to collapse the summary text
-		readLess.addEventListener("click", () => {
-			showWrapper.removeChild(showWrapper.lastChild);
-			let paragraph = document.createElement("p");
-			showWrapper.append(paragraph);
-			paragraph.setAttribute("class", "summary");
-			paragraph.innerHTML = `${truncatedText}...`;
-			paragraph.appendChild(readMore);
-			p2.classList.toggle("more-text");
-			let parentContainer = document.querySelectorAll(".show-wrapper");
-			for (let i = 0; i < parentContainer.length; i++) {
-				parentContainer[i].style.height = "100%";
-			}
-		});
+		// readLess.addEventListener("click", () => {
+		// 	showWrapper.removeChild(showWrapper.lastChild);
+		// 	let paragraph = document.createElement("p");
+		// 	showWrapper.append(paragraph);
+		// 	paragraph.setAttribute("class", "summary");
+		// 	paragraph.innerHTML = `${truncatedText}...`;
+		// 	paragraph.appendChild(readMore);
+		// 	p2.classList.toggle("more-text");
+		// 	let parentContainer = document.querySelectorAll(".show-wrapper");
+		// 	for (let i = 0; i < parentContainer.length; i++) {
+		// 		parentContainer[i].style.height = "100%";
+		// 	}
+		// });
 
 		//Select a show options
 		let selectShows = document.querySelector("#shows");
@@ -168,11 +129,46 @@ function populateShowsPage(arr) {
 	});
 }
 
+const showNameEvent = (e) => {
+	currentShowName = e.target.innerText;
+	showId = e.target.id;
+	loadEpisodes();
+	displayEpisodes.style.display = "block";
+	searchForEpisodes.style.display = "block";
+	navLink.style.display = "block";
+	document.getElementById("show-episodes").innerHTML = currentShowName;
+	document.getElementById("show-name").innerHTML = currentShowName;
+	searchForEpisodes.placeholder = currentShowName;
+	displayShows.style.display = "none";
+};
+
+const showsReadMore = (e) => {
+	let parentContainer = e.target.parentElement.parentElement;
+	let fullSummary = document.createElement("p");
+	fullSummary.setAttribute("class", "more-text summary");
+	parentContainer.removeChild(parentContainer.lastChild)
+	fullSummary.innerHTML =
+		shows[parentContainer.id - 1].summary;
+	let readLess = document.createElement("button");
+	readLess.innerHTML = `Read less`;
+	readLess.setAttribute("class", "read-less");
+	fullSummary.appendChild(readLess);
+	parentContainer.appendChild(fullSummary);
+	fullSummary.classList.toggle("more-text");
+	for (let i = 0; i < rootShows.childNodes.length; i++) {
+		if (parentContainer.id === rootShows.childNodes[i].id) {
+			rootShows.childNodes[i].style.height = "100%";
+		} else {
+			rootShows.childNodes[i].style.height = "fit-content";
+		}
+	}
+};
+
 //Async function to fetch episodes' shows
 const loadEpisodes = async () => {
 	try {
 		const response = fetch(
-			"https://api.tvmaze.com/shows/" + showID + "/episodes"
+			"https://api.tvmaze.com/shows/" + showId + "/episodes"
 		);
 		episodes = await (await response).json();
 		populateEpisodesPage(episodes);
@@ -218,11 +214,12 @@ function showSearch() {
 			rootShows.removeChild(rootShows.firstChild);
 		}
 		populateShowsPage(searchResult);
-
+		rootShows.style.display = "grid";
 		if (searchResult.length === 1) {
 			let currentContainer = rootShows.querySelector(".show-wrapper");
 			console.log(currentContainer, originalImage);
-			
+			rootShows.style.display = "block";
+			// rootShows.style.width = "70%";
 			rootShows.style.width = "90%";
 			if (window.innerWidth >= 500) {
 				let image = currentContainer.querySelector("img");
@@ -231,9 +228,8 @@ function showSearch() {
 				image.style.objectFit = "contain";
 				image.style.width = "100%";
 				image.src = originalImage;
-				image.style.height = '500px';
+				image.style.height = "500px";
 			}
-			
 		}
 
 		if (searchValue === "") {
@@ -384,7 +380,6 @@ const episodesSearchInfo = document.querySelector(".episodes-search-info");
 
 // A function consisting of an event listener and a filter to dynamically update the web page based on the user input
 // let currentShowName = document.querySelector(".show-name").innerText;
-console.log(currentShowName);
 
 const clearPlaceholder = () => {
 	searchBar.placeholder = "";
@@ -451,7 +446,7 @@ function episodeSearch(e) {
 	});
 }
 
-episodeNameEvent = (e) => {
+const episodeNameEvent = (e) => {
 	let clickedEpisode = episodes.filter((episode) => {
 		return (
 			episode.name === e.target.innerText.split(" ").slice(0, -2).join(" ")
@@ -465,7 +460,7 @@ episodeNameEvent = (e) => {
 	episodesLink.style.opacity = "1";
 	rootEpisodes.style.display = "block";
 	rootEpisodes.style.width = "90%";
-	rootEpisodes.style.height = "auto";
+	// rootEpisodes.style.height = "auto";
 	episodesLink.disabled = false;
 	episodesLink.onmouseenter = function () {
 		this.style.backgroundColor = "rgb(4, 42, 66)";
@@ -478,8 +473,9 @@ episodeNameEvent = (e) => {
 	document.querySelector(".episode-custom-select-wrapper").style.display =
 		"none";
 	let currentContainer = rootEpisodes.querySelector(".episode-wrapper");
-	currentContainer.style.width = "80%";
+	currentContainer.style.marginTop = "2rem";
 	if (window.innerWidth >= 500) {
+		currentContainer.style.width = "80%";
 		currentContainer.querySelector("img").style.objectFit = "contain";
 		currentContainer.querySelector("img").style.width = "90%";
 		let originalSizeImage = clickedEpisode.map(
@@ -552,7 +548,7 @@ const createCustomSelect = () => {
 				.filter((v) => v.name === this.innerHTML)
 				.forEach((el) => (thisId = el.id));
 			if (thisId) {
-				showID = thisId;
+				showId = thisId;
 				loadEpisodes();
 				document.getElementById("show-episodes").innerHTML = this.innerHTML;
 				document.getElementById("show-name").innerHTML = this.innerHTML;
@@ -689,8 +685,8 @@ const createCustomSelectEpisode = () => {
 					rootEpisodes.style.display = "block";
 					rootEpisodes.style.width = "90%";
 					rootEpisodes.style.heigh = "auto";
-					episode[i].style.width = "80%";
 					if (window.innerWidth >= 500) {
+						episode[i].style.width = "80%";
 						episode[i].querySelector("img").style.objectFit = "contain";
 						episode[i].querySelector("img").style.width = "90%";
 						let originalSizeImage = episodes.map(
