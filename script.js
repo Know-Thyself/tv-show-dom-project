@@ -184,7 +184,9 @@ const loadEpisodes = async () => {
 };
 
 //Shows search result information
-const showsSearchInfoWrapper = document.querySelector(".shows-search-info-wrapper");
+const showsSearchInfoWrapper = document.querySelector(
+	".shows-search-info-wrapper"
+);
 const showsSearchInfo = document.querySelector(".search-info");
 
 // An event listener wrapped inside a function to dynamically update the web page while a user is typing in the search bar.
@@ -193,30 +195,52 @@ function showSearch() {
 		e.preventDefault();
 		// Revealing the hidden information lines
 		showsSearchInfoWrapper.style.display = "flex";
-		rootShows.style.margin = '2rem auto';
+		rootShows.style.margin = "2rem auto";
 
 		//Filtering search results
 		let searchValue = e.target.value.toLowerCase();
+		let originalImage;
 
 		let searchResult = shows.filter((show) => {
-			return (
+			if (
 				show.name.toLowerCase().includes(searchValue) ||
 				show.summary
 					.replace(/(<([^>]+)>)/gi, "")
 					.toLowerCase()
 					.includes(searchValue) ||
 				show.genres.toString().toLowerCase().includes(searchValue)
-			);
+			) {
+				originalImage = show.image.original;
+				return show;
+			}
 		});
 		while (rootShows.firstChild) {
 			rootShows.removeChild(rootShows.firstChild);
 		}
 		populateShowsPage(searchResult);
+
+		if (searchResult.length === 1) {
+			let currentContainer = rootShows.querySelector(".show-wrapper");
+			console.log(currentContainer, originalImage);
+			
+			rootShows.style.width = "90%";
+			if (window.innerWidth >= 500) {
+				let image = currentContainer.querySelector("img");
+				rootShows.style.width = "100%";
+				currentContainer.style.width = "70%";
+				image.style.objectFit = "contain";
+				image.style.width = "100%";
+				image.src = originalImage;
+				image.style.height = '500px';
+			}
+			
+		}
+
 		if (searchValue === "") {
 			showsSearchInfoWrapper.style.display = "none";
 			rootShows.style.margin = "0 auto";
 		}
-		showsSearchInfo.innerHTML = `Displaying ${searchResult.length}/${shows.length} Shows`;
+		showsSearchInfo.innerHTML = `Displaying ${searchResult.length}/${shows.length} shows`;
 	});
 }
 // Navigation link to go back to shows home page. NB: the link works without the event listener. I added the event listener for the sake of speed.
@@ -363,14 +387,14 @@ const episodesSearchInfo = document.querySelector(".episodes-search-info");
 console.log(currentShowName);
 
 const clearPlaceholder = () => {
-	searchBar.placeholder = '';
+	searchBar.placeholder = "";
 	searchForEpisodes.placeholder = "";
 };
 
 const addPlaceholder = () => {
 	searchBar.placeholder = "Search for shows";
 	searchForEpisodes.placeholder = currentShowName;
-}
+};
 function episodeSearch(e) {
 	searchForEpisodes.addEventListener("keyup", (e) => {
 		episodesSearchInfoWrapper.style.display = "flex";
@@ -407,7 +431,7 @@ function episodeSearch(e) {
 				currentContainer.querySelector("img").style.width = "90%";
 				currentContainer.querySelector("img").src = originalImage;
 			}
-		} 
+		}
 		if (searchInput === "") {
 			navLink.style.display = "inline-block";
 			episodesSearchInfoWrapper.style.display = "none";

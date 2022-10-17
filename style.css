@@ -1,9 +1,16 @@
 /* Mobile first Responsive Web Design */
 @import url("https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Lato&family=Merriweather:ital@1&family=Montserrat:wght@300;800&family=Poppins&display=swap");
+/* CSS rules to specify families
+
+font-family: 'Alfa Slab One', cursive;
+font-family: 'Kaushan Script', cursive;
+font-family: 'Lato', sans-serif;
+font-family: 'Marck Script', cursive;
+font-family: 'Merriweather', serif;
+font-family: 'Montserrat', sans-serif;
+font-family: 'Poppins', sans-serif;
+ */
 body {
-	background-color: rgb(213, 217, 219);
-	background-color: rgb(202, 201, 201);
-	background-color: rgb(191, 198, 202);
 	background-color: rgb(206, 210, 211);
 	font-family: "Lato", sans-serif;
 	margin: 0;
@@ -171,7 +178,6 @@ body {
 	justify-content: space-around;
 	align-items: center;
 	background-color: rgb(5, 58, 92);
-	background-color: rgb(0, 26, 35);
 	background-color: rgb(97, 96, 96);
 }
 
@@ -197,17 +203,9 @@ body {
 	background-color: rgb(4, 42, 66);
 	color: aliceblue;
 }
+
 .episodes-link {
 	opacity: 0;
-}
-
-.search-info,
-.search-info2,
-.episodes-search-info,
-.episodes-search-info2 {
-	color: rgb(41, 40, 40);
-	text-align: center;
-	line-height: 1rem;
 }
 
 .shows-search-info-wrapper,
@@ -216,17 +214,24 @@ body {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	width: fit-content;
-	background-color: #fff;
-	padding: 0 1rem;
-	margin: auto;
-	border-radius: 0 30px;
-	/* margin-bottom: 1.75rem; */
+	width: max-content;
+	background-color: darkred;
+	background-color: rgb(0, 26, 35);
+	background-color: rgb(4, 42, 66);
+	padding: 0 2.5rem;
+	border-radius: 0 24px;
+	margin: 0 auto -1rem auto;
 }
 
+.search-info,
 .search-info2,
+.episodes-search-info,
 .episodes-search-info2 {
-	margin-top: 0;
+	color: antiquewhite;
+	text-align: center;
+	font-family: "Marck Script", cursive;
+	line-height: 0%;
+	/* margin: -1rem auto; */
 }
 
 .root-shows,
@@ -236,7 +241,7 @@ body {
 	place-items: start center;
 	grid-auto-flow: row;
 	gap: 2rem;
-	width: 85%;
+	width: 90%;
 	margin: 0 auto;
 }
 
@@ -388,10 +393,10 @@ body {
 	justify-content: center;
 	align-items: center;
 	text-align: center;
-	padding: 2rem 0;
+	padding: 1rem 0;
 	position: absolute;
 	width: 100%;
-	height: 7vh;
+	height: 4vh;
 	background-color: rgb(5, 58, 92);
 	right: 0;
 	bottom: 0;
@@ -437,6 +442,10 @@ body {
 	}
 	.select-selected.select-arrow-active:after {
 		border-color: transparent transparent rgb(41, 40, 40) transparent;
+	}
+	.shows-search-info-wrapper,
+	.episodes-search-info-wrapper {
+		margin: -2rem auto;
 	}
 }
 
