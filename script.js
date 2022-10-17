@@ -91,9 +91,9 @@ function populateShowsPage(arr) {
 		paragraph.appendChild(readMore);
 
 		//Read less button
-		// let readLess = document.createElement("button");
-		// readLess.innerHTML = `Read less`;
-		// readLess.setAttribute("class", "read-less");
+		let readLess = document.createElement("button");
+		readLess.innerHTML = `Read less`;
+		readLess.setAttribute("class", "read-less");
 
 		//A condition in which read more button won't be necessary
 		if (show.summary.length <= truncatedText.length) {
@@ -103,6 +103,7 @@ function populateShowsPage(arr) {
 
 		//An event listener to expand the summary text
 		readMore.addEventListener("click", showsReadMore);
+		readLess.addEventListener("click", showsReadLess);
 
 		//An event listener to collapse the summary text
 		// readLess.addEventListener("click", () => {
@@ -146,9 +147,7 @@ const showsReadMore = (e) => {
 	let parentContainer = e.target.parentElement.parentElement;
 	let fullSummary = document.createElement("p");
 	fullSummary.setAttribute("class", "more-text summary");
-	parentContainer.removeChild(parentContainer.lastChild)
-	fullSummary.innerHTML =
-		shows[parentContainer.id - 1].summary;
+	parentContainer.removeChild(parentContainer.lastChild);
 	let readLess = document.createElement("button");
 	readLess.innerHTML = `Read less`;
 	readLess.setAttribute("class", "read-less");
@@ -156,12 +155,31 @@ const showsReadMore = (e) => {
 	parentContainer.appendChild(fullSummary);
 	fullSummary.classList.toggle("more-text");
 	for (let i = 0; i < rootShows.childNodes.length; i++) {
-		if (parentContainer.id === rootShows.childNodes[i].id) {
+		if (Number(parentContainer.id) === shows[i].id) {
+			fullSummary.innerHTML = shows[i].summary;
 			rootShows.childNodes[i].style.height = "100%";
 		} else {
 			rootShows.childNodes[i].style.height = "fit-content";
 		}
 	}
+};
+
+const showsReadLess = (e) => {
+	let parent = e.target;
+	console.log(parent)
+	// let readMore = parentContainer.querySelector(".read-more");
+	// console.log(readMore)
+	// showWrapper.removeChild(showWrapper.lastChild);
+	// let paragraph = document.createElement("p");
+	// showWrapper.append(paragraph);
+	// paragraph.setAttribute("class", "summary");
+	// paragraph.innerHTML = `${truncatedText}...`;
+	// paragraph.appendChild(readMore);
+	// p2.classList.toggle("more-text");
+	// let parentContainer = document.querySelectorAll(".show-wrapper");
+	// for (let i = 0; i < parentContainer.length; i++) {
+	// 	parentContainer[i].style.height = "100%";
+	// }
 };
 
 //Async function to fetch episodes' shows
