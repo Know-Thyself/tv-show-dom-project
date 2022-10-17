@@ -337,12 +337,17 @@ body {
 	cursor: pointer;
 	font-weight: 500;
 	color: darkred;
-	background-color: rgb(5, 58, 92);
-	background-color: darkred;
 	color: white;
 	font-size: 1rem;
 	margin-top: -0.7rem;
 	border-radius: 3px;
+}
+
+.read-less {
+  background-color: rgb(5, 58, 92);
+}
+.read-more {
+  background-color: darkred;
 }
 
 .read-more:hover,

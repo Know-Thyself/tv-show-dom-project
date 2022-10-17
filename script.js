@@ -91,9 +91,9 @@ function populateShowsPage(arr) {
 		paragraph.appendChild(readMore);
 
 		//Read less button
-		let readLess = document.createElement("button");
-		readLess.innerHTML = `Read less`;
-		readLess.setAttribute("class", "read-less");
+		// let readLess = document.createElement("button");
+		// readLess.innerHTML = `Read less`;
+		// readLess.setAttribute("class", "read-less");
 
 		//A condition in which read more button won't be necessary
 		if (show.summary.length <= truncatedText.length) {
@@ -103,7 +103,6 @@ function populateShowsPage(arr) {
 
 		//An event listener to expand the summary text
 		readMore.addEventListener("click", showsReadMore);
-		readLess.addEventListener("click", showsReadLess);
 
 		//An event listener to collapse the summary text
 		// readLess.addEventListener("click", () => {
@@ -145,18 +144,20 @@ const showNameEvent = (e) => {
 
 const showsReadMore = (e) => {
 	let parentContainer = e.target.parentElement.parentElement;
+	parentContainer.removeChild(parentContainer.lastChild);
 	let fullSummary = document.createElement("p");
 	fullSummary.setAttribute("class", "more-text summary");
-	parentContainer.removeChild(parentContainer.lastChild);
+	console.log(parentContainer.lastChild);
 	let readLess = document.createElement("button");
 	readLess.innerHTML = `Read less`;
 	readLess.setAttribute("class", "read-less");
-	fullSummary.appendChild(readLess);
-	parentContainer.appendChild(fullSummary);
 	fullSummary.classList.toggle("more-text");
 	for (let i = 0; i < rootShows.childNodes.length; i++) {
 		if (Number(parentContainer.id) === shows[i].id) {
 			fullSummary.innerHTML = shows[i].summary;
+			parentContainer.appendChild(fullSummary);
+			fullSummary.appendChild(readLess);
+			readLess.addEventListener("click", showsReadLess);
 			rootShows.childNodes[i].style.height = "100%";
 		} else {
 			rootShows.childNodes[i].style.height = "fit-content";
@@ -164,15 +165,35 @@ const showsReadMore = (e) => {
 	}
 };
 
+// TODO fix this event listener
 const showsReadLess = (e) => {
-	let parent = e.target;
-	console.log(parent)
-	// let readMore = parentContainer.querySelector(".read-more");
+	let grandParent = e.target.parentElement.parentElement;
+	console.log(grandParent.lastChild);
+	// let readMore = grandParent.querySelector(".read-more");
 	// console.log(readMore)
-	// showWrapper.removeChild(showWrapper.lastChild);
-	// let paragraph = document.createElement("p");
-	// showWrapper.append(paragraph);
-	// paragraph.setAttribute("class", "summary");
+	grandParent.removeChild(grandParent.lastChild);
+	console.log(grandParent.lastChild);
+	let paragraph = document.createElement("p");
+
+	// grandParent.appendChild(paragraph);
+	let readMore = document.createElement("button");
+
+	// paragraph.appendChild(readMore);
+
+	for (let i = 0; i < rootShows.childNodes.length; i++) {
+		if (Number(grandParent.id) === shows[i].id) {
+			let truncatedText =
+				shows[i].summary.split(" ").slice(0, 25).join(" ") + "...";
+			paragraph.innerHTML = truncatedText;
+			grandParent.appendChild(paragraph);
+			paragraph.setAttribute("class", "more-text summary");
+			paragraph.appendChild(readMore);
+			paragraph.classList.toggle("more-text");
+			readMore.addEventListener("click", showsReadMore);
+			readMore.setAttribute("class", "read-more");
+		}
+		// rootShows.childNodes[i].style.height = "100%";
+	}
 	// paragraph.innerHTML = `${truncatedText}...`;
 	// paragraph.appendChild(readMore);
 	// p2.classList.toggle("more-text");
