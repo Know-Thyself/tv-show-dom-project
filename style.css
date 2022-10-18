@@ -12,6 +12,7 @@ font-family: 'Poppins', sans-serif;
  */
 body {
 	background-color: rgb(206, 210, 211);
+	background-color: rgb(167, 167, 167);
 	font-family: "Lato", sans-serif;
 	margin: 0;
 	padding: 0;
@@ -24,12 +25,8 @@ body {
 	align-items: center;
 	gap: 2rem;
 	height: 64px;
-	background-image: linear-gradient(
-		rgb(128, 118, 104),
-		/* rgb(79, 150, 221) */ rgb(138, 173, 209),
-		rgb(5, 72, 114)
-	);
-	/* background: rgb(128, 118, 104); */
+	background-color: #101427;
+	background-image: url(./images/old-black-background-distressed-vintage-260nw-1607779117.webp);
 	width: 100%;
 	color: antiquewhite;
 	font-family: "Alfa Slab One", cursive;
@@ -271,8 +268,10 @@ body {
 	width: 100%;
 	margin: auto;
 	text-align: center;
-	padding: 7px 0;
+	padding: 12px 0;
 	border-radius: 8px;
+	background-color: #263238;
+	background-color: #102027;
 	background-color: rgb(41, 40, 40);
 	color: aliceblue;
 	font-size: 1rem;
@@ -304,6 +303,7 @@ body {
 	font-weight: 600;
 	color: rgb(103, 103, 104);
 	color: darkred;
+	color: #271710;
 	text-align: left;
 }
 
