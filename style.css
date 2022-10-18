@@ -319,15 +319,38 @@ body {
 	text-align: left;
 	font-size: 0.9rem;
 	width: 90%;
-	margin: -8px auto 0 auto;
+	margin: 0 auto;
 	color: black;
+	background-color: rgb(248, 251, 252);
+	border: none;
+	text-decoration: none;
+	outline: none;
 }
 
-.more-text {
+/* .more-text {
+	display: none;
+} */
+.d-none {
 	display: none;
 }
 
 .read-more,
+.read-less {
+	font-family: "Merriweather", serif;
+	/* padding: 4px 8px; */
+	border: none;
+	text-decoration: none;
+	outline: none;
+	cursor: pointer;
+	font-weight: 500;
+	color: darkred;
+	/* color: white; */
+	font-size: 1rem;
+	/* margin-top: -0.7rem; */
+	/* border-radius: 3px; */
+}
+
+/* .read-more,
 .read-less {
 	font-family: "Merriweather", serif;
 	padding: 4px 8px;
@@ -364,7 +387,7 @@ body {
 
 .episode-wrapper .read-more:hover {
 	background-color: rgb(114, 5, 5);
-}
+} */
 
 @media screen and (min-width: 690px) {
 	.root-shows,

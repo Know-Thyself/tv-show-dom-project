@@ -79,45 +79,23 @@ function populateShowsPage(arr) {
 
 		//Truncated summary text
 		const truncatedText = show.summary.split(" ").slice(0, 25).join(" ");
-		paragraph = document.createElement("p");
-		paragraph.setAttribute("class", "summary");
-		paragraph.innerHTML = `${truncatedText} ...`;
+		let truncatedSummary = document.createElement("button");
+		truncatedSummary.className = "summary";
+		showWrapper.appendChild(truncatedSummary);
 
-		//Read more button
-		let readMore = document.createElement("button");
-		readMore.setAttribute("class", "read-more");
-		readMore.innerHTML = `Read more`;
-		showWrapper.append(paragraph);
-		paragraph.appendChild(readMore);
-
-		//Read less button
-		// let readLess = document.createElement("button");
-		// readLess.innerHTML = `Read less`;
-		// readLess.setAttribute("class", "read-less");
-
-		//A condition in which read more button won't be necessary
 		if (show.summary.length <= truncatedText.length) {
-			paragraph.innerHTML = truncatedText;
-			readMore.style.display = "none";
+			truncatedSummary.innerHTML = show.summary;
+		} else {
+			truncatedSummary.innerHTML = `${truncatedText} ... <span class="read-more">read more</span>`;
+			truncatedSummary.addEventListener("click", showsReadMore);
 		}
 
-		//An event listener to expand the summary text
-		readMore.addEventListener("click", showsReadMore);
-
-		//An event listener to collapse the summary text
-		// readLess.addEventListener("click", () => {
-		// 	showWrapper.removeChild(showWrapper.lastChild);
-		// 	let paragraph = document.createElement("p");
-		// 	showWrapper.append(paragraph);
-		// 	paragraph.setAttribute("class", "summary");
-		// 	paragraph.innerHTML = `${truncatedText}...`;
-		// 	paragraph.appendChild(readMore);
-		// 	p2.classList.toggle("more-text");
-		// 	let parentContainer = document.querySelectorAll(".show-wrapper");
-		// 	for (let i = 0; i < parentContainer.length; i++) {
-		// 		parentContainer[i].style.height = "100%";
-		// 	}
-		// });
+		let fullSummary = document.createElement("button");
+		fullSummary.setAttribute("class", "d-none summary");
+		fullSummary.innerHTML = `${show.summary}<span class="read-less">read less</span>`;
+		showWrapper.appendChild(fullSummary);
+		truncatedSummary.addEventListener("click", showsReadMore);
+		fullSummary.addEventListener("click", showsReadLess);
 
 		//Select a show options
 		let selectShows = document.querySelector("#shows");
@@ -143,64 +121,31 @@ const showNameEvent = (e) => {
 };
 
 const showsReadMore = (e) => {
-	let parentContainer = e.target.parentElement.parentElement;
-	parentContainer.removeChild(parentContainer.lastChild);
-	let fullSummary = document.createElement("p");
-	fullSummary.setAttribute("class", "more-text summary");
-	console.log(parentContainer.lastChild);
-	let readLess = document.createElement("button");
-	readLess.innerHTML = `Read less`;
-	readLess.setAttribute("class", "read-less");
-	fullSummary.classList.toggle("more-text");
-	for (let i = 0; i < rootShows.childNodes.length; i++) {
-		if (Number(parentContainer.id) === shows[i].id) {
-			fullSummary.innerHTML = shows[i].summary;
-			parentContainer.appendChild(fullSummary);
-			fullSummary.appendChild(readLess);
-			readLess.addEventListener("click", showsReadLess);
-			rootShows.childNodes[i].style.height = "100%";
+	let parent = e.target.parentElement.parentNode.parentElement;
+	let readMore = e.target.parentElement.parentNode;
+	let readLess = e.target.parentElement.parentNode.nextSibling;
+	let allParents = rootShows.querySelectorAll(".show-wrapper");
+	readMore.classList.toggle("d-none");
+	readLess.classList.toggle("d-none");
+	for (let i = 0; i < allParents.length; i++) {
+		if (allParents[i].id === parent.id) {
+			allParents[i].style.height = "100%";
 		} else {
-			rootShows.childNodes[i].style.height = "fit-content";
+			allParents[i].style.height = "fit-content";
+			allParents[i].style.marginTop = "0";
 		}
 	}
 };
 
-// TODO fix this event listener
 const showsReadLess = (e) => {
-	let grandParent = e.target.parentElement.parentElement;
-	console.log(grandParent.lastChild);
-	// let readMore = grandParent.querySelector(".read-more");
-	// console.log(readMore)
-	grandParent.removeChild(grandParent.lastChild);
-	console.log(grandParent.lastChild);
-	let paragraph = document.createElement("p");
-
-	// grandParent.appendChild(paragraph);
-	let readMore = document.createElement("button");
-
-	// paragraph.appendChild(readMore);
-
-	for (let i = 0; i < rootShows.childNodes.length; i++) {
-		if (Number(grandParent.id) === shows[i].id) {
-			let truncatedText =
-				shows[i].summary.split(" ").slice(0, 25).join(" ") + "...";
-			paragraph.innerHTML = truncatedText;
-			grandParent.appendChild(paragraph);
-			paragraph.setAttribute("class", "more-text summary");
-			paragraph.appendChild(readMore);
-			paragraph.classList.toggle("more-text");
-			readMore.addEventListener("click", showsReadMore);
-			readMore.setAttribute("class", "read-more");
-		}
-		// rootShows.childNodes[i].style.height = "100%";
+	let readLess = e.target.parentElement.parentNode.lastChild;
+	let readMore = e.target.parentElement.parentNode.lastChild.previousSibling;
+	let allParents = rootShows.querySelectorAll(".show-wrapper");
+	readMore.classList.toggle("d-none");
+	readLess.classList.toggle("d-none");
+	for (let i = 0; i < allParents.length; i++) {
+		allParents[i].style.height = "100%";
 	}
-	// paragraph.innerHTML = `${truncatedText}...`;
-	// paragraph.appendChild(readMore);
-	// p2.classList.toggle("more-text");
-	// let parentContainer = document.querySelectorAll(".show-wrapper");
-	// for (let i = 0; i < parentContainer.length; i++) {
-	// 	parentContainer[i].style.height = "100%";
-	// }
 };
 
 //Async function to fetch episodes' shows
@@ -256,9 +201,7 @@ function showSearch() {
 		rootShows.style.display = "grid";
 		if (searchResult.length === 1) {
 			let currentContainer = rootShows.querySelector(".show-wrapper");
-			console.log(currentContainer, originalImage);
 			rootShows.style.display = "block";
-			// rootShows.style.width = "70%";
 			rootShows.style.width = "90%";
 			if (window.innerWidth >= 500) {
 				let image = currentContainer.querySelector("img");
