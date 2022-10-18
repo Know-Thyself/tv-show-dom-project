@@ -303,6 +303,7 @@ episodesLink.addEventListener("click", function (e) {
 	}
 	searchForEpisodes.value = "";
 	rootEpisodes.style.display = "grid";
+	episodesSearchContainer.style.display = 'block';
 	if (window.innerWidth >= 1340) {
 		rootEpisodes.style.width = "97%";
 	} else if (window.innerWidth >= 1040) {
@@ -404,6 +405,9 @@ function episodeSearch(e) {
 	});
 }
 
+const episodesSearchContainer = document.querySelector(
+	".episode-search-container"
+);
 const episodeNameEvent = (e) => {
 	let clickedEpisode = episodes.filter((episode) => {
 		return (
@@ -417,6 +421,7 @@ const episodeNameEvent = (e) => {
 	episodesSearchInfoWrapper.style.display = "none";
 	episodesLink.style.opacity = "1";
 	rootEpisodes.style.display = "block";
+	episodesSearchContainer.style.display = "none";
 	episodesLink.disabled = false;
 	episodesLink.onmouseenter = function () {
 		this.style.backgroundColor = "rgb(4, 42, 66)";
