@@ -327,67 +327,25 @@ body {
 	outline: none;
 }
 
-/* .more-text {
-	display: none;
-} */
 .d-none {
 	display: none;
 }
 
 .read-more,
 .read-less {
+	display: inline;
 	font-family: "Merriweather", serif;
-	/* padding: 4px 8px; */
 	border: none;
 	text-decoration: none;
 	outline: none;
 	cursor: pointer;
 	font-weight: 500;
 	color: darkred;
-	/* color: white; */
 	font-size: 1rem;
-	/* margin-top: -0.7rem; */
-	/* border-radius: 3px; */
 }
-
-/* .read-more,
 .read-less {
-	font-family: "Merriweather", serif;
-	padding: 4px 8px;
-	border: none;
-	text-decoration: none;
-	outline: none;
-	cursor: pointer;
-	font-weight: 500;
-	color: darkred;
-	color: white;
-	font-size: 1rem;
-	margin-top: -0.7rem;
-	border-radius: 3px;
+	margin-top: -2rem;
 }
-
-.read-less {
-  background-color: rgb(5, 58, 92);
-}
-.read-more {
-  background-color: darkred;
-}
-
-.read-more:hover,
-.read-less:hover {
-	background-color: rgb(124, 2, 2);
-	color: aliceblue;
-}
-
-.episode-wrapper .read-more,
-.episode-wrapper .read-less {
-	background-color: rgb(156, 3, 3);
-	color: aliceblue;
-}
-
-.episode-wrapper .read-more:hover {
-	background-color: rgb(114, 5, 5);
-} */
 
 @media screen and (min-width: 690px) {
 	.root-shows,

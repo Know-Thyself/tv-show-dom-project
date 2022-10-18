@@ -39,11 +39,9 @@ function populateShowsPage(arr) {
 		showName.id = show.id;
 		//An event listener to link names of shows to their episodes pages
 		showName.addEventListener("click", showNameEvent);
-
 		img = document.createElement("img");
 		img.src = show.image.medium;
 		showWrapper.appendChild(img);
-
 		//Genres, Status, Rating and Runtime
 		let genres = document.createElement("h4");
 		genres.setAttribute("class", "genres");
@@ -58,12 +56,10 @@ function populateShowsPage(arr) {
 		let showInfo = document.createElement("section");
 		showInfo.className = "show-info";
 		showWrapper.appendChild(showInfo);
-
 		showInfo.appendChild(genres);
 		showInfo.appendChild(status);
 		showInfo.appendChild(rating);
 		showInfo.appendChild(runtime);
-
 		// Giving a bit of space between words and after commas
 		let corrected = show.genres.toString().split(",").join(", ");
 		genres.innerHTML = `Genres: ${corrected}`;
@@ -72,11 +68,9 @@ function populateShowsPage(arr) {
 		status.style.wordSpacing = "5px";
 		rating.style.wordSpacing = "5px";
 		runtime.style.wordSpacing = "5px";
-
 		let emptyDiv = document.createElement("div");
 		emptyDiv.className = "empty-div";
 		showWrapper.appendChild(emptyDiv);
-
 		//Truncated summary text
 		const truncatedText = show.summary.split(" ").slice(0, 25).join(" ");
 		let truncatedSummary = document.createElement("button");
@@ -169,18 +163,16 @@ const showsSearchInfoWrapper = document.querySelector(
 );
 const showsSearchInfo = document.querySelector(".search-info");
 
-// An event listener wrapped inside a function to dynamically update the web page while a user is typing in the search bar.
+// An event listener to dynamically update the web page
 function showSearch() {
 	searchBar.addEventListener("keyup", (e) => {
 		e.preventDefault();
 		// Revealing the hidden information lines
 		showsSearchInfoWrapper.style.display = "flex";
 		rootShows.style.margin = "2rem auto";
-
 		//Filtering search results
 		let searchValue = e.target.value.toLowerCase();
 		let originalImage;
-
 		let searchResult = shows.filter((show) => {
 			if (
 				show.name.toLowerCase().includes(searchValue) ||
@@ -213,7 +205,6 @@ function showSearch() {
 				image.style.height = "500px";
 			}
 		}
-
 		if (searchValue === "") {
 			showsSearchInfoWrapper.style.display = "none";
 			rootShows.style.margin = "0 auto";
@@ -235,14 +226,6 @@ function populateEpisodesPage(arr) {
 		episodeWrapper.setAttribute("id", episode.id);
 		episodeWrapper.setAttribute("class", "episode-wrapper");
 		rootEpisodes.appendChild(episodeWrapper);
-		// centering the last child after search and select
-		if (arr.length === 1) {
-			rootEpisodes.style.display = "block";
-			rootEpisodes.style.width = "70%";
-		} else {
-			rootEpisodes.style.display = "grid";
-			rootEpisodes.style.width = "90%";
-		}
 		let episodeName = document.createElement("h2");
 		episodeWrapper.appendChild(episodeName);
 		let formattedSeasonNumber = `0${episode.season}`.slice(-2);
@@ -250,7 +233,6 @@ function populateEpisodesPage(arr) {
 		episodeName.innerHTML = `${episode.name} - S${formattedSeasonNumber}E${formattedEpisodeNumber}`;
 		episodeName.setAttribute("class", "episode-name");
 		episodeName.addEventListener("click", episodeNameEvent);
-
 		let img = document.createElement("img");
 		if (episode.image) {
 			img.src = episode.image.medium;
@@ -259,18 +241,15 @@ function populateEpisodesPage(arr) {
 				"https://upload.wikimedia.org/wikipedia/commons/2/26/512pxIcon-sunset_photo_not_found.png";
 		}
 		episodeWrapper.appendChild(img);
-
 		//Select an episode options
 		let selectEpisode = document.getElementById("select-episode");
 		let options = document.createElement("option");
 		options.setAttribute("class", "episodes-option");
 		options.innerHTML = `S${formattedSeasonNumber}E${formattedEpisodeNumber} - ${episode.name}`;
 		selectEpisode.appendChild(options);
-
 		// Truncated summary Text
 		episodeTruncatedSummary = document.createElement("button");
 		episodeTruncatedSummary.setAttribute("class", "summary");
-
 		let truncatedText = episode.summary.split(" ").slice(0, 25).join(" ");
 		if (episode.summary.length <= truncatedText) {
 			episodeTruncatedSummary.innerHTML = episode.summary;
@@ -282,11 +261,9 @@ function populateEpisodesPage(arr) {
 		episodeFullSummary.setAttribute("class", "summary d-none");
 		episodeFullSummary.innerHTML = `${episode.summary} <span class="read-less">read less</span>`;
 		episodeWrapper.appendChild(episodeFullSummary);
-
 		episodeTruncatedSummary.addEventListener("click", episodesReadMore);
 		episodeFullSummary.addEventListener("click", episodesReadLess);
 	});
-	createCustomSelect();
 }
 
 const episodesReadMore = (e) => {
@@ -466,8 +443,6 @@ const createCustomSelect = () => {
 		selectedDiv.innerHTML =
 			selectElement.options[selectElement.selectedIndex].innerHTML;
 		customSelect[i].appendChild(selectedDiv);
-		//selectedDiv.id = selectElement.options[selectElement];
-
 		/*for each element, create a new DIV that will contain the option list:*/
 		selectHide = document.createElement("div");
 		selectHide.setAttribute("class", "select-items select-hide");
@@ -573,8 +548,6 @@ const createCustomSelectEpisode = () => {
 		selectedDiv.innerHTML =
 			selectElement.options[selectElement.selectedIndex].innerHTML;
 		customSelect[i].appendChild(selectedDiv);
-		//selectedDiv.id = selectElement.options[selectElement];
-
 		/*for each element, create a new DIV that will contain the option list:*/
 		selectHide = document.createElement("div");
 		selectHide.setAttribute("class", "select-items select-hide");
@@ -587,7 +560,6 @@ const createCustomSelectEpisode = () => {
 				e.preventDefault();
 				e.stopPropagation();
 				e.stopImmediatePropagation();
-
 				/*when an item is clicked, update the original select box,
         and the selected item:*/
 				let y, i, k, s, h, sl, yl;
