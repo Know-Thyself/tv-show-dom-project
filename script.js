@@ -106,7 +106,7 @@ const showNameEvent = (e) => {
 	showId = e.target.id;
 	loadEpisodes();
 	displayEpisodes.style.display = "block";
-	searchForEpisodes.style.display = "block";
+	// searchForEpisodes.style.display = "block";
 	navLink.style.display = "block";
 	document.getElementById("show-episodes").innerHTML = currentShowName;
 	document.getElementById("show-name").innerHTML = currentShowName;
@@ -200,9 +200,9 @@ function showSearch() {
 				rootShows.style.width = "100%";
 				currentContainer.style.width = "70%";
 				image.style.objectFit = "contain";
-				image.style.width = "100%";
+				image.style.width = "80%";
 				image.src = originalImage;
-				image.style.height = "500px";
+				image.style.height = "auto";
 			}
 		}
 		if (searchValue === "") {
@@ -284,14 +284,14 @@ const episodesReadMore = (e) => {
 };
 
 const episodesReadLess = (e) => {
-		let readLess = e.target.parentElement.parentNode.lastChild;
-		let readMore = e.target.parentElement.parentNode.lastChild.previousSibling;
-		let allParents = rootEpisodes.querySelectorAll(".episode-wrapper");
-		readMore.classList.toggle("d-none");
-		readLess.classList.toggle("d-none");
-		for (let i = 0; i < allParents.length; i++) {
-			allParents[i].style.height = "100%";
-		}
+	let readLess = e.target.parentElement.parentNode.lastChild;
+	let readMore = e.target.parentElement.parentNode.lastChild.previousSibling;
+	let allParents = rootEpisodes.querySelectorAll(".episode-wrapper");
+	readMore.classList.toggle("d-none");
+	readLess.classList.toggle("d-none");
+	for (let i = 0; i < allParents.length; i++) {
+		allParents[i].style.height = "100%";
+	}
 };
 
 const episodesLink = document.getElementById("episodes-navigation-link");
@@ -303,6 +303,13 @@ episodesLink.addEventListener("click", function (e) {
 	}
 	searchForEpisodes.value = "";
 	rootEpisodes.style.display = "grid";
+	if (window.innerWidth >= 1340) {
+		rootEpisodes.style.width = "97%";
+	} else if (window.innerWidth >= 1040) {
+		rootEpisodes.style.width = "95%";
+	} else if (window.innerWidth >= 690) {
+		rootEpisodes.style.width = "90%";
+	} else rootEpisodes.style.width = "85%";
 	episodesSearchInfoWrapper.style.display = "none";
 	episodesLink.disabled = true;
 	episodesLink.style.backgroundColor = "gray";
@@ -334,6 +341,7 @@ const addPlaceholder = () => {
 	searchBar.placeholder = "Search for shows";
 	searchForEpisodes.placeholder = currentShowName;
 };
+
 function episodeSearch(e) {
 	searchForEpisodes.addEventListener("keyup", (e) => {
 		episodesSearchInfoWrapper.style.display = "flex";
@@ -361,14 +369,20 @@ function episodeSearch(e) {
 		if (searchFilter.length === 1) {
 			rootEpisodes.style.display = "block";
 			rootEpisodes.style.width = "90%";
+			let currentContainer = rootEpisodes.querySelector(".episode-wrapper");
+			currentContainer.style.width = "100%";
 			document.querySelector(".episode-custom-select-wrapper").style.display =
 				"none";
-			let currentContainer = rootEpisodes.querySelector(".episode-wrapper");
-			currentContainer.style.width = "80%";
 			if (window.innerWidth >= 500) {
-				currentContainer.querySelector("img").style.objectFit = "contain";
-				currentContainer.querySelector("img").style.width = "90%";
-				currentContainer.querySelector("img").src = originalImage;
+				let originalSizeImage = searchFilter.map(
+					(episode) => episode.image.original
+				);
+				let imageElem = currentContainer.querySelector("img");
+				imageElem.src = originalSizeImage[0];
+				rootEpisodes.style.width = "70%";
+				imageElem.style.objectFit = "contain";
+				imageElem.style.width = "80%";
+				imageElem.style.height = "auto";
 			}
 		}
 		if (searchInput === "") {
@@ -403,8 +417,6 @@ const episodeNameEvent = (e) => {
 	episodesSearchInfoWrapper.style.display = "none";
 	episodesLink.style.opacity = "1";
 	rootEpisodes.style.display = "block";
-	rootEpisodes.style.width = "90%";
-	// rootEpisodes.style.height = "auto";
 	episodesLink.disabled = false;
 	episodesLink.onmouseenter = function () {
 		this.style.backgroundColor = "rgb(4, 42, 66)";
@@ -417,15 +429,16 @@ const episodeNameEvent = (e) => {
 	document.querySelector(".episode-custom-select-wrapper").style.display =
 		"none";
 	let currentContainer = rootEpisodes.querySelector(".episode-wrapper");
-	currentContainer.style.marginTop = "2rem";
+	currentContainer.style.marginTop = "1rem";
+	currentContainer.style.width = "100%";
 	if (window.innerWidth >= 500) {
-		currentContainer.style.width = "80%";
-		currentContainer.querySelector("img").style.objectFit = "contain";
-		currentContainer.querySelector("img").style.width = "90%";
 		let originalSizeImage = clickedEpisode.map(
 			(episode) => episode.image.original
 		);
 		currentContainer.querySelector("img").src = originalSizeImage[0];
+		rootEpisodes.style.width = "70%";
+		currentContainer.querySelector("img").style.objectFit = "contain";
+		currentContainer.querySelector("img").style.width = "80%";
 	}
 };
 
@@ -494,8 +507,8 @@ const createCustomSelect = () => {
 				document.getElementById("show-name").innerHTML = this.innerHTML;
 				searchForEpisodes.placeholder = this.innerHTML;
 				navLink.style.display = "block";
-				searchForEpisodes.style.display = "block";
-				// searchBar.value = "";
+				// searchForEpisodes.style.display = "block";
+				searchBar.value = "";
 				displayEpisodes.style.display = "block";
 				rootEpisodes.innerHTML = "";
 				displayShows.style.display = "none";
@@ -620,16 +633,16 @@ const createCustomSelectEpisode = () => {
 					};
 					navLink.style.display = "block";
 					rootEpisodes.style.display = "block";
-					rootEpisodes.style.width = "90%";
 					rootEpisodes.style.heigh = "auto";
 					if (window.innerWidth >= 500) {
-						episode[i].style.width = "80%";
-						episode[i].querySelector("img").style.objectFit = "contain";
-						episode[i].querySelector("img").style.width = "90%";
 						let originalSizeImage = episodes.map(
 							(episode) => episode.image.original
 						);
 						episode[i].querySelector("img").src = originalSizeImage[i];
+						rootEpisodes.style.width = "70%";
+						// episodes[i].style.width = "100%";
+						episode[i].querySelector("img").style.objectFit = "contain";
+						episode[i].querySelector("img").style.width = "80%";
 					}
 					episode[i].querySelector("img").style.height = "auto";
 				} else if (checker !== selectedShow) {
