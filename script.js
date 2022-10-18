@@ -221,23 +221,18 @@ function showSearch() {
 		showsSearchInfo.innerHTML = `Displaying ${searchResult.length}/${shows.length} shows`;
 	});
 }
-// Navigation link to go back to shows home page. NB: the link works without the event listener. I added the event listener for the sake of speed.
+
 const navLink = document.getElementById("navigation-link");
 navLink.setAttribute("href", window.location.href);
 navLink.addEventListener("click", () => window.location.reload());
 
 // Populating the episodes' page
 function populateEpisodesPage(arr) {
-	if (shows.length < arr.length) {
-		shows.push(arr);
-	}
-
 	arr.forEach((episode) => {
-		//Creating and appending elements
 		const episodeWrapper = document.createElement("div", {
 			is: "expanding-list",
 		});
-		episodeWrapper.setAttribute("id", "episodesDiv");
+		episodeWrapper.setAttribute("id", episode.id);
 		episodeWrapper.setAttribute("class", "episode-wrapper");
 		rootEpisodes.appendChild(episodeWrapper);
 		// centering the last child after search and select
@@ -273,61 +268,54 @@ function populateEpisodesPage(arr) {
 		selectEpisode.appendChild(options);
 
 		// Truncated summary Text
-		episodeSummary = document.createElement("p");
-		episodeSummary.setAttribute("class", "summary");
-		episodeWrapper.appendChild(episodeSummary);
-		let truncatedText;
-		if (episode.summary) {
-			truncatedText = episode.summary.split(" ").slice(0, 25).join(" ");
+		episodeTruncatedSummary = document.createElement("button");
+		episodeTruncatedSummary.setAttribute("class", "summary");
+
+		let truncatedText = episode.summary.split(" ").slice(0, 25).join(" ");
+		if (episode.summary.length <= truncatedText) {
+			episodeTruncatedSummary.innerHTML = episode.summary;
+		} else {
+			episodeTruncatedSummary.innerHTML = `${truncatedText} ... <span class="read-more">read more</span>`;
 		}
-		episodeSummary.innerHTML = `${truncatedText} ...`;
-		let span = document.createElement("span");
-		span.setAttribute("class", "more-text summary");
-		span.innerHTML = episode.summary;
+		episodeWrapper.appendChild(episodeTruncatedSummary);
+		let episodeFullSummary = document.createElement("button");
+		episodeFullSummary.setAttribute("class", "summary d-none");
+		episodeFullSummary.innerHTML = `${episode.summary} <span class="read-less">read less</span>`;
+		episodeWrapper.appendChild(episodeFullSummary);
 
-		//A read more button
-		let readMore = document.createElement("button");
-		readMore.setAttribute("class", "read-more");
-		readMore.innerHTML = `Read more`;
-		episodeWrapper.append(episodeSummary);
-		episodeSummary.appendChild(readMore);
-
-		//A read less button
-		let readLess = document.createElement("button");
-		readLess.innerHTML = `Read less`;
-		readLess.setAttribute("class", "read-less");
-
-		//A condition in which the buttons won't be necessary
-		if (episode.summary && episode.summary.length <= truncatedText.length) {
-			episodeSummary.innerHTML = truncatedText;
-			readMore.style.display = "none";
-		} else if (!episode.summary) {
-			episodeSummary.innerHTML = "";
-			readMore.style.display = "none";
-		}
-
-		//An event listener to expand the summary
-		readMore.addEventListener("click", () => {
-			episodeWrapper.removeChild(episodeWrapper.lastChild);
-			episodeWrapper.appendChild(span);
-			span.setAttribute("class", "more-text summary");
-			span.style.display = "block";
-			span.appendChild(readLess);
-		});
-
-		//An event listener to collapse the summary
-		readLess.addEventListener("click", () => {
-			episodeWrapper.removeChild(episodeWrapper.lastChild);
-			let fullEpisodeSummary = document.createElement("p");
-			episodeWrapper.append(fullEpisodeSummary);
-			fullEpisodeSummary.setAttribute("class", "summary");
-			fullEpisodeSummary.innerHTML = `${truncatedText}...`;
-			fullEpisodeSummary.appendChild(readMore);
-			span.style.display = "none";
-		});
+		episodeTruncatedSummary.addEventListener("click", episodesReadMore);
+		episodeFullSummary.addEventListener("click", episodesReadLess);
 	});
 	createCustomSelect();
 }
+
+const episodesReadMore = (e) => {
+	let parent = e.target.parentElement.parentNode.parentElement;
+	let readMore = e.target.parentElement.parentNode;
+	let readLess = e.target.parentElement.parentNode.nextSibling;
+	let allParents = rootEpisodes.querySelectorAll(".episode-wrapper");
+	readMore.classList.toggle("d-none");
+	readLess.classList.toggle("d-none");
+	for (let i = 0; i < allParents.length; i++) {
+		if (allParents[i].id === parent.id) {
+			allParents[i].style.height = "100%";
+		} else {
+			allParents[i].style.height = "fit-content";
+			allParents[i].style.marginTop = "0";
+		}
+	}
+};
+
+const episodesReadLess = (e) => {
+		let readLess = e.target.parentElement.parentNode.lastChild;
+		let readMore = e.target.parentElement.parentNode.lastChild.previousSibling;
+		let allParents = rootEpisodes.querySelectorAll(".episode-wrapper");
+		readMore.classList.toggle("d-none");
+		readLess.classList.toggle("d-none");
+		for (let i = 0; i < allParents.length; i++) {
+			allParents[i].style.height = "100%";
+		}
+};
 
 const episodesLink = document.getElementById("episodes-navigation-link");
 // Event listener to go back to episodes page
@@ -359,9 +347,6 @@ const episodesSearchInfoWrapper = document.querySelector(
 	".episodes-search-info-wrapper"
 );
 const episodesSearchInfo = document.querySelector(".episodes-search-info");
-
-// A function consisting of an event listener and a filter to dynamically update the web page based on the user input
-// let currentShowName = document.querySelector(".show-name").innerText;
 
 const clearPlaceholder = () => {
 	searchBar.placeholder = "";
@@ -517,8 +502,6 @@ const createCustomSelect = () => {
 		}
 		customSelect[i].appendChild(selectHide);
 		selectedDiv.addEventListener("click", function (e) {
-			/*when the select box is clicked, close any other select boxes,
-      and open/close the current select box:*/
 			e.stopPropagation();
 			e.stopImmediatePropagation();
 			e.preventDefault();
@@ -685,9 +668,7 @@ const createCustomSelectEpisode = () => {
 		});
 	}
 
-	/*if the user clicks anywhere outside the select box,
-then close all select boxes:*/
-	//document.addEventListener("click", closeAllSelect);
+	document.addEventListener("click", closeAllSelect);
 };
 function closeAllSelect(elm) {
 	/*a function that will close all select boxes in the document,
