@@ -37,7 +37,7 @@ function populateShowsPage(arr) {
 		showWrapper.appendChild(showName);
 		showName.innerHTML = show.name;
 		showName.id = show.id;
-		//click show names to go to episodes 
+		//click show names to go to episodes
 		showName.addEventListener("click", showNameEvent);
 		img = document.createElement("img");
 		img.src = show.image.medium;
@@ -56,7 +56,10 @@ function populateShowsPage(arr) {
 		let emptyDiv = document.createElement("div");
 		emptyDiv.className = "empty-div";
 		showWrapper.appendChild(emptyDiv);
-		createAndFormatSummary(show.summary, showWrapper);
+		createAndFormatSummary(
+			show.summary,
+			showWrapper
+		);
 		//Select a show options
 		let selectShows = document.querySelector("#shows");
 		let options = document.createElement("option");
@@ -100,14 +103,14 @@ const createAndFormatSummary = (summary, parent) => {
 		truncatedSummary.innerHTML = summary;
 	} else {
 		truncatedSummary.innerHTML = `${truncatedText} ... <span class="read-more">read more</span>`;
-		truncatedSummary.addEventListener("click", showsReadMore);
+		truncatedSummary.addEventListener("click", readMore);
 	}
 	let fullSummary = document.createElement("button");
 	fullSummary.setAttribute("class", "d-none summary");
 	fullSummary.innerHTML = `${summary}<span class="read-less">read less</span>`;
 	parent.appendChild(fullSummary);
-	truncatedSummary.addEventListener("click", showsReadMore);
-	fullSummary.addEventListener("click", showsReadLess);
+	truncatedSummary.addEventListener("click", readMore);
+	fullSummary.addEventListener("click", readLess);
 };
 
 const showNameEvent = (e) => {
@@ -123,11 +126,14 @@ const showNameEvent = (e) => {
 	displayShows.style.display = "none";
 };
 
-const showsReadMore = (e) => {
+const readMore = (e) => {
 	let parent = e.target.parentElement.parentNode.parentElement;
 	let readMore = e.target.parentElement.parentNode;
 	let readLess = e.target.parentElement.parentNode.nextSibling;
 	let allParents = rootShows.querySelectorAll(".show-wrapper");
+	if (displayShows.style.display === 'none') {
+		allParents = rootEpisodes.querySelectorAll(".episode-wrapper");
+	}
 	readMore.classList.toggle("d-none");
 	readLess.classList.toggle("d-none");
 	for (let i = 0; i < allParents.length; i++) {
@@ -140,10 +146,13 @@ const showsReadMore = (e) => {
 	}
 };
 
-const showsReadLess = (e) => {
+const readLess = (e) => {
 	let readLess = e.target.parentElement.parentNode.lastChild;
 	let readMore = e.target.parentElement.parentNode.lastChild.previousSibling;
 	let allParents = rootShows.querySelectorAll(".show-wrapper");
+	if (displayShows.style.display === "none") {
+		allParents = rootEpisodes.querySelectorAll(".episode-wrapper");
+	}
 	readMore.classList.toggle("d-none");
 	readLess.classList.toggle("d-none");
 	for (let i = 0; i < allParents.length; i++) {
@@ -263,52 +272,12 @@ function populateEpisodesPage(arr) {
 		options.setAttribute("class", "episodes-option");
 		options.innerHTML = `S${formattedSeasonNumber}E${formattedEpisodeNumber} - ${episode.name}`;
 		selectEpisode.appendChild(options);
-		// Truncated summary Text
-		episodeTruncatedSummary = document.createElement("button");
-		episodeTruncatedSummary.setAttribute("class", "summary");
-		let truncatedText = episode.summary.split(" ").slice(0, 25).join(" ");
-		if (episode.summary.length <= truncatedText) {
-			episodeTruncatedSummary.innerHTML = episode.summary;
-		} else {
-			episodeTruncatedSummary.innerHTML = `${truncatedText} ... <span class="read-more">read more</span>`;
-		}
-		episodeWrapper.appendChild(episodeTruncatedSummary);
-		let episodeFullSummary = document.createElement("button");
-		episodeFullSummary.setAttribute("class", "summary d-none");
-		episodeFullSummary.innerHTML = `${episode.summary} <span class="read-less">read less</span>`;
-		episodeWrapper.appendChild(episodeFullSummary);
-		episodeTruncatedSummary.addEventListener("click", episodesReadMore);
-		episodeFullSummary.addEventListener("click", episodesReadLess);
+		createAndFormatSummary(
+			episode.summary,
+			episodeWrapper
+		);
 	});
 }
-
-const episodesReadMore = (e) => {
-	let parent = e.target.parentElement.parentNode.parentElement;
-	let readMore = e.target.parentElement.parentNode;
-	let readLess = e.target.parentElement.parentNode.nextSibling;
-	let allParents = rootEpisodes.querySelectorAll(".episode-wrapper");
-	readMore.classList.toggle("d-none");
-	readLess.classList.toggle("d-none");
-	for (let i = 0; i < allParents.length; i++) {
-		if (allParents[i].id === parent.id) {
-			allParents[i].style.height = "100%";
-		} else {
-			allParents[i].style.height = "fit-content";
-			allParents[i].style.marginTop = "0";
-		}
-	}
-};
-
-const episodesReadLess = (e) => {
-	let readLess = e.target.parentElement.parentNode.lastChild;
-	let readMore = e.target.parentElement.parentNode.lastChild.previousSibling;
-	let allParents = rootEpisodes.querySelectorAll(".episode-wrapper");
-	readMore.classList.toggle("d-none");
-	readLess.classList.toggle("d-none");
-	for (let i = 0; i < allParents.length; i++) {
-		allParents[i].style.height = "100%";
-	}
-};
 
 const episodesLink = document.getElementById("episodes-navigation-link");
 // Event listener to go back to episodes page
