@@ -24,14 +24,9 @@ body {
 	align-items: center;
 	gap: 1rem;
 	height: 64px;
-	background-color: #101427;
 	background-image: url(./images/header-bg.webp);
 	width: 100%;
 	color: antiquewhite;
-	font-family: "Alfa Slab One", cursive;
-	font-family: "Lato", sans-serif;
-	font-family: "Poppins", sans-serif;
-	font-family: "Merriweather", serif;
 	font-family: "Montserrat", sans-serif;
 }
 
@@ -157,6 +152,10 @@ body {
 	color: rgb(76, 76, 78);
 }
 
+.search-bar {
+	padding: 7px 4px 7px 40px;
+}
+
 .episodes-search-bar {
 	width: 70%;
 }
@@ -177,10 +176,11 @@ body {
 .nav-links-plus-name {
 	display: flex;
 	width: 100%;
+	flex-direction: column-reverse;
 	/* margin: auto; */
-	
-	justify-content: space-around;
+	justify-content: center;
 	align-items: center;
+	margin: -1.5rem auto 1rem auto;
 	/* margin: auto;
 	margin-bottom: 0; */
 	/* background-color: rgb(5, 58, 92);
@@ -189,13 +189,13 @@ body {
 
 .nav-link {
 	padding: 0.34rem;
-	/* background-color: rgb(5, 58, 92); */
 	text-decoration: none;
 	text-align: center;
+	text-transform: uppercase;
+	font-weight: 500;
 	width: fit-content;
 	color: aliceblue;
-	background-color: rgb(5, 58, 92);
-	background-color: darkred;
+	background-color: #373459;
 	display: inline-flex;
 	/* position: relative; */
 	border-radius: 4px;
@@ -208,8 +208,11 @@ body {
 
 .show-name {
 	font-family: "Lato", sans-serif;
+	font-family: "Alfa Slab One", cursive;
+	font-family: "Rye", cursive;
 	color: rgb(41, 40, 40);
 	color: darkred;
+	color: #360507;
 	text-align: center;
 	/* padding: 0.35rem 0; */
 	font-size: large;
@@ -217,7 +220,7 @@ body {
 
 .nav-link:hover,
 .episodes-link:hover {
-	background-color: rgb(4, 42, 66);
+	background-color: #2b284d;
 	color: aliceblue;
 }
 
@@ -232,13 +235,12 @@ body {
 	justify-content: center;
 	align-items: center;
 	width: max-content;
-	
-	background-color: rgb(0, 26, 35);
-	background-color: rgb(4, 42, 66);
 	padding: 0 2.5rem;
 	border-radius: 0 24px;
 	margin: 0 auto -1rem auto;
 	background-color: darkred;
+	background-color: rgb(0, 26, 35);
+	background-color: rgb(41, 40, 40);
 }
 
 .episodes-search-info-wrapper {
@@ -287,9 +289,10 @@ body {
 	border-radius: 8px;
 	background-color: #382a38;
 	background-color: #676767;
-	background-color: rgb(41, 40, 40);
-	background-color: #282929;
+	background-color: #344059;
+
 	background-color: #382a38;
+
 	color: aliceblue;
 	font-size: 1rem;
 	cursor: pointer;
@@ -297,6 +300,8 @@ body {
 }
 .episode-wrapper .episode-name {
 	background-color: #373459;
+	background-color: #282929;
+	background-color: #360507;
 	/* background-color: rgb(73, 71, 71); */
 }
 
@@ -304,7 +309,8 @@ body {
 	background-color: #301f30;
 }
 .episode-name:hover {
-	background-color: #383650;
+	background-color: #333333;
+	background-color: rgb(37, 3, 3);
 }
 
 .show-info {
@@ -377,11 +383,11 @@ body {
 		width: 90%;
 		gap: 1.5rem;
 	}
-	/* .show-wrapper,
-	.episode-wrapper {
-		width: 100%;
+	.nav-links-plus-name {
+		flex-direction: row;
 		margin: auto;
-	} */
+		justify-content: space-around;
+	}
 }
 
 /* to keep the footer where it belongs */
@@ -440,7 +446,7 @@ body {
 	.custom-select,
 	.custom-select-episode {
 		position: absolute;
-		top: 1rem;
+		top: 0.9rem;
 		right: 3.5rem;
 		/* margin-top: 10px; */
 	}
