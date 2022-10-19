@@ -37,60 +37,26 @@ function populateShowsPage(arr) {
 		showWrapper.appendChild(showName);
 		showName.innerHTML = show.name;
 		showName.id = show.id;
-		//An event listener to link names of shows to their episodes pages
+		//click show names to go to episodes 
 		showName.addEventListener("click", showNameEvent);
 		img = document.createElement("img");
 		img.src = show.image.medium;
 		showWrapper.appendChild(img);
 		//Genres, Status, Rating and Runtime
-		let genres = document.createElement("h4");
-		genres.setAttribute("class", "genres");
-		let status = document.createElement("h4");
-		status.className = "status";
-		let rating = document.createElement("h4");
-		rating.className = "rating";
-		rating.innerText = `Rating: ${show.rating.average}    `;
-		let runtime = document.createElement("h4");
-		runtime.className = "runtime";
-		runtime.innerText = `Runtime: ${show.runtime}`;
 		let showInfo = document.createElement("section");
 		showInfo.className = "show-info";
 		showWrapper.appendChild(showInfo);
-		showInfo.appendChild(genres);
-		showInfo.appendChild(status);
-		showInfo.appendChild(rating);
-		showInfo.appendChild(runtime);
-		// Giving a bit of space between words and after commas
-		let corrected = show.genres.toString().split(",").join(", ");
-		genres.innerHTML = `Genres: ${corrected}`;
-		status.innerHTML = `Status: ${show.status}`;
-		genres.style.wordSpacing = "5px";
-		status.style.wordSpacing = "5px";
-		rating.style.wordSpacing = "5px";
-		runtime.style.wordSpacing = "5px";
+		createAndFormatShowInfos(
+			show.genres,
+			show.status,
+			show.rating.average,
+			show.runtime,
+			showInfo
+		);
 		let emptyDiv = document.createElement("div");
 		emptyDiv.className = "empty-div";
 		showWrapper.appendChild(emptyDiv);
-		//Truncated summary text
-		const truncatedText = show.summary.split(" ").slice(0, 25).join(" ");
-		let truncatedSummary = document.createElement("button");
-		truncatedSummary.className = "summary";
-		showWrapper.appendChild(truncatedSummary);
-
-		if (show.summary.length <= truncatedText.length) {
-			truncatedSummary.innerHTML = show.summary;
-		} else {
-			truncatedSummary.innerHTML = `${truncatedText} ... <span class="read-more">read more</span>`;
-			truncatedSummary.addEventListener("click", showsReadMore);
-		}
-
-		let fullSummary = document.createElement("button");
-		fullSummary.setAttribute("class", "d-none summary");
-		fullSummary.innerHTML = `${show.summary}<span class="read-less">read less</span>`;
-		showWrapper.appendChild(fullSummary);
-		truncatedSummary.addEventListener("click", showsReadMore);
-		fullSummary.addEventListener("click", showsReadLess);
-
+		createAndFormatSummary(show.summary, showWrapper);
 		//Select a show options
 		let selectShows = document.querySelector("#shows");
 		let options = document.createElement("option");
@@ -100,6 +66,49 @@ function populateShowsPage(arr) {
 		selectShows.appendChild(options);
 	});
 }
+
+const createAndFormatShowInfos = (a, b, c, d, e) => {
+	let corrected = a.toString().split(",").join(", ");
+	let genres = document.createElement("h4");
+	genres.setAttribute("class", "genres");
+	let status = document.createElement("h4");
+	status.className = "status";
+	let rating = document.createElement("h4");
+	rating.className = "rating";
+	rating.innerText = `Rating: ${c}    `;
+	let runtime = document.createElement("h4");
+	runtime.className = "runtime";
+	runtime.innerText = `Runtime: ${d}`;
+	e.appendChild(genres);
+	e.appendChild(status);
+	e.appendChild(rating);
+	e.appendChild(runtime);
+	genres.innerHTML = `Genres: ${corrected}`;
+	status.innerHTML = `Status: ${b}`;
+	genres.style.wordSpacing = "5px";
+	status.style.wordSpacing = "5px";
+	rating.style.wordSpacing = "5px";
+	runtime.style.wordSpacing = "5px";
+};
+
+const createAndFormatSummary = (summary, parent) => {
+	const truncatedText = summary.split(" ").slice(0, 25).join(" ");
+	let truncatedSummary = document.createElement("button");
+	truncatedSummary.className = "summary";
+	parent.appendChild(truncatedSummary);
+	if (summary.length <= truncatedText.length) {
+		truncatedSummary.innerHTML = summary;
+	} else {
+		truncatedSummary.innerHTML = `${truncatedText} ... <span class="read-more">read more</span>`;
+		truncatedSummary.addEventListener("click", showsReadMore);
+	}
+	let fullSummary = document.createElement("button");
+	fullSummary.setAttribute("class", "d-none summary");
+	fullSummary.innerHTML = `${summary}<span class="read-less">read less</span>`;
+	parent.appendChild(fullSummary);
+	truncatedSummary.addEventListener("click", showsReadMore);
+	fullSummary.addEventListener("click", showsReadLess);
+};
 
 const showNameEvent = (e) => {
 	currentShowName = e.target.innerText;
