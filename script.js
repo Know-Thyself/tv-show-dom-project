@@ -179,7 +179,7 @@ const loadEpisodes = async () => {
 		);
 		episodes = await (await response).json();
 		populateEpisodesPage(episodes);
-		createCustomSelectEpisode();
+		createCustomSelect();
 		episodeSearch(episodes);
 	} catch (err) {
 		console.error(err);
@@ -286,6 +286,7 @@ const episodeCode = (season, number) => {
 	number = number < 10 ? "0" + number : number;
 	return `S${season}E${number}`
 }
+
 const createImageElement = (obj, container) => {
 	let img = document.createElement("img");
 	let imageNotFound =
@@ -421,12 +422,14 @@ function episodeSearch(e) {
 const episodesSearchContainer = document.querySelector(
 	".episode-search-container"
 );
+
 const episodeNameEvent = (e) => {
 	let clickedEpisode = episodes.filter((episode) => {
 		return (
 			episode.name === e.target.innerText.split(" ").slice(0, -2).join(" ")
 		);
 	});
+	
 	while (rootEpisodes.firstChild) {
 		rootEpisodes.removeChild(rootEpisodes.firstChild);
 	}
@@ -462,7 +465,10 @@ const episodeNameEvent = (e) => {
 };
 
 const createCustomSelect = () => {
-	const customSelect = document.getElementsByClassName("custom-select");
+	let customSelect = document.getElementsByClassName("custom-select");
+	if (displayShows.style.display === 'none') {
+		customSelect = document.getElementsByClassName("custom-select-episode");
+	}
 	let i, j, l, ll, selectElement, selectedDiv, selectHide, selectOption;
 	/*look for any elements with the class "custom-select":*/
 	l = customSelect.length;
@@ -484,6 +490,9 @@ const createCustomSelect = () => {
 			selectOption = document.createElement("div");
 			selectOption.innerHTML = selectElement.options[j].innerHTML;
 			selectOption.addEventListener("click", function (e) {
+				e.preventDefault();
+				e.stopPropagation();
+				e.stopImmediatePropagation();
 				/*when an item is clicked, update the original select box,
         and the selected item:*/
 				let y, i, k, s, h, sl, yl;
@@ -508,6 +517,10 @@ const createCustomSelect = () => {
 			selectHide.appendChild(selectOption);
 		}
 		customSelect[i].appendChild(selectHide);
+		let selectedShow;
+		if (displayShows.style.display === 'none') {
+			selectedShow = selectedDiv.innerHTML.split(" ").slice(2).join(" ");
+		}
 		selectedDiv.addEventListener("click", function (e) {
 			e.stopPropagation();
 			e.stopImmediatePropagation();
@@ -515,25 +528,70 @@ const createCustomSelect = () => {
 			closeAllSelect(this);
 			this.nextSibling.classList.toggle("select-hide");
 			this.classList.toggle("select-arrow-active");
-			let thisId;
-			shows
-				.filter((v) => v.name === this.innerHTML)
-				.forEach((el) => (thisId = el.id));
-			if (thisId) {
-				showId = thisId;
-				loadEpisodes();
-				document.getElementById("show-episodes").innerHTML = this.innerHTML;
-				document.getElementById("show-name").innerHTML = this.innerHTML;
-				searchForEpisodes.placeholder = this.innerHTML;
-				navLink.style.display = "block";
-				// searchForEpisodes.style.display = "block";
-				searchBar.value = "";
-				displayEpisodes.style.display = "block";
-				rootEpisodes.innerHTML = "";
-				displayShows.style.display = "none";
+			if (displayShows.style.display !== "none") {
+				let thisId;
+				shows
+					.filter((v) => v.name === this.innerHTML)
+					.forEach((el) => (thisId = el.id));
+				if (thisId) {
+					showId = thisId;
+					loadEpisodes();
+					document.getElementById("show-episodes").innerHTML = this.innerHTML;
+					document.getElementById("show-name").innerHTML = this.innerHTML;
+					searchForEpisodes.placeholder = this.innerHTML;
+					navLink.style.display = "block";
+					// searchForEpisodes.style.display = "block";
+					searchBar.value = "";
+					displayEpisodes.style.display = "block";
+					rootEpisodes.innerHTML = "";
+					displayShows.style.display = "none";
+				}
+			} else {
+					searchForEpisodes.value = "";
+					episodesSearchInfoWrapper.style.display = "none";
+					let episode = document.querySelectorAll(".episode-wrapper");
+					let checkerShow = this.textContent.split(" ").slice(2).join(" ");
+					for (let i = 0; i < episode.length; i++) {
+						episode[i].style.display = "block";
+						let checker = this.textContent.split(" ").slice(2).join(" ");
+						let currentElement = episode[i].firstChild.innerHTML
+							.split(" ")
+							.slice(0, -2)
+							.join(" ");
+						if (currentElement === checker) {
+							// episode[i].style.display = "grid";
+							backToAllEpisodes.style.opacity = "1";
+							backToAllEpisodes.disabled = false;
+							backToAllEpisodes.style.cursor = "pointer";
+							backToAllEpisodes.style.backgroundColor = "rgb(5, 58, 92)";
+							backToAllEpisodes.onmouseenter = function () {
+								this.style.backgroundColor = "rgb(4, 42, 66)";
+							};
+							backToAllEpisodes.onmouseleave = function () {
+								this.style.backgroundColor = "rgb(5, 58, 92)";
+							};
+							navLink.style.display = "block";
+							rootEpisodes.style.display = "block";
+							rootEpisodes.style.heigh = "auto";
+							if (window.innerWidth >= 500) {
+								let originalSizeImage = episodes.map(
+									(episode) => episode.image.original
+								);
+								episode[i].querySelector("img").src = originalSizeImage[i];
+								rootEpisodes.style.width = "70%";
+								// episodes[i].style.width = "100%";
+								episode[i].querySelector("img").style.objectFit = "contain";
+								episode[i].querySelector("img").style.width = "80%";
+							}
+							episode[i].querySelector("img").style.height = "auto";
+						} else if (checker !== selectedShow) {
+							episode[i].style.display = "none";
+						}
+					}
 			}
 		});
 	}
+
 	function closeAllSelect(elm) {
 		/*a function that will close all select boxes in the document,
   except the current select box:*/
@@ -564,141 +622,5 @@ const createCustomSelect = () => {
 then close all select boxes:*/
 	document.addEventListener("click", closeAllSelect);
 };
-
-const createCustomSelectEpisode = () => {
-	let i, j, l, ll, selectElement, selectedDiv, selectHide, selectOption;
-	/*look for any elements with the class "custom-select-episode":*/
-	const customSelect = document.getElementsByClassName("custom-select-episode");
-	l = customSelect.length;
-	for (i = 0; i < l; i++) {
-		// selectElement = customSelect[i].getElementsByTagName("select")[0];
-		selectElement = customSelect[i].querySelectorAll(".select-episode")[0];
-		ll = selectElement.length;
-		/*for each element, create a new DIV that will act as the selected item:*/
-		selectedDiv = document.createElement("div");
-		selectedDiv.setAttribute("class", "select-selected");
-		selectedDiv.innerHTML =
-			selectElement.options[selectElement.selectedIndex].innerHTML;
-		customSelect[i].appendChild(selectedDiv);
-		/*for each element, create a new DIV that will contain the option list:*/
-		selectHide = document.createElement("div");
-		selectHide.setAttribute("class", "select-items select-hide");
-		for (j = 1; j < ll; j++) {
-			/*for each option in the original select element,
-    create a new div that will act as an option item:*/
-			selectOption = document.createElement("div");
-			selectOption.innerHTML = selectElement.options[j].innerHTML;
-			selectOption.addEventListener("click", function (e) {
-				e.preventDefault();
-				e.stopPropagation();
-				e.stopImmediatePropagation();
-				/*when an item is clicked, update the original select box,
-        and the selected item:*/
-				let y, i, k, s, h, sl, yl;
-				// s = this.parentNode.parentNode.getElementsByTagName("select")[0];
-				s = this.parentNode.parentNode.querySelectorAll(".select-episode")[0];
-				sl = s.length;
-				h = this.parentNode.previousSibling;
-				for (i = 0; i < sl; i++) {
-					if (s.options[i].innerHTML == this.innerHTML) {
-						s.selectedIndex = i;
-						h.innerHTML = this.innerHTML;
-						y = this.parentNode.getElementsByClassName("same-as-selected");
-						yl = y.length;
-						for (k = 0; k < yl; k++) {
-							y[k].removeAttribute("class");
-						}
-						this.setAttribute("class", "same-as-selected");
-						break;
-					}
-				}
-				h.click();
-			});
-			selectHide.appendChild(selectOption);
-		}
-		customSelect[i].appendChild(selectHide);
-		let selectedShow = selectedDiv.innerHTML.split(" ").slice(2).join(" ");
-		selectedDiv.addEventListener("click", function (e) {
-			/*when the select box is clicked, close any other select boxes,
-      and open/close the current select box:*/
-			e.preventDefault();
-			e.stopPropagation();
-			e.stopImmediatePropagation();
-			closeAllSelect(this);
-			this.nextSibling.classList.toggle("select-hide");
-			this.classList.toggle("select-arrow-active");
-			searchForEpisodes.value = "";
-			episodesSearchInfoWrapper.style.display = "none";
-			let episode = document.querySelectorAll(".episode-wrapper");
-			let checkerShow = this.textContent.split(" ").slice(2).join(" ");
-			for (let i = 0; i < episode.length; i++) {
-				episode[i].style.display = "block";
-				let checker = this.textContent.split(" ").slice(2).join(" ");
-				let currentElement = episode[i].firstChild.innerHTML
-					.split(" ")
-					.slice(0, -2)
-					.join(" ");
-				if (currentElement === checker) {
-					// episode[i].style.display = "grid";
-					backToAllEpisodes.style.opacity = "1";
-					backToAllEpisodes.disabled = false;
-					backToAllEpisodes.style.cursor = "pointer";
-					backToAllEpisodes.style.backgroundColor = "rgb(5, 58, 92)";
-					backToAllEpisodes.onmouseenter = function () {
-						this.style.backgroundColor = "rgb(4, 42, 66)";
-					};
-					backToAllEpisodes.onmouseleave = function () {
-						this.style.backgroundColor = "rgb(5, 58, 92)";
-					};
-					navLink.style.display = "block";
-					rootEpisodes.style.display = "block";
-					rootEpisodes.style.heigh = "auto";
-					if (window.innerWidth >= 500) {
-						let originalSizeImage = episodes.map(
-							(episode) => episode.image.original
-						);
-						episode[i].querySelector("img").src = originalSizeImage[i];
-						rootEpisodes.style.width = "70%";
-						// episodes[i].style.width = "100%";
-						episode[i].querySelector("img").style.objectFit = "contain";
-						episode[i].querySelector("img").style.width = "80%";
-					}
-					episode[i].querySelector("img").style.height = "auto";
-				} else if (checker !== selectedShow) {
-					episode[i].style.display = "none";
-				}
-			}
-			// searchForEpisodes.style.display = "none";
-		});
-	}
-
-	document.addEventListener("click", closeAllSelect);
-};
-function closeAllSelect(elm) {
-	/*a function that will close all select boxes in the document,
-  except the current select box:*/
-	let x,
-		y,
-		i,
-		xl,
-		yl,
-		arrNo = [];
-	x = document.getElementsByClassName("select-items");
-	y = document.getElementsByClassName("select-selected");
-	xl = x.length;
-	yl = y.length;
-	for (i = 0; i < yl; i++) {
-		if (elm == y[i]) {
-			arrNo.push(i);
-		} else {
-			y[i].classList.remove("select-arrow-active");
-		}
-	}
-	for (i = 0; i < xl; i++) {
-		if (arrNo.indexOf(i)) {
-			x[i].classList.add("select-hide");
-		}
-	}
-}
 
 window.onload = loadShows;
