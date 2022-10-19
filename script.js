@@ -27,50 +27,46 @@ const loadShows = async () => {
 // A function to extract shows and populate the webpage.
 function populateShowsPage(arr) {
 	arr.forEach((show) => {
-		//Creating elements
 		let showWrapper = document.createElement("div");
 		showWrapper.setAttribute("class", "show-wrapper");
 		showWrapper.id = show.id;
 		rootShows.appendChild(showWrapper);
-		showName = document.createElement("h3");
-		showName.setAttribute("class", "name");
-		showWrapper.appendChild(showName);
-		showName.innerHTML = show.name;
-		showName.id = show.id;
-		//click show names to go to episodes
-		showName.addEventListener("click", showNameEvent);
-		img = document.createElement("img");
-		img.src = show.image.medium;
-		showWrapper.appendChild(img);
+		createShowName(show, showWrapper);
+		createShowImage(show, showWrapper);
 		//Genres, Status, Rating and Runtime
-		let showInfo = document.createElement("section");
-		showInfo.className = "show-info";
-		showWrapper.appendChild(showInfo);
 		createAndFormatShowInfos(
 			show.genres,
 			show.status,
 			show.rating.average,
 			show.runtime,
-			showInfo
-		);
-		let emptyDiv = document.createElement("div");
-		emptyDiv.className = "empty-div";
-		showWrapper.appendChild(emptyDiv);
-		createAndFormatSummary(
-			show.summary,
 			showWrapper
 		);
-		//Select a show options
-		let selectShows = document.querySelector("#shows");
-		let options = document.createElement("option");
-		options.setAttribute("id", `${show.id}`);
-		options.setAttribute("class", "show-options");
-		options.innerText = show.name;
-		selectShows.appendChild(options);
+		createEmptyDiv(showWrapper);
+		createAndFormatSummary(show.summary, showWrapper);
+		createSelectOptions(show);
 	});
 }
 
+const createShowName = (show, parent) => {
+	let showName = document.createElement("h3");
+	showName.setAttribute("class", "name");
+	parent.appendChild(showName);
+	showName.innerHTML = show.name;
+	showName.id = show.id;
+	//click show names to go to episodes
+	showName.addEventListener("click", showNameEvent);
+}
+
+const createShowImage = (show, parent) => {
+	let img = document.createElement("img");
+	img.src = show.image.medium;
+	parent.appendChild(img);
+}
+
 const createAndFormatShowInfos = (a, b, c, d, e) => {
+	let showInfo = document.createElement("section");
+	showInfo.className = "show-info";
+	e.appendChild(showInfo);
 	let corrected = a.toString().split(",").join(", ");
 	let genres = document.createElement("h4");
 	genres.setAttribute("class", "genres");
@@ -82,10 +78,10 @@ const createAndFormatShowInfos = (a, b, c, d, e) => {
 	let runtime = document.createElement("h4");
 	runtime.className = "runtime";
 	runtime.innerText = `Runtime: ${d}`;
-	e.appendChild(genres);
-	e.appendChild(status);
-	e.appendChild(rating);
-	e.appendChild(runtime);
+	showInfo.appendChild(genres);
+	showInfo.appendChild(status);
+	showInfo.appendChild(rating);
+	showInfo.appendChild(runtime);
 	genres.innerHTML = `Genres: ${corrected}`;
 	status.innerHTML = `Status: ${b}`;
 	genres.style.wordSpacing = "5px";
@@ -93,6 +89,12 @@ const createAndFormatShowInfos = (a, b, c, d, e) => {
 	rating.style.wordSpacing = "5px";
 	runtime.style.wordSpacing = "5px";
 };
+
+createEmptyDiv = (parent) => {
+	let emptyDiv = document.createElement("div");
+	emptyDiv.className = "empty-div";
+	parent.appendChild(emptyDiv);
+}
 
 const createAndFormatSummary = (summary, parent) => {
 	const truncatedText = summary.split(" ").slice(0, 25).join(" ");
@@ -113,6 +115,15 @@ const createAndFormatSummary = (summary, parent) => {
 	fullSummary.addEventListener("click", readLess);
 };
 
+const createSelectOptions = (show) => {
+	let selectShows = document.querySelector("#shows");
+	let options = document.createElement("option");
+	options.setAttribute("id", `${show.id}`);
+	options.setAttribute("class", "show-options");
+	options.innerText = show.name;
+	selectShows.appendChild(options);
+}
+
 const showNameEvent = (e) => {
 	currentShowName = e.target.innerText;
 	showId = e.target.id;
@@ -131,7 +142,7 @@ const readMore = (e) => {
 	let readMore = e.target.parentElement.parentNode;
 	let readLess = e.target.parentElement.parentNode.nextSibling;
 	let allParents = rootShows.querySelectorAll(".show-wrapper");
-	if (displayShows.style.display === 'none') {
+	if (displayShows.style.display === "none") {
 		allParents = rootEpisodes.querySelectorAll(".episode-wrapper");
 	}
 	readMore.classList.toggle("d-none");
@@ -251,37 +262,54 @@ function populateEpisodesPage(arr) {
 		episodeWrapper.setAttribute("id", episode.id);
 		episodeWrapper.setAttribute("class", "episode-wrapper");
 		rootEpisodes.appendChild(episodeWrapper);
-		let episodeName = document.createElement("h2");
-		episodeWrapper.appendChild(episodeName);
-		let formattedSeasonNumber = `0${episode.season}`.slice(-2);
-		let formattedEpisodeNumber = `0${episode.number}`.slice(-2);
-		episodeName.innerHTML = `${episode.name} - S${formattedSeasonNumber}E${formattedEpisodeNumber}`;
-		episodeName.setAttribute("class", "episode-name");
-		episodeName.addEventListener("click", episodeNameEvent);
-		let img = document.createElement("img");
-		if (episode.image) {
-			img.src = episode.image.medium;
-		} else {
-			img.src =
-				"https://upload.wikimedia.org/wikipedia/commons/2/26/512pxIcon-sunset_photo_not_found.png";
-		}
-		episodeWrapper.appendChild(img);
-		//Select an episode options
-		let selectEpisode = document.getElementById("select-episode");
-		let options = document.createElement("option");
-		options.setAttribute("class", "episodes-option");
-		options.innerHTML = `S${formattedSeasonNumber}E${formattedEpisodeNumber} - ${episode.name}`;
-		selectEpisode.appendChild(options);
-		createAndFormatSummary(
-			episode.summary,
-			episodeWrapper
-		);
+		createEpisodeName(episode, episodeWrapper)
+		createImageElement(episode, episodeWrapper);
+		createAndFormatSummary(episode.summary, episodeWrapper);
+		createEpisodeSelectOptions(episode);
+		
 	});
 }
 
-const episodesLink = document.getElementById("episodes-navigation-link");
-// Event listener to go back to episodes page
-episodesLink.addEventListener("click", function (e) {
+const createEpisodeName = (episode, parent) => {
+	let episodeName = document.createElement("h2");
+	parent.appendChild(episodeName);
+	episodeName.innerHTML = `${episode.name} - ${episodeCode(
+		episode.season,
+		episode.number
+	)}`;
+	episodeName.setAttribute("class", "episode-name");
+	episodeName.addEventListener("click", episodeNameEvent);
+}
+
+const episodeCode = (season, number) => {
+	season = season < 10 ? '0' + season : season;
+	number = number < 10 ? "0" + number : number;
+	return `S${season}E${number}`
+}
+const createImageElement = (obj, container) => {
+	let img = document.createElement("img");
+	let imageNotFound =
+		"https://upload.wikimedia.org/wikipedia/commons/2/26/512pxIcon-sunset_photo_not_found.png";
+	if (obj.image) {
+		img.src = obj.image.medium;
+	} else {
+		img.src = imageNotFound;
+	}
+	container.appendChild(img);
+};
+
+const createEpisodeSelectOptions = (episode) => {
+	let selectEpisode = document.getElementById("select-episode");
+	let options = document.createElement("option");
+	options.setAttribute("class", "episodes-option");
+	options.innerHTML = `${episodeCode(episode.season, episode.number)} - ${
+		episode.name
+	}`;
+	selectEpisode.appendChild(options);
+}
+
+const backToAllEpisodes = document.getElementById("episodes-navigation-link");
+backToAllEpisodes.addEventListener("click", function (e) {
 	e.preventDefault();
 	while (rootEpisodes.firstChild) {
 		rootEpisodes.removeChild(rootEpisodes.firstChild);
@@ -297,18 +325,18 @@ episodesLink.addEventListener("click", function (e) {
 		rootEpisodes.style.width = "90%";
 	} else rootEpisodes.style.width = "85%";
 	episodesSearchInfoWrapper.style.display = "none";
-	episodesLink.disabled = true;
-	episodesLink.style.backgroundColor = "gray";
+	backToAllEpisodes.disabled = true;
+	backToAllEpisodes.style.backgroundColor = "gray";
 	// rootEpisodes.style.marginTop = "auto";
 	document.querySelector(".episode-custom-select-wrapper").style.display =
 		"flex";
-	episodesLink.onmouseenter = function () {
+	backToAllEpisodes.onmouseenter = function () {
 		this.style.backgroundColor = "gray";
 	};
-	episodesLink.onmouseleave = function () {
+	backToAllEpisodes.onmouseleave = function () {
 		this.style.backgroundColor = "gray";
 	};
-	episodesLink.style.cursor = "auto";
+	backToAllEpisodes.style.cursor = "auto";
 	populateEpisodesPage(episodes);
 });
 
@@ -349,8 +377,8 @@ function episodeSearch(e) {
 			rootEpisodes.removeChild(rootEpisodes.firstChild);
 		}
 		populateEpisodesPage(searchFilter);
-		episodesLink.disabled = false;
-		episodesLink.style.opacity = "1";
+		backToAllEpisodes.disabled = false;
+		backToAllEpisodes.style.opacity = "1";
 		rootEpisodes.style.margin = "2rem auto";
 		if (searchFilter.length === 1) {
 			rootEpisodes.style.display = "block";
@@ -376,14 +404,14 @@ function episodeSearch(e) {
 			episodesSearchInfoWrapper.style.display = "none";
 			rootEpisodes.style.margin = "0 auto";
 			rootEpisodes.style.display = "grid";
-			episodesLink.disabled = true;
-			episodesLink.onmouseenter = function () {
+			backToAllEpisodes.disabled = true;
+			backToAllEpisodes.onmouseenter = function () {
 				this.style.backgroundColor = "gray";
 			};
-			episodesLink.onmouseleave = function () {
+			backToAllEpisodes.onmouseleave = function () {
 				this.style.backgroundColor = "gray";
 			};
-			episodesLink.style.cursor = "auto";
+			backToAllEpisodes.style.cursor = "auto";
 			currentShowName = document.querySelector(".show-name").innerText;
 			// searchForEpisodes.placeholder = currentShowName;
 		}
@@ -404,18 +432,18 @@ const episodeNameEvent = (e) => {
 	}
 	populateEpisodesPage(clickedEpisode);
 	episodesSearchInfoWrapper.style.display = "none";
-	episodesLink.style.opacity = "1";
+	backToAllEpisodes.style.opacity = "1";
 	rootEpisodes.style.display = "block";
 	episodesSearchContainer.style.display = "none";
-	episodesLink.disabled = false;
-	episodesLink.style.backgroundColor = "#373459";
-	episodesLink.onmouseenter = function () {
+	backToAllEpisodes.disabled = false;
+	backToAllEpisodes.style.backgroundColor = "#373459";
+	backToAllEpisodes.onmouseenter = function () {
 		this.style.backgroundColor = "#2b284d";
 	};
-	episodesLink.onmouseleave = function () {
+	backToAllEpisodes.onmouseleave = function () {
 		this.style.backgroundColor = "#373459";
 	};
-	episodesLink.style.cursor = "pointer";
+	backToAllEpisodes.style.cursor = "pointer";
 
 	document.querySelector(".episode-custom-select-wrapper").style.display =
 		"none";
@@ -612,14 +640,14 @@ const createCustomSelectEpisode = () => {
 					.join(" ");
 				if (currentElement === checker) {
 					// episode[i].style.display = "grid";
-					episodesLink.style.opacity = "1";
-					episodesLink.disabled = false;
-					episodesLink.style.cursor = "pointer";
-					episodesLink.style.backgroundColor = "rgb(5, 58, 92)";
-					episodesLink.onmouseenter = function () {
+					backToAllEpisodes.style.opacity = "1";
+					backToAllEpisodes.disabled = false;
+					backToAllEpisodes.style.cursor = "pointer";
+					backToAllEpisodes.style.backgroundColor = "rgb(5, 58, 92)";
+					backToAllEpisodes.onmouseenter = function () {
 						this.style.backgroundColor = "rgb(4, 42, 66)";
 					};
-					episodesLink.onmouseleave = function () {
+					backToAllEpisodes.onmouseleave = function () {
 						this.style.backgroundColor = "rgb(5, 58, 92)";
 					};
 					navLink.style.display = "block";
