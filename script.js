@@ -140,6 +140,7 @@ const showNameEvent = (e) => {
 	currentShowName = e.target.innerText;
 	showId = e.target.id;
 	loadEpisodes();
+	window.scrollTo(0, 0);
 	displayEpisodes.style.display = "block";
 	navLink.style.display = "block";
 	document.getElementById("show-episodes").innerHTML = currentShowName;
@@ -379,7 +380,7 @@ const episodeNameEvent = (e) => {
 	}
 	populateEpisodesPage(clickedEpisode);
 	let currentContainer = rootEpisodes.querySelector(".episode-wrapper");
-	oneEpisodeLayout(clickedEpisode, currentContainer);
+	oneEpisodeLayout(clickedEpisode[0], currentContainer);
 	document.querySelector(".episode-custom-select-wrapper").style.display =
 		"none";
 };
@@ -428,7 +429,7 @@ const oneEpisodeSearchLayout = (arr) => {
 	}
 };
 
-const oneEpisodeLayout = (clickedEpisode, container) => {
+const oneEpisodeLayout = (episode, container) => {
 	episodesSearchInfoWrapper.style.display = "none";
 	backToAllEpisodes.style.opacity = "1";
 	rootEpisodes.style.display = "block";
@@ -447,8 +448,8 @@ const oneEpisodeLayout = (clickedEpisode, container) => {
 	window.scrollTo(0, 0);
 	if (window.innerWidth >= 500) {
 		let originalSizeImage;
-		if (clickedEpisode[0].image) {
-			originalSizeImage = clickedEpisode[0].image.original;
+		if (episode.image) {
+			originalSizeImage = episode.image.original;
 		} else {
 			originalSizeImage = image.src;
 		}
@@ -553,8 +554,8 @@ const createCustomSelect = () => {
 						.slice(0, -2)
 						.join(" ");
 					if (currentElement === checker) {
-						let selectedEpisode = [episodes[i]];
-						let selectedElement = episode [i];
+						let selectedEpisode = episodes[i];
+						let selectedElement = episode[i];
 						oneEpisodeLayout(selectedEpisode, selectedElement);
 					} else if (checker !== selectedShow) {
 						episode[i].style.display = "none";
