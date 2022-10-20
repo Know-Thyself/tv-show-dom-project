@@ -79,7 +79,7 @@ const createShowImage = (show, parent) => {
 
 const createShowInfo = (g, s, r, rt, parent) => {
 	let corrected = g.toString().split(",").join(", ");
-  let showInfo = document.createElement("section");
+	let showInfo = document.createElement("section");
 	showInfo.className = "show-info";
 	parent.appendChild(showInfo);
 	let genres = document.createElement("h4");
@@ -211,13 +211,13 @@ function showSearch() {
 			rootShows.removeChild(rootShows.firstChild);
 		}
 		populateShowsPage(searchResult);
-		if (searchResult.length === 1) oneShowStyle(originalImage);
+		if (searchResult.length === 1) oneShowLayout(originalImage);
 		if (searchValue === "") allShowsLayout();
 		showsSearchInfo.innerHTML = `Displaying ${searchResult.length}/${shows.length} shows`;
 	});
 }
 
-const oneShowStyle = (img) => {
+const oneShowLayout = (img) => {
 	let currentContainer = rootShows.querySelector(".show-wrapper");
 	rootShows.style.display = "block";
 	rootShows.style.width = "90%";
@@ -230,7 +230,7 @@ const oneShowStyle = (img) => {
 		image.src = img;
 		image.style.height = "auto";
 	}
-}
+};
 
 const allShowsLayout = () => {
 	rootShows.style.display = "grid";
@@ -243,7 +243,7 @@ const allShowsLayout = () => {
 	} else if (window.innerWidth >= 690) {
 		rootShows.style.width = "90%";
 	} else rootShows.style.width = "85%";
-}
+};
 
 const navLink = document.getElementById("navigation-link");
 navLink.setAttribute("href", window.location.href);
@@ -289,8 +289,8 @@ const createImageElement = (obj, container) => {
 		img.src = obj.image.medium;
 	} else {
 		img.src = imageNotFound;
-		img.style.width = '250px';
-		img.style.height = '140px';
+		img.style.width = "250px";
+		img.style.height = "140px";
 	}
 	container.appendChild(img);
 };
@@ -314,31 +314,6 @@ backToAllEpisodes.addEventListener("click", function (e) {
 	allEpisodesLayout();
 	populateEpisodesPage(episodes);
 });
-
-const allEpisodesLayout = () => {
-	searchForEpisodes.value = "";
-	rootEpisodes.style.display = "grid";
-	episodesSearchContainer.style.display = "block";
-	if (window.innerWidth >= 1340) {
-		rootEpisodes.style.width = "97%";
-	} else if (window.innerWidth >= 1040) {
-		rootEpisodes.style.width = "95%";
-	} else if (window.innerWidth >= 690) {
-		rootEpisodes.style.width = "90%";
-	} else rootEpisodes.style.width = "85%";
-	episodesSearchInfoWrapper.style.display = "none";
-	backToAllEpisodes.disabled = true;
-	backToAllEpisodes.style.backgroundColor = "gray";
-	document.querySelector(".episode-custom-select-wrapper").style.display =
-		"flex";
-	backToAllEpisodes.onmouseenter = function () {
-		this.style.backgroundColor = "gray";
-	};
-	backToAllEpisodes.onmouseleave = function () {
-		this.style.backgroundColor = "gray";
-	};
-	backToAllEpisodes.style.cursor = "auto";
-}
 
 //Episodes' Search result information
 const episodesSearchInfoWrapper = document.querySelector(
@@ -380,37 +355,10 @@ function episodeSearch(e) {
 		backToAllEpisodes.style.opacity = "1";
 		rootEpisodes.style.margin = "2rem auto";
 		if (searchFilter.length === 1) {
-			rootEpisodes.style.display = "block";
-			rootEpisodes.style.width = "90%";
-			let currentContainer = rootEpisodes.querySelector(".episode-wrapper");
-			currentContainer.style.width = "100%";
-			document.querySelector(".episode-custom-select-wrapper").style.display =
-				"none";
-			if (window.innerWidth >= 500) {
-				let originalSizeImage = searchFilter.map(
-					(episode) => episode.image.original
-				);
-				let imageElem = currentContainer.querySelector("img");
-				imageElem.src = originalSizeImage[0];
-				rootEpisodes.style.width = "70%";
-				imageElem.style.objectFit = "contain";
-				imageElem.style.width = "80%";
-				imageElem.style.height = "auto";
-			}
+			oneEpisodeSearchLayout(searchFilter);
 		}
 		if (searchInput === "") {
-			navLink.style.display = "inline-block";
-			episodesSearchInfoWrapper.style.display = "none";
-			rootEpisodes.style.margin = "0 auto";
-			rootEpisodes.style.display = "grid";
-			backToAllEpisodes.disabled = true;
-			backToAllEpisodes.onmouseenter = function () {
-				this.style.backgroundColor = "gray";
-			};
-			backToAllEpisodes.onmouseleave = function () {
-				this.style.backgroundColor = "gray";
-			};
-			backToAllEpisodes.style.cursor = "auto";
+			allEpisodesLayout();
 			currentShowName = document.querySelector(".show-name").innerText;
 		}
 	});
@@ -426,11 +374,61 @@ const episodeNameEvent = (e) => {
 			episode.name === e.target.innerText.split(" ").slice(0, -2).join(" ")
 		);
 	});
-
 	while (rootEpisodes.firstChild) {
 		rootEpisodes.removeChild(rootEpisodes.firstChild);
 	}
 	populateEpisodesPage(clickedEpisode);
+	let currentContainer = rootEpisodes.querySelector(".episode-wrapper");
+	oneEpisodeLayout(clickedEpisode, currentContainer);
+	document.querySelector(".episode-custom-select-wrapper").style.display =
+		"none";
+};
+
+const allEpisodesLayout = () => {
+	searchForEpisodes.value = "";
+	rootEpisodes.style.display = "grid";
+	rootEpisodes.style.margin = "0 auto";
+	episodesSearchContainer.style.display = "block";
+	if (window.innerWidth >= 1340) {
+		rootEpisodes.style.width = "97%";
+	} else if (window.innerWidth >= 1040) {
+		rootEpisodes.style.width = "95%";
+	} else if (window.innerWidth >= 690) {
+		rootEpisodes.style.width = "90%";
+	} else rootEpisodes.style.width = "85%";
+	episodesSearchInfoWrapper.style.display = "none";
+	backToAllEpisodes.disabled = true;
+	backToAllEpisodes.style.backgroundColor = "gray";
+	document.querySelector(".episode-custom-select-wrapper").style.display =
+		"flex";
+	backToAllEpisodes.onmouseenter = function () {
+		this.style.backgroundColor = "gray";
+	};
+	backToAllEpisodes.onmouseleave = function () {
+		this.style.backgroundColor = "gray";
+	};
+	backToAllEpisodes.style.cursor = "auto";
+};
+
+const oneEpisodeSearchLayout = (arr) => {
+	rootEpisodes.style.display = "block";
+	rootEpisodes.style.width = "90%";
+	let currentContainer = rootEpisodes.querySelector(".episode-wrapper");
+	currentContainer.style.width = "100%";
+	document.querySelector(".episode-custom-select-wrapper").style.display =
+		"none";
+	if (window.innerWidth >= 500) {
+		let originalSizeImage = arr.map((episode) => episode.image.original);
+		let imageElem = currentContainer.querySelector("img");
+		imageElem.src = originalSizeImage[0];
+		rootEpisodes.style.width = "70%";
+		imageElem.style.objectFit = "contain";
+		imageElem.style.width = "80%";
+		imageElem.style.height = "auto";
+	}
+};
+
+const oneEpisodeLayout = (clickedEpisode, container) => {
 	episodesSearchInfoWrapper.style.display = "none";
 	backToAllEpisodes.style.opacity = "1";
 	rootEpisodes.style.display = "block";
@@ -444,15 +442,11 @@ const episodeNameEvent = (e) => {
 		this.style.backgroundColor = "#373459";
 	};
 	backToAllEpisodes.style.cursor = "pointer";
-	document.querySelector(".episode-custom-select-wrapper").style.display =
-		"none";
-	let currentContainer = rootEpisodes.querySelector(".episode-wrapper");
-	currentContainer.style.marginTop = "1rem";
-	currentContainer.style.width = "100%";
-	let image = currentContainer.querySelector("img");
+	container.style.width = "100%";
+	let image = container.querySelector("img");
 	window.scrollTo(0, 0);
 	if (window.innerWidth >= 500) {
-		let originalSizeImage; 
+		let originalSizeImage;
 		if (clickedEpisode[0].image) {
 			originalSizeImage = clickedEpisode[0].image.original;
 		} else {
@@ -541,7 +535,6 @@ const createCustomSelect = () => {
 					document.getElementById("show-name").innerHTML = this.innerHTML;
 					searchForEpisodes.placeholder = this.innerHTML;
 					navLink.style.display = "block";
-					// searchForEpisodes.style.display = "block";
 					searchBar.value = "";
 					displayEpisodes.style.display = "block";
 					rootEpisodes.innerHTML = "";
@@ -560,31 +553,9 @@ const createCustomSelect = () => {
 						.slice(0, -2)
 						.join(" ");
 					if (currentElement === checker) {
-						// episode[i].style.display = "grid";
-						backToAllEpisodes.style.opacity = "1";
-						backToAllEpisodes.disabled = false;
-						backToAllEpisodes.style.cursor = "pointer";
-						backToAllEpisodes.style.backgroundColor = "rgb(5, 58, 92)";
-						backToAllEpisodes.onmouseenter = function () {
-							this.style.backgroundColor = "rgb(4, 42, 66)";
-						};
-						backToAllEpisodes.onmouseleave = function () {
-							this.style.backgroundColor = "rgb(5, 58, 92)";
-						};
-						navLink.style.display = "block";
-						rootEpisodes.style.display = "block";
-						rootEpisodes.style.heigh = "auto";
-						if (window.innerWidth >= 500) {
-							let originalSizeImage = episodes.map(
-								(episode) => episode.image.original
-							);
-							episode[i].querySelector("img").src = originalSizeImage[i];
-							rootEpisodes.style.width = "70%";
-							// episodes[i].style.width = "100%";
-							episode[i].querySelector("img").style.objectFit = "contain";
-							episode[i].querySelector("img").style.width = "80%";
-						}
-						episode[i].querySelector("img").style.height = "auto";
+						let selectedEpisode = [episodes[i]];
+						let selectedElement = episode [i];
+						oneEpisodeLayout(selectedEpisode, selectedElement);
 					} else if (checker !== selectedShow) {
 						episode[i].style.display = "none";
 					}
