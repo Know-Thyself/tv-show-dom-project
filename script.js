@@ -225,11 +225,11 @@ const oneShowLayout = (img) => {
 	if (window.innerWidth >= 500) {
 		let image = currentContainer.querySelector("img");
 		rootShows.style.width = "100%";
-		currentContainer.style.width = "70%";
+		currentContainer.style.width = "60%";
 		image.style.objectFit = "contain";
-		image.style.width = "80%";
+		image.style.width = "100%";
 		image.src = img;
-		image.style.height = "auto";
+		image.style.height = "70vh";
 	}
 };
 
@@ -332,7 +332,7 @@ const addPlaceholder = () => {
 	searchForEpisodes.placeholder = currentShowName;
 };
 
-function episodeSearch(e) {
+const episodeSearch = (e) => {
 	searchForEpisodes.addEventListener("keyup", (e) => {
 		episodesSearchInfoWrapper.style.display = "flex";
 		const searchInput = e.target.value.toLowerCase();
@@ -454,9 +454,11 @@ const oneEpisodeLayout = (episode, container) => {
 			originalSizeImage = image.src;
 		}
 		image.src = originalSizeImage;
-		rootEpisodes.style.width = "70%";
+		rootEpisodes.style.width = "60%";
 		image.style.objectFit = "contain";
 		image.style.width = "80%";
+		image.style.height = 'auto';
+
 	}
 };
 
