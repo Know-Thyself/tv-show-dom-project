@@ -31,6 +31,7 @@ const loadEpisodes = async () => {
 			"https://api.tvmaze.com/shows/" + showId + "/episodes"
 		);
 		episodes = await (await response).json();
+		console.log(episodes);
 		populateEpisodesPage(episodes);
 		createCustomSelect();
 		episodeSearch(episodes);
@@ -106,22 +107,24 @@ createEmptyDiv = (parent) => {
 };
 
 const createAndFormatSummary = (summary, parent) => {
-	const truncatedText = summary.split(" ").slice(0, 25).join(" ");
-	let truncatedSummary = document.createElement("button");
-	truncatedSummary.className = "summary";
-	parent.appendChild(truncatedSummary);
-	if (summary.length <= truncatedText.length) {
-		truncatedSummary.innerHTML = summary;
-	} else {
-		truncatedSummary.innerHTML = `${truncatedText} ... <span class="read-more">read more</span>`;
+	if (summary) {
+		const truncatedText = summary.split(" ").slice(0, 25).join(" ");
+		let truncatedSummary = document.createElement("button");
+		truncatedSummary.className = "summary";
+		parent.appendChild(truncatedSummary);
+		if (summary.length <= truncatedText.length) {
+			truncatedSummary.innerHTML = summary;
+		} else {
+			truncatedSummary.innerHTML = `${truncatedText} ... <span class="read-more">read more</span>`;
+			truncatedSummary.addEventListener("click", readMore);
+		}
+		let fullSummary = document.createElement("button");
+		fullSummary.setAttribute("class", "d-none summary");
+		fullSummary.innerHTML = `${summary}<span class="read-less">read less</span>`;
+		parent.appendChild(fullSummary);
 		truncatedSummary.addEventListener("click", readMore);
+		fullSummary.addEventListener("click", readLess);
 	}
-	let fullSummary = document.createElement("button");
-	fullSummary.setAttribute("class", "d-none summary");
-	fullSummary.innerHTML = `${summary}<span class="read-less">read less</span>`;
-	parent.appendChild(fullSummary);
-	truncatedSummary.addEventListener("click", readMore);
-	fullSummary.addEventListener("click", readLess);
 };
 
 const createSelectOptions = (show) => {
@@ -441,20 +444,24 @@ const episodeNameEvent = (e) => {
 		this.style.backgroundColor = "#373459";
 	};
 	backToAllEpisodes.style.cursor = "pointer";
-
 	document.querySelector(".episode-custom-select-wrapper").style.display =
 		"none";
 	let currentContainer = rootEpisodes.querySelector(".episode-wrapper");
 	currentContainer.style.marginTop = "1rem";
 	currentContainer.style.width = "100%";
+	let image = currentContainer.querySelector("img");
+	window.scrollTo(0, 0);
 	if (window.innerWidth >= 500) {
-		let originalSizeImage = clickedEpisode.map(
-			(episode) => episode.image.original
-		);
-		currentContainer.querySelector("img").src = originalSizeImage[0];
+		let originalSizeImage; 
+		if (clickedEpisode[0].image) {
+			originalSizeImage = clickedEpisode[0].image.original;
+		} else {
+			originalSizeImage = image.src;
+		}
+		image.src = originalSizeImage;
 		rootEpisodes.style.width = "70%";
-		currentContainer.querySelector("img").style.objectFit = "contain";
-		currentContainer.querySelector("img").style.width = "80%";
+		image.style.objectFit = "contain";
+		image.style.width = "80%";
 	}
 };
 
