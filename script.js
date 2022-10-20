@@ -11,7 +11,7 @@ let showId, currentShowName;
 //Variables to store data and minimize api calls
 let shows, episodes;
 
-//Getting shows from API and passing it as a parameter
+//Getting shows data from API
 const loadShows = async () => {
 	try {
 		const response = await fetch("https://api.tvmaze.com/shows");
@@ -19,6 +19,21 @@ const loadShows = async () => {
 		populateShowsPage(shows);
 		showSearch(shows);
 		createCustomSelect();
+	} catch (err) {
+		console.error(err);
+	}
+};
+
+//Async function to fetch a show's episodes
+const loadEpisodes = async () => {
+	try {
+		const response = fetch(
+			"https://api.tvmaze.com/shows/" + showId + "/episodes"
+		);
+		episodes = await (await response).json();
+		populateEpisodesPage(episodes);
+		createCustomSelect();
+		episodeSearch(episodes);
 	} catch (err) {
 		console.error(err);
 	}
@@ -33,8 +48,7 @@ function populateShowsPage(arr) {
 		rootShows.appendChild(showWrapper);
 		createShowName(show, showWrapper);
 		createShowImage(show, showWrapper);
-		//Genres, Status, Rating and Runtime
-		createAndFormatShowInfos(
+		createShowInfo(
 			show.genres,
 			show.status,
 			show.rating.average,
@@ -53,48 +67,43 @@ const createShowName = (show, parent) => {
 	parent.appendChild(showName);
 	showName.innerHTML = show.name;
 	showName.id = show.id;
-	//click show names to go to episodes
 	showName.addEventListener("click", showNameEvent);
-}
+};
 
 const createShowImage = (show, parent) => {
 	let img = document.createElement("img");
 	img.src = show.image.medium;
 	parent.appendChild(img);
-}
+};
 
-const createAndFormatShowInfos = (a, b, c, d, e) => {
-	let showInfo = document.createElement("section");
+const createShowInfo = (g, s, r, rt, parent) => {
+	let corrected = g.toString().split(",").join(", ");
+  let showInfo = document.createElement("section");
 	showInfo.className = "show-info";
-	e.appendChild(showInfo);
-	let corrected = a.toString().split(",").join(", ");
+	parent.appendChild(showInfo);
 	let genres = document.createElement("h4");
 	genres.setAttribute("class", "genres");
+	genres.innerHTML = `Genres: ${corrected}`;
 	let status = document.createElement("h4");
 	status.className = "status";
+	status.innerHTML = `Status: ${s}`;
 	let rating = document.createElement("h4");
 	rating.className = "rating";
-	rating.innerText = `Rating: ${c}    `;
+	rating.innerText = `Rating: ${r}    `;
 	let runtime = document.createElement("h4");
 	runtime.className = "runtime";
-	runtime.innerText = `Runtime: ${d}`;
+	runtime.innerText = `Runtime: ${rt}`;
 	showInfo.appendChild(genres);
 	showInfo.appendChild(status);
 	showInfo.appendChild(rating);
 	showInfo.appendChild(runtime);
-	genres.innerHTML = `Genres: ${corrected}`;
-	status.innerHTML = `Status: ${b}`;
-	genres.style.wordSpacing = "5px";
-	status.style.wordSpacing = "5px";
-	rating.style.wordSpacing = "5px";
-	runtime.style.wordSpacing = "5px";
 };
 
 createEmptyDiv = (parent) => {
 	let emptyDiv = document.createElement("div");
 	emptyDiv.className = "empty-div";
 	parent.appendChild(emptyDiv);
-}
+};
 
 const createAndFormatSummary = (summary, parent) => {
 	const truncatedText = summary.split(" ").slice(0, 25).join(" ");
@@ -122,14 +131,13 @@ const createSelectOptions = (show) => {
 	options.setAttribute("class", "show-options");
 	options.innerText = show.name;
 	selectShows.appendChild(options);
-}
+};
 
 const showNameEvent = (e) => {
 	currentShowName = e.target.innerText;
 	showId = e.target.id;
 	loadEpisodes();
 	displayEpisodes.style.display = "block";
-	// searchForEpisodes.style.display = "block";
 	navLink.style.display = "block";
 	document.getElementById("show-episodes").innerHTML = currentShowName;
 	document.getElementById("show-name").innerHTML = currentShowName;
@@ -171,35 +179,16 @@ const readLess = (e) => {
 	}
 };
 
-//Async function to fetch episodes' shows
-const loadEpisodes = async () => {
-	try {
-		const response = fetch(
-			"https://api.tvmaze.com/shows/" + showId + "/episodes"
-		);
-		episodes = await (await response).json();
-		populateEpisodesPage(episodes);
-		createCustomSelect();
-		episodeSearch(episodes);
-	} catch (err) {
-		console.error(err);
-	}
-};
-
-//Shows search result information
 const showsSearchInfoWrapper = document.querySelector(
 	".shows-search-info-wrapper"
 );
 const showsSearchInfo = document.querySelector(".search-info");
 
-// An event listener to dynamically update the web page
 function showSearch() {
 	searchBar.addEventListener("keyup", (e) => {
 		e.preventDefault();
-		// Revealing the hidden information lines
 		showsSearchInfoWrapper.style.display = "flex";
 		rootShows.style.margin = "2rem auto";
-		//Filtering search results
 		let searchValue = e.target.value.toLowerCase();
 		let originalImage;
 		let searchResult = shows.filter((show) => {
@@ -219,41 +208,44 @@ function showSearch() {
 			rootShows.removeChild(rootShows.firstChild);
 		}
 		populateShowsPage(searchResult);
-		rootShows.style.display = "grid";
-		if (searchResult.length === 1) {
-			let currentContainer = rootShows.querySelector(".show-wrapper");
-			rootShows.style.display = "block";
-			rootShows.style.width = "90%";
-			if (window.innerWidth >= 500) {
-				let image = currentContainer.querySelector("img");
-				rootShows.style.width = "100%";
-				currentContainer.style.width = "70%";
-				image.style.objectFit = "contain";
-				image.style.width = "80%";
-				image.src = originalImage;
-				image.style.height = "auto";
-			}
-		}
-		if (searchValue === "") {
-			showsSearchInfoWrapper.style.display = "none";
-			rootShows.style.margin = "0 auto";
-			if (window.innerWidth >= 1340) {
-				rootShows.style.width = "97%";
-			} else if (window.innerWidth >= 1040) {
-				rootShows.style.width = "95%";
-			} else if (window.innerWidth >= 690) {
-				rootShows.style.width = "90%";
-			} else rootShows.style.width = "85%";
-		}
+		if (searchResult.length === 1) oneShowStyle(originalImage);
+		if (searchValue === "") allShowsLayout();
 		showsSearchInfo.innerHTML = `Displaying ${searchResult.length}/${shows.length} shows`;
 	});
+}
+
+const oneShowStyle = (img) => {
+	let currentContainer = rootShows.querySelector(".show-wrapper");
+	rootShows.style.display = "block";
+	rootShows.style.width = "90%";
+	if (window.innerWidth >= 500) {
+		let image = currentContainer.querySelector("img");
+		rootShows.style.width = "100%";
+		currentContainer.style.width = "70%";
+		image.style.objectFit = "contain";
+		image.style.width = "80%";
+		image.src = img;
+		image.style.height = "auto";
+	}
+}
+
+const allShowsLayout = () => {
+	rootShows.style.display = "grid";
+	showsSearchInfoWrapper.style.display = "none";
+	rootShows.style.margin = "0 auto";
+	if (window.innerWidth >= 1340) {
+		rootShows.style.width = "97%";
+	} else if (window.innerWidth >= 1040) {
+		rootShows.style.width = "95%";
+	} else if (window.innerWidth >= 690) {
+		rootShows.style.width = "90%";
+	} else rootShows.style.width = "85%";
 }
 
 const navLink = document.getElementById("navigation-link");
 navLink.setAttribute("href", window.location.href);
 navLink.addEventListener("click", () => window.location.reload());
 
-// Populating the episodes' page
 function populateEpisodesPage(arr) {
 	arr.forEach((episode) => {
 		const episodeWrapper = document.createElement("div", {
@@ -262,11 +254,10 @@ function populateEpisodesPage(arr) {
 		episodeWrapper.setAttribute("id", episode.id);
 		episodeWrapper.setAttribute("class", "episode-wrapper");
 		rootEpisodes.appendChild(episodeWrapper);
-		createEpisodeName(episode, episodeWrapper)
+		createEpisodeName(episode, episodeWrapper);
 		createImageElement(episode, episodeWrapper);
 		createAndFormatSummary(episode.summary, episodeWrapper);
 		createEpisodeSelectOptions(episode);
-		
 	});
 }
 
@@ -279,13 +270,13 @@ const createEpisodeName = (episode, parent) => {
 	)}`;
 	episodeName.setAttribute("class", "episode-name");
 	episodeName.addEventListener("click", episodeNameEvent);
-}
+};
 
 const episodeCode = (season, number) => {
-	season = season < 10 ? '0' + season : season;
+	season = season < 10 ? "0" + season : season;
 	number = number < 10 ? "0" + number : number;
-	return `S${season}E${number}`
-}
+	return `S${season}E${number}`;
+};
 
 const createImageElement = (obj, container) => {
 	let img = document.createElement("img");
@@ -307,7 +298,7 @@ const createEpisodeSelectOptions = (episode) => {
 		episode.name
 	}`;
 	selectEpisode.appendChild(options);
-}
+};
 
 const backToAllEpisodes = document.getElementById("episodes-navigation-link");
 backToAllEpisodes.addEventListener("click", function (e) {
@@ -315,6 +306,11 @@ backToAllEpisodes.addEventListener("click", function (e) {
 	while (rootEpisodes.firstChild) {
 		rootEpisodes.removeChild(rootEpisodes.firstChild);
 	}
+	allEpisodesLayout();
+	populateEpisodesPage(episodes);
+});
+
+const allEpisodesLayout = () => {
 	searchForEpisodes.value = "";
 	rootEpisodes.style.display = "grid";
 	episodesSearchContainer.style.display = "block";
@@ -328,7 +324,6 @@ backToAllEpisodes.addEventListener("click", function (e) {
 	episodesSearchInfoWrapper.style.display = "none";
 	backToAllEpisodes.disabled = true;
 	backToAllEpisodes.style.backgroundColor = "gray";
-	// rootEpisodes.style.marginTop = "auto";
 	document.querySelector(".episode-custom-select-wrapper").style.display =
 		"flex";
 	backToAllEpisodes.onmouseenter = function () {
@@ -338,8 +333,7 @@ backToAllEpisodes.addEventListener("click", function (e) {
 		this.style.backgroundColor = "gray";
 	};
 	backToAllEpisodes.style.cursor = "auto";
-	populateEpisodesPage(episodes);
-});
+}
 
 //Episodes' Search result information
 const episodesSearchInfoWrapper = document.querySelector(
@@ -361,7 +355,6 @@ function episodeSearch(e) {
 	searchForEpisodes.addEventListener("keyup", (e) => {
 		episodesSearchInfoWrapper.style.display = "flex";
 		const searchInput = e.target.value.toLowerCase();
-		//Filtering the search
 		let originalImage;
 		const searchFilter = episodes.filter((episode) => {
 			if (episode.name && episode.summary) {
@@ -414,7 +407,6 @@ function episodeSearch(e) {
 			};
 			backToAllEpisodes.style.cursor = "auto";
 			currentShowName = document.querySelector(".show-name").innerText;
-			// searchForEpisodes.placeholder = currentShowName;
 		}
 	});
 }
@@ -429,7 +421,7 @@ const episodeNameEvent = (e) => {
 			episode.name === e.target.innerText.split(" ").slice(0, -2).join(" ")
 		);
 	});
-	
+
 	while (rootEpisodes.firstChild) {
 		rootEpisodes.removeChild(rootEpisodes.firstChild);
 	}
@@ -466,7 +458,7 @@ const episodeNameEvent = (e) => {
 
 const createCustomSelect = () => {
 	let customSelect = document.getElementsByClassName("custom-select");
-	if (displayShows.style.display === 'none') {
+	if (displayShows.style.display === "none") {
 		customSelect = document.getElementsByClassName("custom-select-episode");
 	}
 	let i, j, l, ll, selectElement, selectedDiv, selectHide, selectOption;
@@ -475,13 +467,13 @@ const createCustomSelect = () => {
 	for (i = 0; i < l; i++) {
 		selectElement = customSelect[i].getElementsByTagName("select")[0];
 		ll = selectElement.length;
-		/*for each element, create a new DIV that will act as the selected item:*/
+		/*a new DIV that will act as the selected item:*/
 		selectedDiv = document.createElement("div");
 		selectedDiv.setAttribute("class", "select-selected");
 		selectedDiv.innerHTML =
 			selectElement.options[selectElement.selectedIndex].innerHTML;
 		customSelect[i].appendChild(selectedDiv);
-		/*for each element, create a new DIV that will contain the option list:*/
+		/*a new DIV that will contain the option list:*/
 		selectHide = document.createElement("div");
 		selectHide.setAttribute("class", "select-items select-hide");
 		for (j = 1; j < ll; j++) {
@@ -518,7 +510,7 @@ const createCustomSelect = () => {
 		}
 		customSelect[i].appendChild(selectHide);
 		let selectedShow;
-		if (displayShows.style.display === 'none') {
+		if (displayShows.style.display === "none") {
 			selectedShow = selectedDiv.innerHTML.split(" ").slice(2).join(" ");
 		}
 		selectedDiv.addEventListener("click", function (e) {
@@ -547,47 +539,47 @@ const createCustomSelect = () => {
 					displayShows.style.display = "none";
 				}
 			} else {
-					searchForEpisodes.value = "";
-					episodesSearchInfoWrapper.style.display = "none";
-					let episode = document.querySelectorAll(".episode-wrapper");
-					let checkerShow = this.textContent.split(" ").slice(2).join(" ");
-					for (let i = 0; i < episode.length; i++) {
-						episode[i].style.display = "block";
-						let checker = this.textContent.split(" ").slice(2).join(" ");
-						let currentElement = episode[i].firstChild.innerHTML
-							.split(" ")
-							.slice(0, -2)
-							.join(" ");
-						if (currentElement === checker) {
-							// episode[i].style.display = "grid";
-							backToAllEpisodes.style.opacity = "1";
-							backToAllEpisodes.disabled = false;
-							backToAllEpisodes.style.cursor = "pointer";
-							backToAllEpisodes.style.backgroundColor = "rgb(5, 58, 92)";
-							backToAllEpisodes.onmouseenter = function () {
-								this.style.backgroundColor = "rgb(4, 42, 66)";
-							};
-							backToAllEpisodes.onmouseleave = function () {
-								this.style.backgroundColor = "rgb(5, 58, 92)";
-							};
-							navLink.style.display = "block";
-							rootEpisodes.style.display = "block";
-							rootEpisodes.style.heigh = "auto";
-							if (window.innerWidth >= 500) {
-								let originalSizeImage = episodes.map(
-									(episode) => episode.image.original
-								);
-								episode[i].querySelector("img").src = originalSizeImage[i];
-								rootEpisodes.style.width = "70%";
-								// episodes[i].style.width = "100%";
-								episode[i].querySelector("img").style.objectFit = "contain";
-								episode[i].querySelector("img").style.width = "80%";
-							}
-							episode[i].querySelector("img").style.height = "auto";
-						} else if (checker !== selectedShow) {
-							episode[i].style.display = "none";
+				searchForEpisodes.value = "";
+				episodesSearchInfoWrapper.style.display = "none";
+				let episode = document.querySelectorAll(".episode-wrapper");
+				let checkerShow = this.textContent.split(" ").slice(2).join(" ");
+				for (let i = 0; i < episode.length; i++) {
+					episode[i].style.display = "block";
+					let checker = this.textContent.split(" ").slice(2).join(" ");
+					let currentElement = episode[i].firstChild.innerHTML
+						.split(" ")
+						.slice(0, -2)
+						.join(" ");
+					if (currentElement === checker) {
+						// episode[i].style.display = "grid";
+						backToAllEpisodes.style.opacity = "1";
+						backToAllEpisodes.disabled = false;
+						backToAllEpisodes.style.cursor = "pointer";
+						backToAllEpisodes.style.backgroundColor = "rgb(5, 58, 92)";
+						backToAllEpisodes.onmouseenter = function () {
+							this.style.backgroundColor = "rgb(4, 42, 66)";
+						};
+						backToAllEpisodes.onmouseleave = function () {
+							this.style.backgroundColor = "rgb(5, 58, 92)";
+						};
+						navLink.style.display = "block";
+						rootEpisodes.style.display = "block";
+						rootEpisodes.style.heigh = "auto";
+						if (window.innerWidth >= 500) {
+							let originalSizeImage = episodes.map(
+								(episode) => episode.image.original
+							);
+							episode[i].querySelector("img").src = originalSizeImage[i];
+							rootEpisodes.style.width = "70%";
+							// episodes[i].style.width = "100%";
+							episode[i].querySelector("img").style.objectFit = "contain";
+							episode[i].querySelector("img").style.width = "80%";
 						}
+						episode[i].querySelector("img").style.height = "auto";
+					} else if (checker !== selectedShow) {
+						episode[i].style.display = "none";
 					}
+				}
 			}
 		});
 	}
