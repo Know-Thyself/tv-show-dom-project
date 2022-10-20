@@ -286,6 +286,8 @@ const createImageElement = (obj, container) => {
 		img.src = obj.image.medium;
 	} else {
 		img.src = imageNotFound;
+		img.style.width = '250px';
+		img.style.height = '140px';
 	}
 	container.appendChild(img);
 };
