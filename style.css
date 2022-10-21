@@ -1,18 +1,28 @@
 /* Mobile first Responsive Web Design */
 @import url("https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Lato&family=Merriweather:ital@1&family=Montserrat:wght@300;800&family=Poppins&display=swap");
-/* CSS rules to specify families
 
-font-family: 'Alfa Slab One', cursive;
-font-family: 'Kaushan Script', cursive;
-font-family: 'Lato', sans-serif;
-font-family: 'Marck Script', cursive;
-font-family: 'Merriweather', serif;
-font-family: 'Montserrat', sans-serif;
-font-family: 'Poppins', sans-serif;
- */
+:root {
+	--primary-font: 'Lato', sans-serif;
+	--header-font: 'Montserrat', sans-serif;
+	--secondary-font: 'Merriweather', serif;
+	--show-name-font: 'Alfa Slab One', cursive;
+	--show-info-font: 'Marck Script', cursive;
+  --body-background: rgb(167, 167, 167);
+  --show-name-bg : #382a38;
+	--show-name: #360507;
+	--search-info-bg: rgb(41, 40, 40);
+	--dark-rich-blue: rgb(0, 26, 35);
+	--select-items-bg: rgb(65, 64, 64);
+	--dark-red: rgb(129, 1, 1);
+	--wrapper-bg: rgb(248, 251, 252);
+	--buttons-bg: #373459;
+	--white: white;
+	--aliceblue: aliceblue;
+	--box-shadow: rgb(146, 146, 146);
+}
 body {
-	background-color: rgb(167, 167, 167);
-	font-family: "Lato", sans-serif;
+	background-color: var(--body-background);
+	font-family: var(--primary-font);
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
@@ -26,8 +36,8 @@ body {
 	height: 64px;
 	background-image: url(./images/header-bg.webp);
 	width: 100%;
-	color: antiquewhite;
-	font-family: "Montserrat", sans-serif;
+	/* color: antiquewhite; */
+	font-family: var(--header-font);
 }
 
 .logo,
@@ -55,7 +65,7 @@ body {
 .custom-select-episode {
 	position: relative;
 	font-family: Arial;
-	font-family: "Merriweather", serif;
+	font-family: var(--secondary-font);
 }
 
 .custom-select select,
@@ -64,7 +74,7 @@ body {
 }
 
 .select-selected {
-	background-color: rgb(5, 58, 92);
+	/* background-color: rgb(5, 58, 92); */
 	border-radius: 4px;
 }
 
@@ -77,19 +87,19 @@ body {
 	width: 0;
 	height: 0;
 	border: 6px solid transparent;
-	border-color: #fff transparent transparent transparent;
+	border-color: var(--white) transparent transparent transparent;
 }
 
 /*point the arrow upwards when the select box is open (active):*/
 .select-selected.select-arrow-active:after {
-	border-color: transparent transparent #fff transparent;
+	border-color: transparent transparent var(--white) transparent;
 	top: 7px;
 }
 
 /*style the items (options), including the selected item:*/
 .select-items div,
 .select-selected {
-	color: #ffffff;
+	color: var(--white);
 	padding: 6px 12px;
 	border: 1px solid transparent;
 	border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
@@ -100,7 +110,7 @@ body {
 /*style items (options):*/
 .select-items {
 	position: absolute;
-	background-color: rgb(80, 78, 78);
+	background-color: var(--select-items-bg);
 	top: 100%;
 	left: 0;
 	right: 0;
@@ -146,17 +156,13 @@ body {
 
 .search-bar,
 .episodes-search-bar {
-	padding: 4px 4px 4px 40px;
-	font-family: "Merriweather", serif;
+	padding: 6px 4px 6px 40px;
+	font-family: var(--secondary-font);
 	width: 90%;
 	font-size: 1rem;
-	border: 1px solid white;
+	border: 1px solid var(--white);
 	border-radius: 4px;
 	color: rgb(76, 76, 78);
-}
-
-.search-bar {
-	padding: 7px 4px 7px 40px;
 }
 
 .episodes-search-bar {
@@ -196,8 +202,8 @@ body {
 	text-transform: uppercase;
 	font-weight: 500;
 	width: fit-content;
-	color: aliceblue;
-	background-color: #373459;
+	color: var(--aliceblue);
+	background-color: var(--buttons-bg);
 	display: inline-flex;
 	/* position: relative; */
 	border-radius: 4px;
@@ -209,12 +215,11 @@ body {
 }
 
 .show-name {
-	font-family: "Lato", sans-serif;
-	font-family: "Alfa Slab One", cursive;
+	font-family: var(--primary-font);
+	font-family: var(--show-name-font);
 	font-family: "Rye", cursive;
 	color: rgb(41, 40, 40);
-	color: darkred;
-	color: #360507;
+	color: var(--show-name);
 	text-align: center;
 	/* padding: 0.35rem 0; */
 	font-size: large;
@@ -223,7 +228,7 @@ body {
 .nav-link:hover,
 .episodes-link:hover {
 	background-color: #2b284d;
-	color: aliceblue;
+	color: var(--aliceblue);
 }
 
 .episodes-link {
@@ -240,9 +245,7 @@ body {
 	padding: 0 2.5rem;
 	border-radius: 0 24px;
 	margin: 0 auto -1rem auto;
-	background-color: darkred;
-	background-color: rgb(0, 26, 35);
-	background-color: rgb(41, 40, 40);
+	background-color: var(--search-info-bg);
 }
 
 .episodes-search-info-wrapper {
@@ -255,7 +258,7 @@ body {
 .episodes-search-info2 {
 	color: antiquewhite;
 	text-align: center;
-	font-family: "Marck Script", cursive;
+	font-family: var(--show-info-font);
 	line-height: 0%;
 	/* margin: -1rem auto; */
 }
@@ -276,25 +279,22 @@ body {
 	height: 100%;
 	width: 100%;
 	text-align: center;
-	background-color: rgb(248, 251, 252);
+	background-color: var(--wrapper-bg);
 	margin: 0 auto;
 	border-radius: 8px;
+	box-shadow: 1px 1px 1px 1px var(--box-shadow);
 }
 
 .show-wrapper .name,
 .episode-wrapper .episode-name {
-	font-family: "Lato", sans-serif;
+	font-family: var(--primary-font);
 	width: 100%;
 	margin: auto;
 	text-align: center;
 	padding: 12px 0;
 	border-radius: 8px;
 	background-color: #382a38;
-	background-color: #676767;
-	background-color: #344059;
-
-	background-color: #382a38;
-
+	background-color: var(--show-name-bg);
 	color: aliceblue;
 	font-size: 1rem;
 	cursor: pointer;
@@ -303,8 +303,7 @@ body {
 .episode-wrapper .episode-name {
 	background-color: #373459;
 	background-color: #282929;
-	background-color: #360507;
-	/* background-color: rgb(73, 71, 71); */
+	background-color: var(--show-name);
 }
 
 .name:hover {
@@ -324,14 +323,11 @@ body {
 .status,
 .rating,
 .runtime {
-	font-family: "Lato", sans-serif;
+	font-family: var(--primary-font);
 	font-size: 0.75rem;
 	margin: 0;
 	font-weight: 600;
-	color: rgb(103, 103, 104);
-	color: darkred;
-	color: rgb(129, 1, 1);
-	/* color: #271710; */
+	color: var(--dark-red);
 	word-spacing: 5px;
 	text-align: left;
 }
@@ -340,11 +336,11 @@ body {
 	width: 100%;
 	margin-top: 4px;
 	background-color: darkred;
-	border: ridge 1px black;
+	border-bottom: ridge 1px black;
 	height: 1px;
 }
 .summary {
-	font-family: "Merriweather", serif;
+	font-family: var(--secondary-font);
 	text-align: left;
 	font-size: 0.9rem;
 	width: 90%;
@@ -363,15 +359,16 @@ body {
 .read-more,
 .read-less {
 	display: inline;
-	font-family: "Merriweather", serif;
+	font-family: var(--secondary-font);
 	border: none;
 	text-decoration: none;
 	outline: none;
 	cursor: pointer;
 	font-weight: 500;
-	color: darkred;
+	color: var(--dark-red);
 	font-size: 1rem;
 }
+
 .read-less {
 	margin-top: -2rem;
 }
@@ -406,11 +403,6 @@ body {
 
 .select-selected {
 	background-color: rgb(41, 40, 40);
-	background-color: rgb(5, 58, 92);
-	background-color: whitesmoke;
-	background-color: rgb(41, 40, 40);
-	color: rgb(41, 40, 40);
-	color: rgb(76, 76, 78);
 	color: whitesmoke;
 }
 
@@ -429,7 +421,7 @@ body {
 	left: 0;
 }
 .data-info {
-	color: aliceblue;
+	color: var(--aliceblue);
 	font-size: large;
 }
 
@@ -454,16 +446,11 @@ body {
 		/* margin-top: 10px; */
 	}
 	.select-selected {
-		background-color: rgb(41, 40, 40);
-		background-color: rgb(5, 58, 92);
 		background-color: whitesmoke;
-		color: rgb(41, 40, 40);
 		color: rgb(76, 76, 78);
 	}
 	.select-items {
-		background-color: rgb(80, 78, 78);
-		background-color: rgb(128, 118, 104);
-			background-color: rgb(65, 64, 64);
+		background-color: var(--select-items-bg);
 	}
 	.select-selected:after {
 		border-color: rgb(41, 40, 40) transparent transparent transparent;
@@ -485,6 +472,9 @@ body {
 	.root-episodes {
 		grid-template-columns: repeat(4, 1fr);
 		width: 97%;
+	}
+	.episodes-search-bar {
+		width: 90%;
 	}
 }
 

@@ -31,7 +31,6 @@ const loadEpisodes = async () => {
 			"https://api.tvmaze.com/shows/" + showId + "/episodes"
 		);
 		episodes = await (await response).json();
-		console.log(episodes);
 		populateEpisodesPage(episodes);
 		createCustomSelect();
 		episodeSearch(episodes);
@@ -363,7 +362,7 @@ const episodeSearch = (e) => {
 			currentShowName = document.querySelector(".show-name").innerText;
 		}
 	});
-}
+};
 
 const episodesSearchContainer = document.querySelector(
 	".episode-search-container"
@@ -429,6 +428,8 @@ const oneEpisodeSearchLayout = (arr) => {
 	}
 };
 
+const navContainer = displayEpisodes.querySelector(".nav-links-plus-name");
+
 const oneEpisodeLayout = (episode, container) => {
 	episodesSearchInfoWrapper.style.display = "none";
 	backToAllEpisodes.style.opacity = "1";
@@ -457,8 +458,10 @@ const oneEpisodeLayout = (episode, container) => {
 		rootEpisodes.style.width = "60%";
 		image.style.objectFit = "contain";
 		image.style.width = "80%";
-		image.style.height = 'auto';
-
+		image.style.height = "auto";
+	} else {
+		navContainer.style.marginTop = "1rem";
+		navContainer.style.flexDirection = "column";
 	}
 };
 
