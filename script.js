@@ -434,6 +434,7 @@ const oneEpisodeLayout = (episode, container) => {
 	episodesSearchInfoWrapper.style.display = "none";
 	backToAllEpisodes.style.opacity = "1";
 	rootEpisodes.style.display = "block";
+	rootEpisodes.style.marginTop = "2rem";
 	episodesSearchContainer.style.display = "none";
 	backToAllEpisodes.disabled = false;
 	backToAllEpisodes.style.backgroundColor = "#373459";
