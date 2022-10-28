@@ -1,5 +1,5 @@
 /* Mobile first Responsive Web Design */
-@import url("https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Lato&family=Merriweather:ital@1&family=Montserrat:wght@300;800&family=Poppins&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Lato&family=Merriweather:ital@1&family=Montserrat:wght@300;800&family=Poppins&display=swap');
 
 :root {
 	--primary-font: 'Lato', sans-serif;
@@ -7,8 +7,8 @@
 	--secondary-font: 'Merriweather', serif;
 	--show-name-font: 'Alfa Slab One', cursive;
 	--show-info-font: 'Marck Script', cursive;
-  --body-background: rgb(167, 167, 167);
-  --show-name-bg : #382a38;
+	--body-background: rgb(167, 167, 167);
+	--show-name-bg: #382a38;
 	--show-name: #360507;
 	--search-info-bg: rgb(41, 40, 40);
 	--dark-rich-blue: rgb(0, 26, 35);
@@ -81,7 +81,7 @@ body {
 /*style the arrow inside the select element:*/
 .select-selected:after {
 	position: absolute;
-	content: "";
+	content: '';
 	top: 14px;
 	right: 10px;
 	width: 0;
@@ -139,6 +139,7 @@ body {
 
 .search-container,
 .episode-search-container {
+	width: 60%;
 	border-radius: 7px;
 }
 
@@ -165,7 +166,7 @@ body {
 }
 
 .episodes-search-bar {
-	width: 70%;
+	width: 75%;
 }
 
 ::placeholder {
@@ -216,7 +217,7 @@ body {
 .show-name {
 	font-family: var(--primary-font);
 	font-family: var(--show-name-font);
-	font-family: "Rye", cursive;
+	font-family: 'Rye', cursive;
 	color: rgb(41, 40, 40);
 	color: var(--show-name);
 	text-align: center;
@@ -387,6 +388,12 @@ body {
 		margin: auto;
 		justify-content: space-around;
 	}
+	.search-bar {
+		width: 80%;
+	}
+	.episodes-search-bar {
+		width: 70%;
+	}
 }
 
 /* to keep the footer where it belongs */
@@ -398,6 +405,7 @@ body {
 }
 .display-episodes {
 	display: none;
+	background-color: #454361;
 }
 
 .select-selected {
@@ -433,9 +441,15 @@ body {
     grid-auto-rows: auto; */
 		width: 95%;
 	}
-	.search-bar,
+	.search-container,
+.episode-search-container {
+	width: 30%;
+}
+	.search-bar {
+		width: 90%;
+	}
 	.episodes-search-bar {
-		width: 100%;
+		width: 79%;
 	}
 	.custom-select,
 	.custom-select-episode {
@@ -472,9 +486,9 @@ body {
 		grid-template-columns: repeat(4, 1fr);
 		width: 97%;
 	}
-	.episodes-search-bar {
+	/* .episodes-search-bar {
 		width: 90%;
-	}
+	} */
 }
 
 @media screen and (min-width: 1720px) {
