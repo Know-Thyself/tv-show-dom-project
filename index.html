@@ -13,10 +13,6 @@
 			href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Lato&family=Montserrat:wght@300&family=Noto+Serif&family=Permanent+Marker&display=swap"
 			rel="stylesheet"
 		/>
-		<!-- <link
-			rel="stylesheet"
-			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-		/> -->
 		<link
 			rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
@@ -31,118 +27,62 @@
 	</head>
 
 	<body>
-		<div id="main-container">
-			<!-- The header consisting of logo, select box and search bar  -->
-			<div id="shows-page-wrapper" class="display-shows">
-				<div class="header">
-					<img
-						class="logo"
-						src="./images/live-tv.jpg"
-						alt="logo-image"
+		<main id="main-wrapper" class="main">
+			<header class="header">
+				<img class="logo" src="./images/live-tv.jpg" alt="logo-image" />
+				<div class="search-container">
+					<i class="fa-solid fa-magnifying-glass fa-xlg icon"></i>
+					<input
+						class="search-bar"
+						type="search"
+						placeholder="Search for shows"
+						onfocus="clearPlaceholder()"
+						onblur="addPlaceholder()"
+						name="search"
 					/>
-					<!-- Search bar to search for shows -->
-					<div class="search-container">
-						<i class="fa-solid fa-magnifying-glass fa-xlg icon"></i>
-						<input
-							class="search-bar"
-							type="search"
-							placeholder="Search for shows"
-							onfocus="clearPlaceholder()"
-							onblur="addPlaceholder()"
-							name="search"
-						/>
-					</div>
 				</div>
-				<section class="custom-select-wrapper">
-					<div class="custom-select" style="width: 300px" size="5">
-						<select name="shows" id="shows" class="select-shows">
-							<option value="shows" class="dropdown-menu">Select a Show</option>
-						</select>
-					</div>
-				</section>
-
-				<!-- A root container for all shows generated using an api and DOM manipulation  -->
-				<div class="shows-search-info-wrapper">
-					<p class="search-info"></p>
+			</header>
+			<nav class="nav-links-plus-name">
+				<button id="navigation-link" class="nav-link">Back to Shows</button>
+				<h1 id="show-name" class="show-name"></h1>
+				<button id="episodes-navigation-link" class="nav-link episodes-link">
+					Back to Episodes
+				</button>
+			</nav>
+			<section class="custom-select-wrapper">
+				<div class="custom-select" size="5">
+					<select name="shows" id="select-show" class="select-show">
+						<option value="shows" id="show-option" class="dropdown-menu">
+							Select a Show
+						</option>
+					</select>
 				</div>
-				<div class="root-shows" id="root-shows"></div>
-
-				<!-- Footer just to show where the data is originated from -->
-				<footer class="footer">
-					<a class="data-info" href="https://www.tvmaze.com/"
-						>The data on this app is originated from TVMaze.com</a
+			</section>
+			<div class="episode-custom-select-wrapper">
+				<div class="custom-select-episode" style="min-width: 300px">
+					<select
+						name="episodes"
+						id="select-episode"
+						class="select-episode"
+						aria-selected="true"
 					>
-				</footer>
+						<option id="episode-option" value="episodes" class="dropdown-menu">
+							Select an episode
+						</option>
+					</select>
+				</div>
 			</div>
-
-			<!-- Episodes page -->
-			<div id="episodes-page-wrapper" class="display-episodes">
-				<div class="episodes-header">
-					<img
-						class="epi-logo"
-						src="./images/live-tv.jpg"
-						alt="logo-image"
-					/>
-					<div class="episode-search-container">
-						<i class="fa-solid fa-magnifying-glass fa-xlg icon"></i>
-						<input
-							class="episodes-search-bar"
-							type="text"
-							placeholder="Search for episodes"
-							name="search-episodes"
-							onfocus="clearPlaceholder()"
-							onblur="addPlaceholder()"
-						/>
-					</div>
-				</div>
-
-				<div class="nav-links-plus-name">
-					<button id="navigation-link" class="nav-link">Back to All Shows</button>
-					<h1 id="show-name" class="show-name"></h1>
-					<button id="episodes-navigation-link" class="nav-link episodes-link">
-						Back to All Episodes
-					</button>
-				</div>
-				<section class="episodes-page-navigation">
-					<!-- Select box to pick an episode -->
-					<div class="episode-custom-select-wrapper">
-						<div class="custom-select-episode" style="min-width: 300px">
-							<select
-								name="episodes"
-								id="select-episode"
-								class="select-episode"
-								aria-selected="true"
-							>
-								<option
-									id="show-episodes"
-									value="episodes"
-									class="dropdown-menu"
-								>
-									Select an episode
-								</option>
-							</select>
-						</div>
-					</div>
-				</section>
-				<!-- A root container for all episodes generated using an api and DOM manipulation  -->
-				<div class="episodes-search-info-wrapper">
-					<!-- <h1 id="show-name" class="show-name"></h1> -->
-					<h4 class="episodes-search-info"></h4>
-				</div>
-				<div class="root-episodes" id="root-episodes"></div>
-
-				<!-- Footer just to show where the data is originated from -->
-				<footer class="footer">
-					<a class="data-info" href="https://www.tvmaze.com/"
-						>The data on this app is originated from TVMaze.com</a
-					>
-				</footer>
+			<div class="shows-search-info-wrapper">
+				<p class="search-info"></p>
 			</div>
-		</div>
-
-		<!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
+			<div class="root" id="root"></div>
+			<footer class="footer">
+				<a class="data-info" href="https://www.tvmaze.com/"
+					>The data on this app is originated from TVMaze.com</a
+				>
+			</footer>
+		</main>
 		<script src="episodes.js"></script>
-		<!-- Loads YOUR javascript code -->
 		<script src="script.js"></script>
 		<script src="shows.js"></script>
 	</body>
