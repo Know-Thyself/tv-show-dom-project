@@ -12,7 +12,7 @@ const loadShows = async () => {
 		const response = await fetch(url);
 		shows = await response.json();
 		populatePage(shows);
-		showSearch(shows);
+		search(shows);
 		createCustomSelect();
 	} catch (err) {
 		console.error(err);
@@ -87,8 +87,8 @@ const createImage = (obj, container) => {
 	container.appendChild(img);
 };
 
+let selectEpisode = document.getElementById('select-episode');
 const createEpisodeSelectOptions = (episode) => {
-	let selectEpisode = document.getElementById('select-episode');
 	let options = document.createElement('option');
 	options.setAttribute('class', 'episodes-option');
 	options.innerHTML = `${episodeCode(episode.season, episode.number)} - ${
@@ -147,8 +147,8 @@ const createAndFormatSummary = (summary, parent) => {
 	}
 };
 
+let selectShow = document.querySelector('#select-show');
 const createSelectOptions = (show) => {
-	let selectShow = document.querySelector('#select-show');
 	let options = document.createElement('option');
 	options.setAttribute('id', `${show.id}`);
 	options.setAttribute('class', 'show-options');
@@ -196,10 +196,12 @@ const readLess = (e) => {
 		allParents[i].style.height = '100%';
 	}
 };
-
-const searchInfoWrapper = document.querySelector('.shows-search-info-wrapper');
-const showsSearchInfo = document.querySelector('.search-info');
-function showSearch() {
+let customSelectEpisode = document.getElementsByClassName(
+	'custom-select-episode'
+);
+const searchInfoWrapper = document.querySelector('.search-info-wrapper');
+const searchInfo = document.querySelector('.search-info');
+const search = () => {
 	searchBar.addEventListener('keyup', (e) => {
 		e.preventDefault();
 		searchInfoWrapper.style.display = 'flex';
@@ -232,11 +234,27 @@ function showSearch() {
 		while (rootElement.firstChild) {
 			rootElement.removeChild(rootElement.firstChild);
 		}
+		while (customSelect[0].children.length > 1) {
+			customSelect[0].removeChild(customSelect[0].lastChild);
+		}
+
+		while (customSelectEpisode[0].children.length > 1) {
+			customSelectEpisode[0].removeChild(customSelectEpisode[0].lastChild);
+		}
+		while (selectShow.length > 1) {
+			selectShow.removeChild(selectShow.lastChild);
+		}
+		while (selectEpisode.length > 1) {
+			selectEpisode.removeChild(selectEpisode.lastChild);
+		}
+		console.log(customSelect[0].children);
 		populatePage(searchResult);
+		createCustomSelect();
+		console.log(selectShow.lastChild);
 		if (searchResult[0].genres) {
-			showsSearchInfo.innerHTML = `Displaying ${searchResult.length}/${shows.length} shows`;
+			searchInfo.innerHTML = `Displaying ${searchResult.length}/${shows.length} shows`;
 		} else {
-			showsSearchInfo.innerHTML = `Displaying ${searchResult.length}/${shows.length} episodes`;
+			searchInfo.innerHTML = `Displaying ${searchResult.length}/${shows.length} episodes`;
 		}
 		if (searchResult.length === 1 && searchResult[0].genres)
 			oneShowLayout(originalImage);
@@ -244,7 +262,7 @@ function showSearch() {
 			oneEpisodeSearchLayout(searchResult);
 		if (searchValue === '') allShowsLayout();
 	});
-}
+};
 
 const oneShowLayout = (img) => {
 	let currentContainer = rootElement.querySelector('.wrapper');
@@ -294,16 +312,32 @@ backToEpisodes.addEventListener('click', function (e) {
 	while (rootElement.firstChild) {
 		rootElement.removeChild(rootElement.firstChild);
 	}
+	
+	while (customSelect[0].children.length > 1) {
+		customSelect[0].removeChild(customSelect[0].lastChild);
+	}
+
+	while (customSelectEpisode[0].children.length > 1) {
+		customSelectEpisode[0].removeChild(customSelectEpisode[0].lastChild);
+	}
+	while (selectShow.length > 1) {
+		selectShow.removeChild(selectShow.lastChild);
+	}
+	while (selectEpisode.length > 1) {
+		selectEpisode.removeChild(selectEpisode.lastChild);
+	}
 	allShowsLayout();
 	allEpisodesLayout();
 	populatePage(shows);
+	createCustomSelect();
 });
 
 //Episodes' Search result information
-const episodesSearchInfoWrapper = document.querySelector(
-	'.episodes-search-info-wrapper'
-);
-const episodesSearchInfo = document.querySelector('.episodes-search-info');
+//TODO check
+// const episodesSearchInfoWrapper = document.querySelector(
+// 	'.episodes-search-info-wrapper'
+// );
+// const episodesSearchInfo = document.querySelector('.episodes-search-info');
 
 const clearPlaceholder = () => {
 	searchBar.placeholder = '';
@@ -337,6 +371,7 @@ const allEpisodesLayout = () => {
 	backToShows.style.display = 'inline-flex';
 	navContainer.style.display = 'flex';
 	navContainer.style.margin = '1rem auto';
+	searchInfoWrapper.style.display = 'none';
 	if (window.innerWidth >= 1340) {
 		rootElement.style.width = '97%';
 	} else if (window.innerWidth >= 1040) {
@@ -418,8 +453,8 @@ const oneEpisodeLayout = (episode, container) => {
 	}
 };
 
+let customSelect = document.getElementsByClassName('custom-select');
 const createCustomSelect = () => {
-	let customSelect = document.getElementsByClassName('custom-select');
 	if (!shows[0].genres) {
 		customSelect = document.getElementsByClassName('custom-select-episode');
 	}

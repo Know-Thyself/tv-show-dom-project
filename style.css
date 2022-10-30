@@ -241,8 +241,7 @@ body {
 	display: none;
 }
 
-.shows-search-info-wrapper,
-.episodes-search-info-wrapper {
+.search-info-wrapper {
 	display: none;
 	flex-direction: column;
 	justify-content: center;
@@ -254,9 +253,9 @@ body {
 	background-color: var(--search-info-bg);
 }
 
-.episodes-search-info-wrapper {
+/* .episodes-search-info-wrapper {
 	margin: 1rem auto;
-}
+} */
 
 .search-info,
 .search-info2,
@@ -475,8 +474,7 @@ body {
 	.select-selected.select-arrow-active:after {
 		border-color: transparent transparent rgb(41, 40, 40) transparent;
 	}
-	.shows-search-info-wrapper,
-	.episodes-search-info-wrapper {
+	.search-info-wrapper {
 		margin: -0.5rem auto -1rem auto;
 	}
 	.show-name {
