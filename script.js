@@ -263,8 +263,6 @@ const search = (shows) => {
 
 const backToShows = document.getElementById('navigation-link');
 backToShows.addEventListener('click', (e) => {
-	//let customSelect = document.getElementsByClassName('custom-select');
-	let customSelect = document.getElementById('custom-select');
 	e.preventDefault();
 	rootElement.innerHTML = '';
 	resetRootAndSelect();
@@ -315,6 +313,7 @@ const allShowsLayout = () => {
 	rootElement.style.display = 'grid';
 	searchInfoWrapper.style.display = 'none';
 	searchBarWrapper.style.display = 'block';
+	backToShows.style.display = 'none';
 	if (window.innerWidth >= 1340) {
 		rootElement.style.width = '97%';
 	} else if (window.innerWidth >= 1040) {
