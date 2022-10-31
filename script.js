@@ -258,6 +258,24 @@ const search = (shows) => {
 			oneEpisodeSearchLayout(searchResult);
 		if (searchValue === '' || searchResult.length > 1) allShowsLayout();
 		searchInfoWrapper.style.display = 'flex';
+		if (searchResult.length < shows.length) {
+			backToShows.style.display = 'inline-flex';
+			navContainer.style.display = 'flex';
+			navContainer.style.margin = '1rem auto -1rem auto';
+		}
+		if (searchResult.length > 1 && !searchResult[0].genres) {
+			allEpisodesLayout();
+			backToEpisodes.style.display = 'block';
+			backToEpisodes.disabled = false;
+			backToEpisodes.style.backgroundColor = '#373459';
+			backToEpisodes.onmouseenter = function () {
+				this.style.backgroundColor = '#2b284d';
+			};
+			backToEpisodes.onmouseleave = function () {
+				this.style.backgroundColor = '#373459';
+			};
+			backToEpisodes.style.cursor = 'pointer';
+		}
 	});
 };
 
@@ -313,7 +331,10 @@ const allShowsLayout = () => {
 	rootElement.style.display = 'grid';
 	searchInfoWrapper.style.display = 'none';
 	searchBarWrapper.style.display = 'block';
-	backToShows.style.display = 'none';
+	// backToShows.style.display = 'inline-flex';
+	navContainer.style.display = 'none';
+	// navContainer.style.margin = '1rem auto 0 auto';
+	// backToShows.style.display = 'none';
 	if (window.innerWidth >= 1340) {
 		rootElement.style.width = '97%';
 	} else if (window.innerWidth >= 1040) {
@@ -386,7 +407,8 @@ const allEpisodesLayout = () => {
 	searchBarWrapper.style.display = 'block';
 	backToShows.style.display = 'inline-flex';
 	navContainer.style.display = 'flex';
-	navContainer.style.margin = '1rem auto';
+	navContainer.style.justifyContent = 'space-between';
+	navContainer.style.margin = '1rem auto 0 auto';
 	searchInfoWrapper.style.display = 'none';
 	if (window.innerWidth >= 1340) {
 		rootElement.style.width = '97%';
@@ -430,6 +452,8 @@ const oneEpisodeSearchLayout = (arr) => {
 const oneEpisodeLayout = (episode, container) => {
 	searchInfoWrapper.style.display = 'none';
 	backToEpisodes.style.display = 'block';
+	navContainer.style.display = 'flex';
+	navContainer.style.marginBottom = '1rem';
 	navContainer.style.justifyContent = 'space-between';
 	rootElement.style.display = 'block';
 	searchBarWrapper.style.display = 'none';
