@@ -3,17 +3,26 @@ const mainElement = document.getElementById('main-wrapper');
 const rootElement = document.getElementById('root');
 const searchBar = document.querySelector('.search-bar');
 const navContainer = mainElement.querySelector('.nav-links-plus-name');
+const customSelectWrapper = document.querySelector('.custom-select-wrapper');
+const episodesCustomSelectWrapper = document.querySelector(
+	'.episode-custom-select-wrapper'
+);
 let url = 'https://api.tvmaze.com/shows';
 let shows, showId;
+let backupShows = [];
 
-//Getting shows api data
+//Getting shows' api data
 const loadShows = async () => {
 	try {
 		const response = await fetch(url);
-		shows = await response.json();
+		data = await response.json();
+		if (url === 'https://api.tvmaze.com/shows') {
+			backupShows = [...data];
+		}
+		shows = data;
 		populatePage(shows);
 		search(shows);
-		createCustomSelect();
+		createCustomSelect(shows);
 	} catch (err) {
 		console.error(err);
 	}
@@ -161,8 +170,12 @@ const showNameEvent = (e) => {
 	showId = e.target.id;
 	url = `https://api.tvmaze.com/shows/${showId}/episodes`;
 	rootElement.innerHTML = '';
+	//resetRootAndSelect();
+	resetEpisodeSelect();
 	loadShows();
 	allEpisodesLayout();
+	episodesCustomSelectWrapper.style.display = 'flex';
+	customSelectWrapper.style.display = 'none';
 	document.getElementById('episode-option').innerHTML = currentShowName;
 	document.getElementById('show-name').innerHTML = currentShowName;
 	searchBar.placeholder = currentShowName;
@@ -201,10 +214,9 @@ let customSelectEpisode = document.getElementsByClassName(
 );
 const searchInfoWrapper = document.querySelector('.search-info-wrapper');
 const searchInfo = document.querySelector('.search-info');
-const search = () => {
+const search = (shows) => {
 	searchBar.addEventListener('keyup', (e) => {
 		e.preventDefault();
-		searchInfoWrapper.style.display = 'flex';
 		rootElement.style.margin = '2rem auto';
 		let searchValue = e.target.value.toLowerCase();
 		let originalImage;
@@ -221,37 +233,21 @@ const search = () => {
 				originalImage = show.image.original;
 				return show;
 			} else if (
-				show.name.toLowerCase().includes(searchValue) ||
-				show.summary
-					.replace(/(<([^>]+)>)/gi, '')
-					.toLowerCase()
-					.includes(searchValue)
+				!show.genres &&
+				(show.name.toLowerCase().includes(searchValue) ||
+					show.summary
+						.replace(/(<([^>]+)>)/gi, '')
+						.toLowerCase()
+						.includes(searchValue))
 			) {
 				originalImage = show.image.original;
 				return show;
 			}
 		});
-		while (rootElement.firstChild) {
-			rootElement.removeChild(rootElement.firstChild);
-		}
-		while (customSelect[0].children.length > 1) {
-			customSelect[0].removeChild(customSelect[0].lastChild);
-		}
-
-		while (customSelectEpisode[0].children.length > 1) {
-			customSelectEpisode[0].removeChild(customSelectEpisode[0].lastChild);
-		}
-		while (selectShow.length > 1) {
-			selectShow.removeChild(selectShow.lastChild);
-		}
-		while (selectEpisode.length > 1) {
-			selectEpisode.removeChild(selectEpisode.lastChild);
-		}
-		console.log(customSelect[0].children);
+		resetRootAndSelect();
 		populatePage(searchResult);
-		createCustomSelect();
-		console.log(selectShow.lastChild);
-		if (searchResult[0].genres) {
+		createCustomSelect(searchResult);
+		if (searchResult.length && searchResult[0].genres) {
 			searchInfo.innerHTML = `Displaying ${searchResult.length}/${shows.length} shows`;
 		} else {
 			searchInfo.innerHTML = `Displaying ${searchResult.length}/${shows.length} episodes`;
@@ -260,8 +256,44 @@ const search = () => {
 			oneShowLayout(originalImage);
 		if (searchResult.length === 1 && !searchResult[0].genres)
 			oneEpisodeSearchLayout(searchResult);
-		if (searchValue === '') allShowsLayout();
+		if (searchValue === '' || searchResult.length > 1) allShowsLayout();
+		searchInfoWrapper.style.display = 'flex';
 	});
+};
+
+const backToShows = document.getElementById('navigation-link');
+backToShows.addEventListener('click', (e) => {
+	//let customSelect = document.getElementsByClassName('custom-select');
+	let customSelect = document.getElementById('custom-select');
+	e.preventDefault();
+	rootElement.innerHTML = '';
+	resetRootAndSelect();
+	populatePage(backupShows);
+	allShowsLayout();
+	createCustomSelect(backupShows);
+	search(backupShows);
+	addPlaceholder();
+	episodesCustomSelectWrapper.style.display = 'none';
+	customSelectWrapper.style.display = 'flex';
+});
+
+const resetRootAndSelect = () => {
+	let customSelect = document.getElementById('custom-select');
+	while (rootElement.firstChild) {
+		rootElement.removeChild(rootElement.firstChild);
+	}
+	while (customSelect.children.length > 1) {
+		customSelect.removeChild(customSelect.lastChild);
+	}
+	while (customSelectEpisode[0].children.length > 1) {
+		customSelectEpisode[0].removeChild(customSelectEpisode[0].lastChild);
+	}
+	while (selectShow.length > 1) {
+		selectShow.removeChild(selectShow.lastChild);
+	}
+	while (selectEpisode.length > 1) {
+		selectEpisode.removeChild(selectEpisode.lastChild);
+	}
 };
 
 const oneShowLayout = (img) => {
@@ -282,7 +314,7 @@ const oneShowLayout = (img) => {
 const allShowsLayout = () => {
 	rootElement.style.display = 'grid';
 	searchInfoWrapper.style.display = 'none';
-	rootElement.style.margin = '0 auto';
+	searchBarWrapper.style.display = 'block';
 	if (window.innerWidth >= 1340) {
 		rootElement.style.width = '97%';
 	} else if (window.innerWidth >= 1040) {
@@ -292,8 +324,6 @@ const allShowsLayout = () => {
 	} else rootElement.style.width = '85%';
 	backToEpisodes.disabled = true;
 	backToEpisodes.style.backgroundColor = 'gray';
-	document.querySelector('.episode-custom-select-wrapper').style.display =
-		'flex';
 	backToEpisodes.onmouseenter = function () {
 		this.style.backgroundColor = 'gray';
 	};
@@ -303,47 +333,35 @@ const allShowsLayout = () => {
 	backToEpisodes.style.cursor = 'auto';
 };
 
-const backToShows = document.getElementById('navigation-link');
-backToShows.addEventListener('click', () => window.location.reload());
-
-const backToEpisodes = document.getElementById('episodes-navigation-link');
-backToEpisodes.addEventListener('click', function (e) {
-	e.preventDefault();
+const resetEpisodeSelect = () => {
 	while (rootElement.firstChild) {
 		rootElement.removeChild(rootElement.firstChild);
 	}
-	
-	while (customSelect[0].children.length > 1) {
-		customSelect[0].removeChild(customSelect[0].lastChild);
-	}
-
 	while (customSelectEpisode[0].children.length > 1) {
 		customSelectEpisode[0].removeChild(customSelectEpisode[0].lastChild);
-	}
-	while (selectShow.length > 1) {
-		selectShow.removeChild(selectShow.lastChild);
 	}
 	while (selectEpisode.length > 1) {
 		selectEpisode.removeChild(selectEpisode.lastChild);
 	}
-	allShowsLayout();
-	allEpisodesLayout();
-	populatePage(shows);
-	createCustomSelect();
-});
+};
 
-//Episodes' Search result information
-//TODO check
-// const episodesSearchInfoWrapper = document.querySelector(
-// 	'.episodes-search-info-wrapper'
-// );
-// const episodesSearchInfo = document.querySelector('.episodes-search-info');
+const backToEpisodes = document.getElementById('episodes-navigation-link');
+backToEpisodes.addEventListener('click', function (e) {
+	e.preventDefault();
+	resetEpisodeSelect();
+	populatePage(shows);
+	allEpisodesLayout();
+	episodesCustomSelectWrapper.style.display = 'flex';
+	customSelectWrapper.style.display = 'none';
+	createCustomSelect(shows);
+});
 
 const clearPlaceholder = () => {
 	searchBar.placeholder = '';
 };
 
 const addPlaceholder = () => {
+	searchBar.value = '';
 	searchBar.placeholder = 'Search for shows';
 };
 
@@ -355,17 +373,16 @@ const episodeNameEvent = (e) => {
 			episode.name === e.target.innerText.split(' ').slice(0, -2).join(' ')
 		);
 	});
-	while (rootElement.firstChild) {
-		rootElement.removeChild(rootElement.firstChild);
-	}
+	resetEpisodeSelect();
 	populatePage(clickedEpisode);
+	createCustomSelect(clickedEpisode);
 	let currentContainer = rootElement.querySelector('.wrapper');
 	oneEpisodeLayout(clickedEpisode[0], currentContainer);
-	document.querySelector('.episode-custom-select-wrapper').style.display =
-		'none';
+	episodesCustomSelectWrapper.style.display = 'none';
 };
 
 const allEpisodesLayout = () => {
+	rootElement.style.display = 'grid';
 	rootElement.style.margin = '0 auto';
 	searchBarWrapper.style.display = 'block';
 	backToShows.style.display = 'inline-flex';
@@ -381,9 +398,6 @@ const allEpisodesLayout = () => {
 	} else rootElement.style.width = '85%';
 	backToEpisodes.disabled = true;
 	backToEpisodes.style.backgroundColor = 'gray';
-	document.querySelector('.episode-custom-select-wrapper').style.display =
-		'flex';
-	document.querySelector('.custom-select-wrapper').style.display = 'none';
 	backToEpisodes.onmouseenter = function () {
 		this.style.backgroundColor = 'gray';
 	};
@@ -397,8 +411,7 @@ const oneEpisodeSearchLayout = (arr) => {
 	rootElement.style.display = 'block';
 	let currentContainer = rootElement.querySelector('.wrapper');
 	currentContainer.style.width = '100%';
-	document.querySelector('.episode-custom-select-wrapper').style.display =
-		'none';
+	episodesCustomSelectWrapper.style.display = 'none';
 	if (window.innerWidth >= 500) {
 		let originalSizeImage = arr.map((episode) => episode.image.original);
 		let imageElem = currentContainer.querySelector('img');
@@ -453,10 +466,16 @@ const oneEpisodeLayout = (episode, container) => {
 	}
 };
 
-let customSelect = document.getElementsByClassName('custom-select');
-const createCustomSelect = () => {
-	if (!shows[0].genres) {
+const createCustomSelect = (arr) => {
+	let customSelect = document.getElementsByClassName('custom-select');
+	if (arr.length && !arr[0].genres) {
 		customSelect = document.getElementsByClassName('custom-select-episode');
+		episodesCustomSelectWrapper.style.display = 'flex';
+		customSelectWrapper.style.display = 'none';
+	} else {
+		episodesCustomSelectWrapper.style.display = 'none';
+		customSelectWrapper.style.display = 'flex';
+		document.getElementById('show-option').innerHTML = 'Select a show';
 	}
 	let i, j, l, ll, selectElement, selectedDiv, selectHide, selectOption;
 	/*look for any elements with the class "custom-select":*/
@@ -482,12 +501,12 @@ const createCustomSelect = () => {
 				e.preventDefault();
 				e.stopPropagation();
 				e.stopImmediatePropagation();
-				let parent = document.querySelector('.custom-select-wrapper');
-				if (parent === e.target.parentElement.parentElement.parentElement) {
-					parent.style.display = 'none';
-					document.querySelector(
-						'.episode-custom-select-wrapper'
-					).style.display = 'flex';
+				if (
+					customSelectWrapper ===
+					e.target.parentElement.parentElement.parentElement
+				) {
+					customSelectWrapper.style.display = 'none';
+					episodesCustomSelectWrapper.style.display = 'flex';
 				}
 				/*when an item is clicked, update the original select box,
         and the selected item:*/
@@ -514,7 +533,7 @@ const createCustomSelect = () => {
 		}
 		customSelect[i].appendChild(selectHide);
 		let selectedShow;
-		let match = shows.filter((show) => (show.genres ? undefined : show));
+		let match = arr.filter((show) => (show.genres ? undefined : show));
 		if (match.length) {
 			selectedShow = selectedDiv.innerHTML.split(' ').slice(2).join(' ');
 		}
@@ -527,12 +546,13 @@ const createCustomSelect = () => {
 			this.classList.toggle('select-arrow-active');
 			if (!match.length) {
 				let thisId;
-				shows
+				arr
 					.filter((v) => v.name === this.innerHTML)
 					.forEach((el) => (thisId = el.id));
 				if (thisId) {
 					showId = thisId;
 					url = `https://api.tvmaze.com/shows/${showId}/episodes`;
+					resetEpisodeSelect();
 					loadShows();
 					allEpisodesLayout();
 					document.getElementById('episode-option').innerHTML = this.innerHTML;
@@ -554,7 +574,7 @@ const createCustomSelect = () => {
 						.slice(0, -2)
 						.join(' ');
 					if (currentElement === checker) {
-						let selectedEpisode = shows[i];
+						let selectedEpisode = arr[i];
 						let selectedElement = episode[i];
 						oneEpisodeLayout(selectedEpisode, selectedElement);
 					} else if (checker !== selectedShow) {
