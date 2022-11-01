@@ -7,18 +7,19 @@
 	--secondary-font: 'Merriweather', serif;
 	--show-name-font: 'Alfa Slab One', cursive;
 	--show-info-font: 'Marck Script', cursive;
-	--body-background: rgb(167, 167, 167);
+	--body-background: rgb(206, 202, 202);
 	--show-name-bg: #382a38;
+	--episode-name-bg: #550303;
 	--show-name: #360507;
 	--search-info-bg: rgb(41, 40, 40);
 	--dark-rich-blue: rgb(0, 26, 35);
 	--select-items-bg: rgb(65, 64, 64);
 	--dark-red: rgb(129, 1, 1);
 	--wrapper-bg: rgb(248, 251, 252);
-	--buttons-bg: #373459;
+	--buttons-bg: rgb(29, 27, 27);
 	--white: white;
 	--aliceblue: aliceblue;
-	--box-shadow: rgb(146, 146, 146);
+	--box-shadow: rgb(194, 191, 191);
 }
 body {
 	background-color: var(--body-background);
@@ -28,15 +29,14 @@ body {
 	box-sizing: border-box;
 }
 
-.header,
-.episodes-header {
+.header {
 	display: flex;
 	align-items: center;
 	gap: 1rem;
 	height: 64px;
 	background-image: url(./images/header-bg.webp);
+	background-clip: border-box;
 	width: 100%;
-	/* color: antiquewhite; */
 	font-family: var(--header-font);
 }
 
@@ -157,7 +157,7 @@ body {
 
 .search-bar,
 .episodes-search-bar {
-	padding: 6px 4px 6px 40px;
+	padding: 6px 4px 6px 32px;
 	font-family: var(--secondary-font);
 	width: 90%;
 	font-size: 1rem;
@@ -233,7 +233,7 @@ body {
 
 .nav-link:hover,
 .episodes-link:hover {
-	background-color: #2b284d;
+	background-color: rgb(36, 33, 33);
 	color: var(--aliceblue);
 }
 
@@ -278,8 +278,7 @@ body {
 	margin: 0 auto;
 }
 
-.wrapper,
-.episode-wrapper {
+.wrapper {
 	height: 100%;
 	width: 100%;
 	text-align: center;
@@ -295,27 +294,29 @@ body {
 	width: 100%;
 	margin: auto;
 	text-align: center;
-	padding: 12px 0;
-	border-radius: 8px;
 	background-color: #382a38;
 	background-color: var(--show-name-bg);
 	color: aliceblue;
 	font-size: 1rem;
+	font-weight: 400;
 	cursor: pointer;
 	margin-top: 0;
 }
+.wrapper .name {
+	padding: 12px 2px;
+	border-radius: 7px;
+}
 .wrapper .episode-name {
-	background-color: #373459;
-	background-color: #282929;
-	background-color: var(--show-name);
+	padding: 8px 2px;
+	border-radius: 4px;
+	background-color: var(--episode-name-bg);
 }
 
 .name:hover {
 	background-color: #301f30;
 }
 .episode-name:hover {
-	background-color: #333333;
-	background-color: rgb(37, 3, 3);
+	background-color: #610202;
 }
 
 .show-info {
@@ -490,6 +491,9 @@ body {
 	.custom-select,
 	.custom-select-episode {
 		width: 30%;
+	}
+	.nav-links-plus-name {
+		width: 97%;
 	}
 	/* .episodes-search-bar {
 		width: 90%;

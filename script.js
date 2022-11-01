@@ -61,7 +61,7 @@ function populatePage(arr) {
 }
 
 const createShowName = (show, parent) => {
-	let showName = document.createElement('h3');
+	let showName = document.createElement('h5');
 	showName.setAttribute('class', 'name');
 	parent.appendChild(showName);
 	showName.innerHTML = show.name;
@@ -70,7 +70,7 @@ const createShowName = (show, parent) => {
 };
 
 const createEpisodeName = (episode, parent) => {
-	let episodeName = document.createElement('h2');
+	let episodeName = document.createElement('h5');
 	parent.appendChild(episodeName);
 	episodeName.innerHTML = `${episode.name} - ${episodeCode(
 		episode.season,
@@ -185,6 +185,9 @@ const showNameEvent = (e) => {
 	document.getElementById('episode-option').innerHTML = currentShowName;
 	document.getElementById('show-name').innerHTML = currentShowName;
 	searchBar.placeholder = currentShowName;
+	document.querySelector('.header').style.backgroundImage = "url('./images/darkred-bg.jpg')";
+	document.querySelector('.footer').style.backgroundImage =
+		"url('./images/darkred-bg.jpg')";
 	window.scrollTo(0, 0);
 };
 
@@ -276,12 +279,12 @@ const search = (arr) => {
 			allEpisodesLayout();
 			backToEpisodes.style.display = 'block';
 			backToEpisodes.disabled = false;
-			backToEpisodes.style.backgroundColor = '#373459';
+			backToEpisodes.style.backgroundColor = 'var(--buttons-bg)';
 			backToEpisodes.onmouseenter = function () {
-				this.style.backgroundColor = '#2b284d';
+				this.style.backgroundColor = 'rgb(36, 33, 33)';
 			};
 			backToEpisodes.onmouseleave = function () {
-				this.style.backgroundColor = '#373459';
+				this.style.backgroundColor = 'var(--buttons-bg)';
 			};
 			backToEpisodes.style.cursor = 'pointer';
 		}
@@ -307,6 +310,10 @@ backToShows.addEventListener('click', (e) => {
 	customSelectWrapper.style.display = 'flex';
 	searchInfoWrapper.style.display = 'none';
 	searchBar.placeholder = 'Search for shows';
+	document.querySelector('.header').style.backgroundImage =
+		'url(./images/header-bg.webp)';
+	document.querySelector('.footer').style.backgroundImage =
+		'url(./images/header-bg.webp)';
 });
 
 const resetRootAndSelect = () => {
@@ -478,12 +485,12 @@ const oneEpisodeLayout = (episode, container) => {
 	rootElement.style.display = 'block';
 	searchBarWrapper.style.display = 'none';
 	backToEpisodes.disabled = false;
-	backToEpisodes.style.backgroundColor = '#373459';
+	backToEpisodes.style.backgroundColor = 'var(--buttons-bg)';
 	backToEpisodes.onmouseenter = function () {
-		this.style.backgroundColor = '#2b284d';
+		this.style.backgroundColor = 'rgb(36, 33, 33)';
 	};
 	backToEpisodes.onmouseleave = function () {
-		this.style.backgroundColor = '#373459';
+		this.style.backgroundColor = 'var(--buttons-bg)';
 	};
 	backToEpisodes.style.cursor = 'pointer';
 	container.style.width = '100%';
@@ -598,6 +605,10 @@ const createCustomSelect = (arr) => {
 					resetEpisodeSelect();
 					loadShows();
 					allEpisodesLayout();
+					document.querySelector('.header').style.backgroundImage =
+						"url('./images/darkred-bg.jpg')";
+					document.querySelector('.footer').style.backgroundImage =
+						"url('./images/darkred-bg.jpg')";
 					document.getElementById('episode-option').innerHTML = this.innerHTML;
 					document.getElementById('show-name').innerHTML = this.innerHTML;
 					searchBar.placeholder = this.innerHTML;
