@@ -8,7 +8,7 @@ const episodesCustomSelectWrapper = document.querySelector(
 	'.episode-custom-select-wrapper'
 );
 let url = 'https://api.tvmaze.com/shows';
-let shows, showId;
+let shows, showId, currentShowName;
 let backupShows = [];
 
 //Getting shows' api data
@@ -166,7 +166,7 @@ const createSelectOptions = (show) => {
 };
 
 const showNameEvent = (e) => {
-	let currentShowName = e.target.innerText;
+	currentShowName = e.target.innerText;
 	showId = e.target.id;
 	url = `https://api.tvmaze.com/shows/${showId}/episodes`;
 	rootElement.innerHTML = '';
@@ -174,6 +174,8 @@ const showNameEvent = (e) => {
 	resetEpisodeSelect();
 	loadShows();
 	allEpisodesLayout();
+	searchBar.value = '';
+	searchInfoWrapper.style.display = 'none';
 	episodesCustomSelectWrapper.style.display = 'flex';
 	customSelectWrapper.style.display = 'none';
 	document.getElementById('episode-option').innerHTML = currentShowName;
@@ -217,7 +219,8 @@ const searchInfo = document.querySelector('.search-info');
 const search = (shows) => {
 	searchBar.addEventListener('keyup', (e) => {
 		e.preventDefault();
-		rootElement.style.margin = '2rem auto';
+		searchInfoWrapper.style.display = 'flex';
+		searchInfoWrapper.style.margin = '1rem auto';
 		let searchValue = e.target.value.toLowerCase();
 		let originalImage;
 		let searchResult = shows.filter((show) => {
@@ -257,7 +260,6 @@ const search = (shows) => {
 		if (searchResult.length === 1 && !searchResult[0].genres)
 			oneEpisodeSearchLayout(searchResult);
 		if (searchValue === '' || searchResult.length > 1) allShowsLayout();
-		searchInfoWrapper.style.display = 'flex';
 		if (searchResult.length < shows.length) {
 			backToShows.style.display = 'inline-flex';
 			navContainer.style.display = 'flex';
@@ -276,6 +278,11 @@ const search = (shows) => {
 			};
 			backToEpisodes.style.cursor = 'pointer';
 		}
+		if (searchValue === '' && !shows[0].genres) {
+			searchInfoWrapper.style.display = 'none';
+			searchBar.placeholder = currentShowName;
+			allEpisodesLayout();
+		}
 	});
 };
 
@@ -291,6 +298,8 @@ backToShows.addEventListener('click', (e) => {
 	addPlaceholder();
 	episodesCustomSelectWrapper.style.display = 'none';
 	customSelectWrapper.style.display = 'flex';
+	searchInfoWrapper.style.display = 'none';
+	searchBar.placeholder = 'Search for shows';
 });
 
 const resetRootAndSelect = () => {
@@ -329,12 +338,8 @@ const oneShowLayout = (img) => {
 
 const allShowsLayout = () => {
 	rootElement.style.display = 'grid';
-	searchInfoWrapper.style.display = 'none';
 	searchBarWrapper.style.display = 'block';
-	// backToShows.style.display = 'inline-flex';
 	navContainer.style.display = 'none';
-	// navContainer.style.margin = '1rem auto 0 auto';
-	// backToShows.style.display = 'none';
 	if (window.innerWidth >= 1340) {
 		rootElement.style.width = '97%';
 	} else if (window.innerWidth >= 1040) {
@@ -371,9 +376,11 @@ backToEpisodes.addEventListener('click', function (e) {
 	resetEpisodeSelect();
 	populatePage(shows);
 	allEpisodesLayout();
+	createCustomSelect(shows);
 	episodesCustomSelectWrapper.style.display = 'flex';
 	customSelectWrapper.style.display = 'none';
-	createCustomSelect(shows);
+	searchBar.value = '';
+	searchInfoWrapper.style.display = 'none';
 });
 
 const clearPlaceholder = () => {
@@ -382,7 +389,12 @@ const clearPlaceholder = () => {
 
 const addPlaceholder = () => {
 	searchBar.value = '';
-	searchBar.placeholder = 'Search for shows';
+	if (shows[0].genres) {
+		searchBar.placeholder = 'Search for shows';
+	} else {
+		searchBar.placeholder = currentShowName;
+	}
+	
 };
 
 const searchBarWrapper = document.querySelector('.search-container');
@@ -409,7 +421,6 @@ const allEpisodesLayout = () => {
 	navContainer.style.display = 'flex';
 	navContainer.style.justifyContent = 'space-between';
 	navContainer.style.margin = '1rem auto 0 auto';
-	searchInfoWrapper.style.display = 'none';
 	if (window.innerWidth >= 1340) {
 		rootElement.style.width = '97%';
 	} else if (window.innerWidth >= 1040) {
@@ -581,6 +592,7 @@ const createCustomSelect = (arr) => {
 					document.getElementById('episode-option').innerHTML = this.innerHTML;
 					document.getElementById('show-name').innerHTML = this.innerHTML;
 					searchBar.placeholder = this.innerHTML;
+					currentShowName = this.innerHTML;
 					backToShows.style.display = 'block';
 					searchBar.value = '';
 					rootElement.innerHTML = '';
