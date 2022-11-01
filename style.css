@@ -187,6 +187,7 @@ body {
 	display: flex;
 	/* display: none; */
 	width: 85%;
+	margin-bottom: 1rem;
 	/* flex-direction: column; */
 	/* margin: auto; */
 	justify-content: flex-start;

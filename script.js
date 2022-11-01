@@ -8,8 +8,7 @@ const episodesCustomSelectWrapper = document.querySelector(
 	'.episode-custom-select-wrapper'
 );
 let url = 'https://api.tvmaze.com/shows';
-let shows, showId, currentShowName;
-let backupShows = [];
+let sortedShows, episodes, showId, currentShowName;
 
 //Getting shows' api data
 const loadShows = async () => {
@@ -17,12 +16,17 @@ const loadShows = async () => {
 		const response = await fetch(url);
 		data = await response.json();
 		if (url === 'https://api.tvmaze.com/shows') {
-			backupShows = [...data];
+			sortedShows = [...data];
+			sortedShows.sort((a, b) => a.name.localeCompare(b.name));
+			populatePage(sortedShows);
+			search(sortedShows);
+			createCustomSelect(sortedShows);
+		} else {
+			episodes = data;
+			populatePage(episodes);
+			search(episodes);
+			createCustomSelect(episodes);
 		}
-		shows = data;
-		populatePage(shows);
-		search(shows);
-		createCustomSelect(shows);
 	} catch (err) {
 		console.error(err);
 	}
@@ -216,14 +220,14 @@ let customSelectEpisode = document.getElementsByClassName(
 );
 const searchInfoWrapper = document.querySelector('.search-info-wrapper');
 const searchInfo = document.querySelector('.search-info');
-const search = (shows) => {
+const search = (arr) => {
 	searchBar.addEventListener('keyup', (e) => {
 		e.preventDefault();
 		searchInfoWrapper.style.display = 'flex';
 		searchInfoWrapper.style.margin = '1rem auto';
 		let searchValue = e.target.value.toLowerCase();
 		let originalImage;
-		let searchResult = shows.filter((show) => {
+		let searchResult = arr.filter((show) => {
 			if (
 				show.genres &&
 				(show.name.toLowerCase().includes(searchValue) ||
@@ -251,16 +255,19 @@ const search = (shows) => {
 		populatePage(searchResult);
 		createCustomSelect(searchResult);
 		if (searchResult.length && searchResult[0].genres) {
-			searchInfo.innerHTML = `Displaying ${searchResult.length}/${shows.length} shows`;
+			searchInfo.innerHTML = `Displaying ${searchResult.length}/${arr.length} shows`;
 		} else {
-			searchInfo.innerHTML = `Displaying ${searchResult.length}/${shows.length} episodes`;
+			searchInfo.innerHTML = `Displaying ${searchResult.length}/${arr.length} episodes`;
 		}
 		if (searchResult.length === 1 && searchResult[0].genres)
 			oneShowLayout(originalImage);
 		if (searchResult.length === 1 && !searchResult[0].genres)
 			oneEpisodeSearchLayout(searchResult);
-		if (searchValue === '' || searchResult.length > 1) allShowsLayout();
-		if (searchResult.length < shows.length) {
+		if (searchValue === '') {
+			allShowsLayout();
+			searchInfoWrapper.style.display = 'none';
+		}
+		if (searchResult.length < arr.length) {
 			backToShows.style.display = 'inline-flex';
 			navContainer.style.display = 'flex';
 			navContainer.style.margin = '1rem auto -1rem auto';
@@ -278,7 +285,7 @@ const search = (shows) => {
 			};
 			backToEpisodes.style.cursor = 'pointer';
 		}
-		if (searchValue === '' && !shows[0].genres) {
+		if (searchValue === '' && !arr[0].genres) {
 			searchInfoWrapper.style.display = 'none';
 			searchBar.placeholder = currentShowName;
 			allEpisodesLayout();
@@ -291,10 +298,10 @@ backToShows.addEventListener('click', (e) => {
 	e.preventDefault();
 	rootElement.innerHTML = '';
 	resetRootAndSelect();
-	populatePage(backupShows);
+	populatePage(sortedShows);
+	createCustomSelect(sortedShows);
 	allShowsLayout();
-	createCustomSelect(backupShows);
-	search(backupShows);
+	search(sortedShows);
 	addPlaceholder();
 	episodesCustomSelectWrapper.style.display = 'none';
 	customSelectWrapper.style.display = 'flex';
@@ -374,9 +381,9 @@ const backToEpisodes = document.getElementById('episodes-navigation-link');
 backToEpisodes.addEventListener('click', function (e) {
 	e.preventDefault();
 	resetEpisodeSelect();
-	populatePage(shows);
+	populatePage(episodes);
 	allEpisodesLayout();
-	createCustomSelect(shows);
+	createCustomSelect(episodes);
 	episodesCustomSelectWrapper.style.display = 'flex';
 	customSelectWrapper.style.display = 'none';
 	searchBar.value = '';
@@ -389,18 +396,17 @@ const clearPlaceholder = () => {
 
 const addPlaceholder = () => {
 	searchBar.value = '';
-	if (shows[0].genres) {
+	if (customSelectWrapper.style.display !== 'none') {
 		searchBar.placeholder = 'Search for shows';
 	} else {
 		searchBar.placeholder = currentShowName;
 	}
-	
 };
 
 const searchBarWrapper = document.querySelector('.search-container');
 
 const episodeNameEvent = (e) => {
-	let clickedEpisode = shows.filter((episode) => {
+	let clickedEpisode = episodes.filter((episode) => {
 		return (
 			episode.name === e.target.innerText.split(' ').slice(0, -2).join(' ')
 		);
@@ -427,7 +433,10 @@ const allEpisodesLayout = () => {
 		rootElement.style.width = '95%';
 	} else if (window.innerWidth >= 690) {
 		rootElement.style.width = '90%';
-	} else rootElement.style.width = '85%';
+	} else {
+		rootElement.style.width = '85%';
+		navContainer.style.margin = '1rem auto';
+	}
 	backToEpisodes.disabled = true;
 	backToEpisodes.style.backgroundColor = 'gray';
 	backToEpisodes.onmouseenter = function () {
@@ -594,11 +603,12 @@ const createCustomSelect = (arr) => {
 					searchBar.placeholder = this.innerHTML;
 					currentShowName = this.innerHTML;
 					backToShows.style.display = 'block';
-					searchBar.value = '';
 					rootElement.innerHTML = '';
+					searchBar.value = '';
+					searchInfoWrapper.style.display = 'none';
 				}
 			} else {
-				searchBar.value = '';
+				// searchBar.value = '';
 				let episode = document.querySelectorAll('.wrapper');
 				let checkerShow = this.textContent.split(' ').slice(2).join(' ');
 				for (let i = 0; i < episode.length; i++) {
