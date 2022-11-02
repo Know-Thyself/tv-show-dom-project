@@ -15,7 +15,7 @@ const loadShows = async () => {
 	try {
 		const response = await fetch(url);
 		data = await response.json();
-		if (url === 'https://api.tvmaze.com/shows') {
+		if (!data[0].season) {
 			sortedShows = [...data];
 			sortedShows.sort((a, b) => a.name.localeCompare(b.name));
 			populatePage(sortedShows);
@@ -61,7 +61,7 @@ function populatePage(arr) {
 }
 
 const createShowName = (show, parent) => {
-	let showName = document.createElement('h5');
+	let showName = document.createElement('h4');
 	showName.setAttribute('class', 'name');
 	parent.appendChild(showName);
 	showName.innerHTML = show.name;

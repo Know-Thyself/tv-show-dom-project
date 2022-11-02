@@ -2,10 +2,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Lato&family=Merriweather:ital@1&family=Montserrat:wght@300;800&family=Poppins&display=swap');
 
 :root {
-	--primary-font: 'Lato', sans-serif;
-	--header-font: 'Montserrat', sans-serif;
-	--secondary-font: 'Merriweather', serif;
-	--show-name-font: 'Alfa Slab One', cursive;
+	--primary-font: 'Montserrat', sans-serif;
+	--secondary-font: 'Lato', sans-serif;
+	--readable-font: 'Merriweather', serif;
+	--header-font: 'Alfa Slab One', cursive;
 	--show-info-font: 'Marck Script', cursive;
 	--body-background: rgb(206, 202, 202);
 	--show-name-bg: #382a38;
@@ -18,12 +18,12 @@
 	--wrapper-bg: rgb(248, 251, 252);
 	--buttons-bg: rgb(29, 27, 27);
 	--white: white;
-	--aliceblue: aliceblue;
+	--white-2: rgb(248, 251, 252);
+	--black: black;
 	--box-shadow: rgb(194, 191, 191);
 }
 body {
 	background-color: var(--body-background);
-	font-family: var(--primary-font);
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
@@ -37,7 +37,7 @@ body {
 	background-image: url(./images/header-bg.webp);
 	background-clip: border-box;
 	width: 100%;
-	font-family: var(--header-font);
+	font-family: var(--primary-font);
 }
 
 .logo,
@@ -65,8 +65,7 @@ body {
 .custom-select,
 .custom-select-episode {
 	position: relative;
-	font-family: Arial;
-	font-family: var(--secondary-font);
+	font-family: var(--readable-font);
 	width: 100%;
 }
 
@@ -116,7 +115,7 @@ body {
 	left: 0;
 	right: 0;
 	z-index: 99;
-	max-height: 80vh;
+	max-height: 424px;
 	overflow-y: scroll;
 }
 
@@ -158,7 +157,7 @@ body {
 .search-bar,
 .episodes-search-bar {
 	padding: 6px 4px 6px 32px;
-	font-family: var(--secondary-font);
+	font-family: var(--readable-font);
 	width: 90%;
 	font-size: 1rem;
 	border: 1px solid var(--white);
@@ -185,48 +184,36 @@ body {
 
 .nav-links-plus-name {
 	display: flex;
-	/* display: none; */
 	width: 85%;
 	margin-bottom: 1rem;
-	/* flex-direction: column; */
-	/* margin: auto; */
 	justify-content: flex-start;
 	align-items: center;
-	/* margin: 1rem auto; */
-	/* margin: auto; */
-	/* margin: auto;
-	margin-bottom: 0; */
-	/* background-color: rgb(5, 58, 92);
-	background-color: rgb(97, 96, 96); */
 }
 
 .nav-link {
-	text-decoration: none;
-	/* text-align: center; */
-	text-transform: uppercase;
-	font-weight: 500;
-	width: fit-content;
-	color: var(--aliceblue);
+	font-family: var(--primary-font);
 	background-color: var(--buttons-bg);
-	display: inline-flex;
+	color: var(--white);
+	text-decoration: none;
+	text-transform: uppercase;
+	/* font-weight: 600; */
+	width: fit-content;
 	display: none;
-	/* position: relative; */
 	border-radius: 4px;
 	cursor: pointer;
 	white-space: nowrap;
 	text-decoration: none;
 	border: none;
-	padding: 0.5rem 0.75rem;
+	padding: 0.65rem 0.75rem;
 }
 
 .show-name {
-	font-family: var(--primary-font);
-	font-family: var(--show-name-font);
+	font-family: var(--secondary-font);
+	font-family: var(--header-font);
 	font-family: 'Rye', cursive;
 	color: rgb(41, 40, 40);
 	color: var(--show-name);
 	text-align: center;
-	/* padding: 0.35rem 0; */
 	font-size: large;
 	display: none;
 }
@@ -234,7 +221,6 @@ body {
 .nav-link:hover,
 .episodes-link:hover {
 	background-color: rgb(36, 33, 33);
-	color: var(--aliceblue);
 }
 
 .episodes-link {
@@ -296,9 +282,7 @@ body {
 	text-align: center;
 	background-color: #382a38;
 	background-color: var(--show-name-bg);
-	color: aliceblue;
-	font-size: 1rem;
-	font-weight: 400;
+	color: var(--white);
 	cursor: pointer;
 	margin-top: 0;
 }
@@ -310,6 +294,7 @@ body {
 	padding: 8px 2px;
 	border-radius: 4px;
 	background-color: var(--episode-name-bg);
+	font-family: var(--secondary-font);
 }
 
 .name:hover {
@@ -328,7 +313,7 @@ body {
 .status,
 .rating,
 .runtime {
-	font-family: var(--primary-font);
+	font-family: var(--secondary-font);
 	font-size: 0.75rem;
 	margin: 0;
 	font-weight: 600;
@@ -340,18 +325,18 @@ body {
 .empty-div {
 	width: 100%;
 	margin-top: 4px;
-	background-color: darkred;
-	border-bottom: ridge 1px black;
-	height: 1px;
+	background-color: var(--body-background);
+	height: 6px;
+	border-top: solid var(--show-name-bg);
 }
 .summary {
-	font-family: var(--secondary-font);
+	font-family: var(--readable-font);
 	text-align: left;
 	font-size: 0.9rem;
 	width: 90%;
 	margin: 0 auto;
-	color: black;
-	background-color: rgb(248, 251, 252);
+	color: var(--dark-rich-blue);
+	background-color: var(--white-2);
 	border: none;
 	text-decoration: none;
 	outline: none;
@@ -364,7 +349,7 @@ body {
 .read-more,
 .read-less {
 	display: inline;
-	font-family: var(--secondary-font);
+	font-family: var(--readable-font);
 	border: none;
 	text-decoration: none;
 	outline: none;
@@ -432,7 +417,7 @@ body {
 	left: 0;
 }
 .data-info {
-	color: var(--aliceblue);
+	color: var(--white);
 	font-size: large;
 }
 
