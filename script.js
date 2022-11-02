@@ -2,7 +2,7 @@
 const mainElement = document.getElementById('main-wrapper');
 const rootElement = document.getElementById('root');
 const searchBar = document.querySelector('.search-bar');
-const navContainer = mainElement.querySelector('.nav-links-plus-name');
+const navContainer = mainElement.querySelector('.nav-container');
 const customSelectWrapper = document.querySelector('.custom-select-wrapper');
 const episodesCustomSelectWrapper = document.querySelector(
 	'.episode-custom-select-wrapper'
@@ -185,7 +185,8 @@ const showNameEvent = (e) => {
 	document.getElementById('episode-option').innerHTML = currentShowName;
 	document.getElementById('show-name').innerHTML = currentShowName;
 	searchBar.placeholder = currentShowName;
-	document.querySelector('.header').style.backgroundImage = "url('./images/darkred-bg.jpg')";
+	document.querySelector('.header').style.backgroundImage =
+		"url('./images/darkred-bg.jpg')";
 	document.querySelector('.footer').style.backgroundImage =
 		"url('./images/darkred-bg.jpg')";
 	window.scrollTo(0, 0);
@@ -201,6 +202,7 @@ const readMore = (e) => {
 	for (let i = 0; i < allParents.length; i++) {
 		if (allParents[i].id === parent.id) {
 			allParents[i].style.height = '100%';
+			allParents[i].style.paddingBottom = '0.5rem';
 		} else {
 			allParents[i].style.height = 'fit-content';
 			allParents[i].style.marginTop = '0';
@@ -216,6 +218,7 @@ const readLess = (e) => {
 	readLess.classList.toggle('d-none');
 	for (let i = 0; i < allParents.length; i++) {
 		allParents[i].style.height = '100%';
+		allParents[i].style.paddingBottom = '0';
 	}
 };
 let customSelectEpisode = document.getElementsByClassName(
@@ -226,29 +229,21 @@ const searchInfo = document.querySelector('.search-info');
 const search = (arr) => {
 	searchBar.addEventListener('keyup', (e) => {
 		e.preventDefault();
-		searchInfoWrapper.style.display = 'flex';
-		searchInfoWrapper.style.margin = '1rem auto';
 		let searchValue = e.target.value.toLowerCase();
+		searchInfoWrapper.style.display = 'block';
+		if (arr === episodes) {
+			searchEpisodes(arr, searchValue);
+			return;
+		}
 		let originalImage;
 		let searchResult = arr.filter((show) => {
 			if (
-				show.genres &&
-				(show.name.toLowerCase().includes(searchValue) ||
-					show.summary
-						.replace(/(<([^>]+)>)/gi, '')
-						.toLowerCase()
-						.includes(searchValue) ||
-					show.genres.toString().toLowerCase().includes(searchValue))
-			) {
-				originalImage = show.image.original;
-				return show;
-			} else if (
-				!show.genres &&
-				(show.name.toLowerCase().includes(searchValue) ||
-					show.summary
-						.replace(/(<([^>]+)>)/gi, '')
-						.toLowerCase()
-						.includes(searchValue))
+				show.name.toLowerCase().includes(searchValue) ||
+				show.summary
+					.replace(/(<([^>]+)>)/gi, '')
+					.toLowerCase()
+					.includes(searchValue) ||
+				show.genres.toString().toLowerCase().includes(searchValue)
 			) {
 				originalImage = show.image.original;
 				return show;
@@ -257,43 +252,55 @@ const search = (arr) => {
 		resetRootAndSelect();
 		populatePage(searchResult);
 		createCustomSelect(searchResult);
-		if (searchResult.length && searchResult[0].genres) {
-			searchInfo.innerHTML = `Displaying ${searchResult.length}/${arr.length} shows`;
-		} else {
-			searchInfo.innerHTML = `Displaying ${searchResult.length}/${arr.length} episodes`;
-		}
-		if (searchResult.length === 1 && searchResult[0].genres)
-			oneShowLayout(originalImage);
-		if (searchResult.length === 1 && !searchResult[0].genres)
-			oneEpisodeSearchLayout(searchResult);
+		searchInfo.innerHTML = `Displaying ${searchResult.length}/${arr.length} shows`;
+		navContainer.style.height = 'min-content';
+		if (searchResult.length === 1) oneShowLayout(originalImage);
+		if (searchValue === '' || searchResult.length > 1) allShowsLayout();
 		if (searchValue === '') {
-			allShowsLayout();
 			searchInfoWrapper.style.display = 'none';
-		}
-		if (searchResult.length < arr.length) {
-			backToShows.style.display = 'inline-flex';
-			navContainer.style.display = 'flex';
-			navContainer.style.margin = '1rem auto -1rem auto';
-		}
-		if (searchResult.length > 1 && !searchResult[0].genres) {
-			allEpisodesLayout();
-			backToEpisodes.style.display = 'block';
-			backToEpisodes.disabled = false;
-			backToEpisodes.style.backgroundColor = 'var(--buttons-bg)';
-			backToEpisodes.onmouseenter = function () {
-				this.style.backgroundColor = 'rgb(36, 33, 33)';
-			};
-			backToEpisodes.onmouseleave = function () {
-				this.style.backgroundColor = 'var(--buttons-bg)';
-			};
-			backToEpisodes.style.cursor = 'pointer';
-		}
-		if (searchValue === '' && !arr[0].genres) {
-			searchInfoWrapper.style.display = 'none';
-			searchBar.placeholder = currentShowName;
-			allEpisodesLayout();
+			navContainer.style.height = '0';
 		}
 	});
+};
+
+const searchEpisodes = (episodes, val) => {
+	let originalImage;
+	let searchResult = episodes.filter((episode) => {
+		if (
+			episode.name.toLowerCase().includes(val) ||
+			episode.summary
+				.replace(/(<([^>]+)>)/gi, '')
+				.toLowerCase()
+				.includes(val)
+		) {
+			originalImage = episode.image.original;
+			return episode;
+		}
+	});
+	resetRootAndSelect();
+	populatePage(searchResult);
+	createCustomSelect(searchResult);
+	searchInfo.innerHTML = `Displaying ${searchResult.length}/${episodes.length} episodes`;
+	if (searchResult.length === 1) oneEpisodeSearchLayout(searchResult);
+	if (searchResult.length > 1) {
+		allEpisodesLayout();
+		// backToEpisodes.style.display = 'block';
+		backToEpisodes.style.opacity = '1';
+		backToEpisodes.disabled = false;
+		backToEpisodes.style.backgroundColor = 'var(--buttons-bg)';
+		backToEpisodes.onmouseenter = function () {
+			this.style.backgroundColor = 'rgb(36, 33, 33)';
+		};
+		backToEpisodes.onmouseleave = function () {
+			this.style.backgroundColor = 'var(--buttons-bg)';
+		};
+		backToEpisodes.style.cursor = 'pointer';
+	}
+	if (val === '') {
+		searchInfoWrapper.style.display = 'none';
+		searchBar.placeholder = currentShowName;
+		allEpisodesLayout();
+	}
 };
 
 const backToShows = document.getElementById('navigation-link');
@@ -339,6 +346,7 @@ const oneShowLayout = (img) => {
 	let currentContainer = rootElement.querySelector('.wrapper');
 	rootElement.style.display = 'block';
 	rootElement.style.width = '90%';
+	// searchInfoWrapper.style.marginTop = '-3rem';
 	if (window.innerWidth >= 500) {
 		let image = currentContainer.querySelector('img');
 		rootElement.style.width = '100%';
@@ -346,14 +354,14 @@ const oneShowLayout = (img) => {
 		image.style.objectFit = 'contain';
 		image.style.width = '100%';
 		image.src = img;
-		image.style.height = '70vh';
+		image.style.height = '50vh';
 	}
 };
 
 const allShowsLayout = () => {
 	rootElement.style.display = 'grid';
 	searchBarWrapper.style.display = 'block';
-	navContainer.style.display = 'none';
+	// navContainer.style.display = 'none';
 	if (window.innerWidth >= 1340) {
 		rootElement.style.width = '97%';
 	} else if (window.innerWidth >= 1040) {
@@ -430,8 +438,9 @@ const allEpisodesLayout = () => {
 	rootElement.style.display = 'grid';
 	rootElement.style.margin = '0 auto';
 	searchBarWrapper.style.display = 'block';
-	backToShows.style.display = 'inline-flex';
-	navContainer.style.display = 'flex';
+	// backToShows.style.display = 'inline-flex';
+	backToShows.style.opacity = '1';
+	// navContainer.style.display = 'flex';
 	navContainer.style.justifyContent = 'space-between';
 	navContainer.style.margin = '1rem auto 0 auto';
 	if (window.innerWidth >= 1340) {
@@ -478,8 +487,9 @@ const oneEpisodeSearchLayout = (arr) => {
 
 const oneEpisodeLayout = (episode, container) => {
 	searchInfoWrapper.style.display = 'none';
-	backToEpisodes.style.display = 'block';
-	navContainer.style.display = 'flex';
+	// backToEpisodes.style.display = 'block';
+	backToEpisodes.style.opacity = '1';
+	// navContainer.style.display = 'flex';
 	navContainer.style.marginBottom = '1rem';
 	navContainer.style.justifyContent = 'space-between';
 	rootElement.style.display = 'block';
@@ -613,7 +623,8 @@ const createCustomSelect = (arr) => {
 					document.getElementById('show-name').innerHTML = this.innerHTML;
 					searchBar.placeholder = this.innerHTML;
 					currentShowName = this.innerHTML;
-					backToShows.style.display = 'block';
+					// backToShows.style.display = 'block';
+					backToShows.style.opacity = '1';
 					rootElement.innerHTML = '';
 					searchBar.value = '';
 					searchInfoWrapper.style.display = 'none';
