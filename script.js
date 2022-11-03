@@ -179,6 +179,7 @@ const showNameEvent = (e) => {
 	loadShows();
 	allEpisodesLayout();
 	searchBar.value = '';
+	navContainer.style.height = 'auto';
 	searchInfoWrapper.style.display = 'none';
 	episodesCustomSelectWrapper.style.display = 'flex';
 	customSelectWrapper.style.display = 'none';
@@ -231,6 +232,8 @@ const search = (arr) => {
 		e.preventDefault();
 		let searchValue = e.target.value.toLowerCase();
 		searchInfoWrapper.style.display = 'block';
+		navContainer.style.height = 'auto';
+		backToShows.style.opacity = 1;
 		if (arr === episodes) {
 			searchEpisodes(arr, searchValue);
 			return;
@@ -253,13 +256,8 @@ const search = (arr) => {
 		populatePage(searchResult);
 		createCustomSelect(searchResult);
 		searchInfo.innerHTML = `Displaying ${searchResult.length}/${arr.length} shows`;
-		navContainer.style.height = 'min-content';
 		if (searchResult.length === 1) oneShowLayout(originalImage);
-		if (searchValue === '' || searchResult.length > 1) allShowsLayout();
-		if (searchValue === '') {
-			searchInfoWrapper.style.display = 'none';
-			navContainer.style.height = '0';
-		}
+		if (searchValue === '') allShowsLayout();
 	});
 };
 
@@ -281,6 +279,7 @@ const searchEpisodes = (episodes, val) => {
 	populatePage(searchResult);
 	createCustomSelect(searchResult);
 	searchInfo.innerHTML = `Displaying ${searchResult.length}/${episodes.length} episodes`;
+	searchInfoWrapper.style.backgroundColor = 'var(--episode-name-bg)';
 	if (searchResult.length === 1) oneEpisodeSearchLayout(searchResult);
 	if (searchResult.length > 1) {
 		allEpisodesLayout();
@@ -313,14 +312,6 @@ backToShows.addEventListener('click', (e) => {
 	allShowsLayout();
 	search(sortedShows);
 	addPlaceholder();
-	episodesCustomSelectWrapper.style.display = 'none';
-	customSelectWrapper.style.display = 'flex';
-	searchInfoWrapper.style.display = 'none';
-	searchBar.placeholder = 'Search for shows';
-	document.querySelector('.header').style.backgroundImage =
-		'url(./images/header-bg.webp)';
-	document.querySelector('.footer').style.backgroundImage =
-		'url(./images/header-bg.webp)';
 });
 
 const resetRootAndSelect = () => {
@@ -344,23 +335,34 @@ const resetRootAndSelect = () => {
 
 const oneShowLayout = (img) => {
 	let currentContainer = rootElement.querySelector('.wrapper');
-	rootElement.style.display = 'block';
-	rootElement.style.width = '90%';
-	// searchInfoWrapper.style.marginTop = '-3rem';
-	if (window.innerWidth >= 500) {
+	backToShows.style.opacity = 1;
+	if (window.innerWidth >= 690) {
 		let image = currentContainer.querySelector('img');
-		rootElement.style.width = '100%';
-		currentContainer.style.width = '60%';
+		rootElement.style.display = 'block';
+		currentContainer.style.width = '70%';
 		image.style.objectFit = 'contain';
-		image.style.width = '100%';
+		image.style.width = '80%';
+		image.style.margin = '0 auto';
 		image.src = img;
-		image.style.height = '50vh';
+		image.style.maxHeight = '600px';
 	}
 };
 
 const allShowsLayout = () => {
 	rootElement.style.display = 'grid';
 	searchBarWrapper.style.display = 'block';
+	episodesCustomSelectWrapper.style.display = 'none';
+	customSelectWrapper.style.display = 'flex';
+	searchInfoWrapper.style.backgroundColor = 'var(--search-info-bg)';
+	searchInfoWrapper.style.display = 'none';
+	searchBar.placeholder = 'Search for shows';
+	document.querySelector('.header').style.backgroundImage =
+		'url(./images/header-bg.webp)';
+	document.querySelector('.footer').style.backgroundImage =
+		'url(./images/header-bg.webp)';
+	backToShows.style.opacity = 0;
+	backToEpisodes.style.opacity = 0;
+	navContainer.style.height = '0';
 	// navContainer.style.display = 'none';
 	if (window.innerWidth >= 1340) {
 		rootElement.style.width = '97%';
@@ -469,20 +471,21 @@ const oneEpisodeSearchLayout = (arr) => {
 	let currentContainer = rootElement.querySelector('.wrapper');
 	currentContainer.style.width = '100%';
 	episodesCustomSelectWrapper.style.display = 'none';
-	if (window.innerWidth >= 500) {
-		let originalSizeImage = arr.map((episode) => episode.image.original);
-		let imageElem = currentContainer.querySelector('img');
-		imageElem.src = originalSizeImage[0];
+	let originalSizeImage = arr.map((episode) => episode.image.original);
+	let imageElem = currentContainer.querySelector('img');
+	if (window.innerWidth >= 690) {
 		rootElement.style.width = '70%';
-		imageElem.style.objectFit = 'contain';
-		imageElem.style.width = '80%';
-		imageElem.style.height = 'auto';
+		imageElem.style.maxHeight = '600px';
 	} else {
 		rootElement.style.width = '90%';
-		imageElem.style.width = '90%';
-		navContainer.style.margin = '1rem auto 0 auto';
-		navContainer.style.width = '90%';
+		imageElem.style.height = 'auto';
 	}
+	imageElem.src = originalSizeImage[0];
+	imageElem.style.objectFit = 'contain';
+	imageElem.style.width = '80%';
+	navContainer.style.margin = '1rem auto';
+	navContainer.style.width = '90%';
+	
 };
 
 const oneEpisodeLayout = (episode, container) => {

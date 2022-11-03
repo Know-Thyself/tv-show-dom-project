@@ -11,7 +11,7 @@
 	--show-name-bg: #382a38;
 	--episode-name-bg: #550303;
 	--show-name: #360507;
-	--search-info-bg: rgb(41, 40, 40);
+	--search-info-bg: #382a38;
 	--dark-rich-blue: rgb(0, 26, 35);
 	--select-items-bg: rgb(65, 64, 64);
 	--dark-red: rgb(129, 1, 1);
@@ -176,12 +176,12 @@ body {
 	opacity: 1;
 }
 
-.episodes-page-navigation {
+/* .episodes-page-navigation {
 	width: 90%;
 	margin: auto;
 	display: grid;
 	grid-template-columns: repeat(1, 1fr);
-}
+} */
 
 .nav-container {
 	display: flex;
@@ -235,9 +235,7 @@ body {
 
 .search-info-wrapper {
 	display: none;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+	text-align: center;
 	width: max-content;
 	padding: 0 2.5rem;
 	border-radius: 0 24px;
@@ -390,12 +388,12 @@ body {
 	.search-bar {
 		width: 80%;
 	}
-	.episodes-search-bar {
+	/* .episodes-search-bar {
 		width: 70%;
-	}
+	} */
 	.custom-select,
 	.custom-select-episode {
-		width: 60%;
+		width: 50%;
 	}
 }
 
@@ -436,6 +434,9 @@ body {
 		/* grid-auto-rows: minmax(fit-content, auto); */
 		/* grid-template-rows: fit-content;
     grid-auto-rows: auto; */
+		width: 95%;
+	}
+	.nav-container {
 		width: 95%;
 	}
 	.search-container,
@@ -486,7 +487,7 @@ body {
 	.custom-select-episode {
 		width: 30%;
 	}
-	.nav-conta {
+	.nav-container {
 		width: 97%;
 	}
 	/* .episodes-search-bar {
