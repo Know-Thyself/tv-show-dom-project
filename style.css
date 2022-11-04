@@ -166,9 +166,9 @@ body {
 	color: rgb(76, 76, 78);
 }
 
-.episodes-search-bar {
+/* .episodes-search-bar {
 	width: 75%;
-}
+} */
 
 ::placeholder {
 	font-size: 1rem;
@@ -241,6 +241,7 @@ body {
 	border-radius: 0 24px;
 	/* margin: 0 auto -1rem auto; */
 	background-color: var(--search-info-bg);
+	background-color: var(--white);
 }
 
 /* .episodes-search-info-wrapper {
@@ -252,6 +253,7 @@ body {
 .episodes-search-info,
 .episodes-search-info2 {
 	color: antiquewhite;
+	color: var(--dark-rich-blue);
 	text-align: center;
 	font-family: var(--show-info-font);
 	line-height: 0%;
@@ -342,8 +344,8 @@ body {
 	color: var(--dark-rich-blue);
 	background-color: var(--white-2);
 	border: none;
-	text-decoration: none;
-	outline: none;
+	/* text-decoration: none;
+	outline: none; */
 }
 
 .d-none {

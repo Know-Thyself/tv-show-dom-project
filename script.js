@@ -8,6 +8,7 @@ const episodesCustomSelectWrapper = document.querySelector(
 	'.episode-custom-select-wrapper'
 );
 let url = 'https://api.tvmaze.com/shows';
+let showsUrl = 'https://api.tvmaze.com/shows';
 let sortedShows, episodes, showId, currentShowName;
 
 //Getting shows' api data
@@ -15,7 +16,7 @@ const loadShows = async () => {
 	try {
 		const response = await fetch(url);
 		data = await response.json();
-		if (!data[0].season) {
+		if (url === showsUrl) {
 			sortedShows = [...data];
 			sortedShows.sort((a, b) => a.name.localeCompare(b.name));
 			populatePage(sortedShows);
@@ -142,21 +143,22 @@ createEmptyDiv = (parent) => {
 const createAndFormatSummary = (summary, parent) => {
 	if (summary) {
 		const truncatedText = summary.split(' ').slice(0, 25).join(' ');
-		let truncatedSummary = document.createElement('button');
+		let truncatedSummary = document.createElement('p');
 		truncatedSummary.className = 'summary';
 		parent.appendChild(truncatedSummary);
 		if (summary.length <= truncatedText.length) {
 			truncatedSummary.innerHTML = summary;
 		} else {
 			truncatedSummary.innerHTML = `${truncatedText} ... <span class="read-more">read more</span>`;
-			truncatedSummary.addEventListener('click', readMore);
+			let fullSummary = document.createElement('p');
+			fullSummary.setAttribute('class', 'd-none summary');
+			fullSummary.innerHTML = `${summary}<span class="read-less">read less</span>`;
+			parent.appendChild(fullSummary);
 		}
-		let fullSummary = document.createElement('button');
-		fullSummary.setAttribute('class', 'd-none summary');
-		fullSummary.innerHTML = `${summary}<span class="read-less">read less</span>`;
-		parent.appendChild(fullSummary);
-		truncatedSummary.addEventListener('click', readMore);
-		fullSummary.addEventListener('click', readLess);
+		let readMoreSpan = document.querySelectorAll('.read-more');
+		let readLessSpan = document.querySelectorAll('.read-less');
+		readMoreSpan.forEach((el) => el.addEventListener('click', readMore));
+		readLessSpan.forEach((el) => el.addEventListener('click', readLess));
 	}
 };
 
@@ -194,9 +196,9 @@ const showNameEvent = (e) => {
 };
 
 const readMore = (e) => {
-	let parent = e.target.parentElement.parentNode.parentElement;
-	let readMore = e.target.parentElement.parentNode;
-	let readLess = e.target.parentElement.parentNode.nextSibling;
+	let parent = e.target.parentElement.parentElement.parentElement;
+	let readMore = e.target.parentElement.parentElement;
+	let readLess = e.target.parentElement.parentElement.nextSibling;
 	let allParents = rootElement.querySelectorAll('.wrapper');
 	readMore.classList.toggle('d-none');
 	readLess.classList.toggle('d-none');
@@ -222,6 +224,7 @@ const readLess = (e) => {
 		allParents[i].style.paddingBottom = '0';
 	}
 };
+
 let customSelectEpisode = document.getElementsByClassName(
 	'custom-select-episode'
 );
@@ -234,6 +237,7 @@ const search = (arr) => {
 		searchInfoWrapper.style.display = 'block';
 		navContainer.style.height = 'auto';
 		backToShows.style.opacity = 1;
+		backToEpisodes.style.opacity = 0;
 		if (arr === episodes) {
 			searchEpisodes(arr, searchValue);
 			return;
@@ -256,6 +260,7 @@ const search = (arr) => {
 		populatePage(searchResult);
 		createCustomSelect(searchResult);
 		searchInfo.innerHTML = `Displaying ${searchResult.length}/${arr.length} shows`;
+		// searchInfoWrapper.style.backgroundColor = 'var(--search-info-bg)';
 		if (searchResult.length === 1) oneShowLayout(originalImage);
 		if (searchValue === '') allShowsLayout();
 	});
@@ -283,7 +288,6 @@ const searchEpisodes = (episodes, val) => {
 	if (searchResult.length === 1) oneEpisodeSearchLayout(searchResult);
 	if (searchResult.length > 1) {
 		allEpisodesLayout();
-		// backToEpisodes.style.display = 'block';
 		backToEpisodes.style.opacity = '1';
 		backToEpisodes.disabled = false;
 		backToEpisodes.style.backgroundColor = 'var(--buttons-bg)';
@@ -309,8 +313,8 @@ backToShows.addEventListener('click', (e) => {
 	resetRootAndSelect();
 	populatePage(sortedShows);
 	createCustomSelect(sortedShows);
-	allShowsLayout();
 	search(sortedShows);
+	allShowsLayout();
 	addPlaceholder();
 });
 
@@ -353,7 +357,6 @@ const allShowsLayout = () => {
 	searchBarWrapper.style.display = 'block';
 	episodesCustomSelectWrapper.style.display = 'none';
 	customSelectWrapper.style.display = 'flex';
-	searchInfoWrapper.style.backgroundColor = 'var(--search-info-bg)';
 	searchInfoWrapper.style.display = 'none';
 	searchBar.placeholder = 'Search for shows';
 	document.querySelector('.header').style.backgroundImage =
@@ -485,7 +488,6 @@ const oneEpisodeSearchLayout = (arr) => {
 	imageElem.style.width = '80%';
 	navContainer.style.margin = '1rem auto';
 	navContainer.style.width = '90%';
-	
 };
 
 const oneEpisodeLayout = (episode, container) => {
