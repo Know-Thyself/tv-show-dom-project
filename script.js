@@ -236,7 +236,7 @@ const search = (arr) => {
 		let searchValue = e.target.value.toLowerCase();
 		searchInfoWrapper.style.display = 'block';
 		navContainer.style.height = 'auto';
-		backToShows.style.opacity = 1;
+		// backToShows.style.opacity = 1;
 		backToEpisodes.style.opacity = 0;
 		if (arr === episodes) {
 			searchEpisodes(arr, searchValue);
@@ -260,7 +260,6 @@ const search = (arr) => {
 		populatePage(searchResult);
 		createCustomSelect(searchResult);
 		searchInfo.innerHTML = `Displaying ${searchResult.length}/${arr.length} shows`;
-		// searchInfoWrapper.style.backgroundColor = 'var(--search-info-bg)';
 		if (searchResult.length === 1) oneShowLayout(originalImage);
 		if (searchValue === '') allShowsLayout();
 	});
@@ -284,7 +283,8 @@ const searchEpisodes = (episodes, val) => {
 	populatePage(searchResult);
 	createCustomSelect(searchResult);
 	searchInfo.innerHTML = `Displaying ${searchResult.length}/${episodes.length} episodes`;
-	searchInfoWrapper.style.backgroundColor = 'var(--episode-name-bg)';
+	// searchInfoWrapper.style.backgroundColor = 'var(--episode-name-bg)';
+	// searchInfo.style.color = 'var(--white)';
 	if (searchResult.length === 1) oneEpisodeSearchLayout(searchResult);
 	if (searchResult.length > 1) {
 		allEpisodesLayout();
@@ -441,13 +441,10 @@ const episodeNameEvent = (e) => {
 
 const allEpisodesLayout = () => {
 	rootElement.style.display = 'grid';
-	rootElement.style.margin = '0 auto';
 	searchBarWrapper.style.display = 'block';
-	// backToShows.style.display = 'inline-flex';
+	navContainer.style.height = 'auto';
 	backToShows.style.opacity = '1';
-	// navContainer.style.display = 'flex';
 	navContainer.style.justifyContent = 'space-between';
-	navContainer.style.margin = '1rem auto 0 auto';
 	if (window.innerWidth >= 1340) {
 		rootElement.style.width = '97%';
 	} else if (window.innerWidth >= 1040) {
@@ -628,8 +625,6 @@ const createCustomSelect = (arr) => {
 					document.getElementById('show-name').innerHTML = this.innerHTML;
 					searchBar.placeholder = this.innerHTML;
 					currentShowName = this.innerHTML;
-					// backToShows.style.display = 'block';
-					backToShows.style.opacity = '1';
 					rootElement.innerHTML = '';
 					searchBar.value = '';
 					searchInfoWrapper.style.display = 'none';

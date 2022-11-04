@@ -11,7 +11,7 @@
 	--show-name-bg: #382a38;
 	--episode-name-bg: #550303;
 	--show-name: #360507;
-	--search-info-bg: #382a38;
+	--search-info-bg: #550303;
 	--dark-rich-blue: rgb(0, 26, 35);
 	--select-items-bg: rgb(65, 64, 64);
 	--dark-red: rgb(129, 1, 1);
@@ -241,21 +241,16 @@ body {
 	border-radius: 0 24px;
 	/* margin: 0 auto -1rem auto; */
 	background-color: var(--search-info-bg);
-	background-color: var(--white);
 }
 
 /* .episodes-search-info-wrapper {
 	margin: 1rem auto;
 } */
 
-.search-info,
-.search-info2,
-.episodes-search-info,
-.episodes-search-info2 {
-	color: antiquewhite;
-	color: var(--dark-rich-blue);
-	text-align: center;
+.search-info {
 	font-family: var(--show-info-font);
+	color: var(--white);
+	text-align: center;
 	line-height: 0%;
 	/* margin: -1rem auto; */
 }
