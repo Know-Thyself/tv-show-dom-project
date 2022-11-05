@@ -188,10 +188,6 @@ const showNameEvent = (e) => {
 	document.getElementById('episode-option').innerHTML = currentShowName;
 	document.getElementById('show-name').innerHTML = currentShowName;
 	searchBar.placeholder = currentShowName;
-	document.querySelector('.header').style.backgroundImage =
-		"url('./images/darkred-bg.jpg')";
-	document.querySelector('.footer').style.backgroundImage =
-		"url('./images/darkred-bg.jpg')";
 	window.scrollTo(0, 0);
 };
 
@@ -236,12 +232,15 @@ const search = (arr) => {
 		let searchValue = e.target.value.toLowerCase();
 		searchInfoWrapper.style.display = 'block';
 		navContainer.style.height = 'auto';
-		// backToShows.style.opacity = 1;
 		backToEpisodes.style.opacity = 0;
-		if (arr === episodes) {
+		if (!arr[0].status) {
 			searchEpisodes(arr, searchValue);
 			return;
-		}
+		} 
+		document.querySelector('.header').style.backgroundImage =
+			'url(./images/header-bg.webp)';
+		document.querySelector('.footer').style.backgroundImage =
+			'url(./images/header-bg.webp)';
 		let originalImage;
 		let searchResult = arr.filter((show) => {
 			if (
@@ -283,8 +282,6 @@ const searchEpisodes = (episodes, val) => {
 	populatePage(searchResult);
 	createCustomSelect(searchResult);
 	searchInfo.innerHTML = `Displaying ${searchResult.length}/${episodes.length} episodes`;
-	// searchInfoWrapper.style.backgroundColor = 'var(--episode-name-bg)';
-	// searchInfo.style.color = 'var(--white)';
 	if (searchResult.length === 1) oneEpisodeSearchLayout(searchResult);
 	if (searchResult.length > 1) {
 		allEpisodesLayout();
@@ -340,6 +337,7 @@ const resetRootAndSelect = () => {
 const oneShowLayout = (img) => {
 	let currentContainer = rootElement.querySelector('.wrapper');
 	backToShows.style.opacity = 1;
+	navContainer.style.height = 'auto';
 	if (window.innerWidth >= 690) {
 		let image = currentContainer.querySelector('img');
 		rootElement.style.display = 'block';
@@ -366,7 +364,6 @@ const allShowsLayout = () => {
 	backToShows.style.opacity = 0;
 	backToEpisodes.style.opacity = 0;
 	navContainer.style.height = '0';
-	// navContainer.style.display = 'none';
 	if (window.innerWidth >= 1340) {
 		rootElement.style.width = '97%';
 	} else if (window.innerWidth >= 1040) {
@@ -440,6 +437,10 @@ const episodeNameEvent = (e) => {
 };
 
 const allEpisodesLayout = () => {
+	document.querySelector('.header').style.backgroundImage =
+		"url('./images/darkred-bg.jpg')";
+	document.querySelector('.footer').style.backgroundImage =
+		"url('./images/darkred-bg.jpg')";
 	rootElement.style.display = 'grid';
 	searchBarWrapper.style.display = 'block';
 	navContainer.style.height = 'auto';
@@ -447,12 +448,16 @@ const allEpisodesLayout = () => {
 	navContainer.style.justifyContent = 'space-between';
 	if (window.innerWidth >= 1340) {
 		rootElement.style.width = '97%';
+		navContainer.style.width = '97%';
 	} else if (window.innerWidth >= 1040) {
 		rootElement.style.width = '95%';
+		navContainer.style.width = '95%';
 	} else if (window.innerWidth >= 690) {
 		rootElement.style.width = '90%';
+		navContainer.style.width = '90%';
 	} else {
 		rootElement.style.width = '85%';
+		navContainer.style.width = '85%';
 		navContainer.style.margin = '1rem auto';
 	}
 	backToEpisodes.disabled = true;
@@ -489,9 +494,7 @@ const oneEpisodeSearchLayout = (arr) => {
 
 const oneEpisodeLayout = (episode, container) => {
 	searchInfoWrapper.style.display = 'none';
-	// backToEpisodes.style.display = 'block';
 	backToEpisodes.style.opacity = '1';
-	// navContainer.style.display = 'flex';
 	navContainer.style.marginBottom = '1rem';
 	navContainer.style.justifyContent = 'space-between';
 	rootElement.style.display = 'block';
@@ -617,10 +620,6 @@ const createCustomSelect = (arr) => {
 					resetEpisodeSelect();
 					loadShows();
 					allEpisodesLayout();
-					document.querySelector('.header').style.backgroundImage =
-						"url('./images/darkred-bg.jpg')";
-					document.querySelector('.footer').style.backgroundImage =
-						"url('./images/darkred-bg.jpg')";
 					document.getElementById('episode-option').innerHTML = this.innerHTML;
 					document.getElementById('show-name').innerHTML = this.innerHTML;
 					searchBar.placeholder = this.innerHTML;
@@ -630,7 +629,6 @@ const createCustomSelect = (arr) => {
 					searchInfoWrapper.style.display = 'none';
 				}
 			} else {
-				// searchBar.value = '';
 				let episode = document.querySelectorAll('.wrapper');
 				let checkerShow = this.textContent.split(' ').slice(2).join(' ');
 				for (let i = 0; i < episode.length; i++) {
