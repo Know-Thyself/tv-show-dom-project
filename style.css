@@ -305,9 +305,21 @@ body {
 	background-color: #610202;
 }
 
+.wrapper figure {
+	display: table;
+	width: fit-content;
+	margin: 0 auto;
+}
+
+.wrapper figure figcaption {
+	display:table-caption;
+	caption-side: bottom;
+}
+
 .show-info {
-	width: max-content;
-	margin: 7px auto 0 auto;
+	margin-top: 7px;
+	margin-bottom: -7px;
+	width: inherit;
 }
 
 .genres,
@@ -321,15 +333,16 @@ body {
 	color: var(--dark-red);
 	word-spacing: 5px;
 	text-align: left;
+	word-wrap: break-word;
 }
 
-.empty-div {
+/* .empty-div {
 	width: 100%;
 	margin-top: 4px;
 	background-color: var(--body-background);
 	height: 6px;
 	border-top: solid var(--show-name-bg);
-}
+} */
 .summary {
 	font-family: var(--readable-font);
 	text-align: left;
@@ -339,8 +352,6 @@ body {
 	color: var(--dark-rich-blue);
 	background-color: var(--white-2);
 	border: none;
-	/* text-decoration: none;
-	outline: none; */
 }
 
 .d-none {

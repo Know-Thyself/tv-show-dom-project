@@ -46,14 +46,16 @@ function populatePage(arr) {
 			createShowName(elem, wrapper);
 			createSelectOptions(elem);
 		}
-		createImage(elem, wrapper);
+		let figure = document.createElement('figure');
+		wrapper.appendChild(figure);
+		createImage(elem, figure);
 		if (elem.genres) {
 			createShowInfo(
 				elem.genres,
 				elem.status,
 				elem.rating.average,
 				elem.runtime,
-				wrapper
+				figure
 			);
 			createEmptyDiv(wrapper);
 		}
@@ -113,9 +115,11 @@ const createEpisodeSelectOptions = (episode) => {
 
 const createShowInfo = (g, s, r, rt, parent) => {
 	let corrected = g.toString().split(',').join(', ');
+	let figCaption = document.createElement('figcaption');
+	parent.appendChild(figCaption);
 	let showInfo = document.createElement('section');
 	showInfo.className = 'show-info';
-	parent.appendChild(showInfo);
+	figCaption.appendChild(showInfo);
 	let genres = document.createElement('h4');
 	genres.setAttribute('class', 'genres');
 	genres.innerHTML = `Genres: ${corrected}`;
