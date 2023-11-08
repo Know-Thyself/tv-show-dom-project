@@ -202,7 +202,8 @@ const containerEvent = e => {
 	document.getElementById('episode-option').innerHTML = currentShowName
 	document.getElementById('show-name').innerHTML = currentShowName
 	searchBar.placeholder = currentShowName
-	window.scrollTo(0, 0)
+    window.scrollTo(0, 0)
+    backToShows.style.display = 'inline-block'
 }
 
 const readMore = e => {
