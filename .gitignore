@@ -1,0 +1,6 @@
+.vscode/*
+.vscode/settings.json
+.vscode/extensions.json
+# Ignore all local history of files
+**/.history
+.vscode

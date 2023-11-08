@@ -273,6 +273,7 @@ body {
 	margin: 0 auto;
 	border-radius: 8px;
 	box-shadow: 1px 1px 1px 1px var(--box-shadow);
+    cursor: pointer;
 }
 
 .wrapper .name,
