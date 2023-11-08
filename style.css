@@ -41,11 +41,12 @@ body {
 	font-family: var(--primary-font);
 }
 
-.logo,
-.epi-logo {
+.logo {
 	height: 64px;
 	width: auto;
 	float: left;
+    cursor: pointer;
+    margin-left: 7.5%;
 }
 
 .custom-select-wrapper,
@@ -391,6 +392,9 @@ body {
 		/* margin: auto; */
 		/* justify-content: space-around; */
 	}
+    .logo {
+        margin-left: 5%;
+    }
 	.nav-link {
 		display: inline-block;
 	}
@@ -445,6 +449,9 @@ body {
     grid-auto-rows: auto; */
 		width: 95%;
 	}
+    .logo {
+        margin-left: 2.5%;
+    }
 	.nav-container {
 		width: 95%;
 	}
@@ -462,7 +469,7 @@ body {
 	.custom-select-episode {
 		position: absolute;
 		top: 0.9rem;
-		right: 3.5rem;
+		right: 2.5%;
 		width: 30%;
 		/* margin-top: 10px; */
 	}

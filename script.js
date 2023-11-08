@@ -202,8 +202,8 @@ const containerEvent = e => {
 	document.getElementById('episode-option').innerHTML = currentShowName
 	document.getElementById('show-name').innerHTML = currentShowName
 	searchBar.placeholder = currentShowName
-    window.scrollTo(0, 0)
-    backToShows.style.display = 'inline-block'
+	window.scrollTo(0, 0)
+	backToShows.style.display = 'inline-block'
 }
 
 const readMore = e => {
@@ -318,8 +318,7 @@ const searchEpisodes = (episodes, val) => {
 	}
 }
 
-const backToShows = document.getElementById('navigation-link')
-backToShows.addEventListener('click', e => {
+const navigateToHome = e => {
 	e.preventDefault()
 	rootElement.innerHTML = ''
 	resetRootAndSelect()
@@ -328,7 +327,12 @@ backToShows.addEventListener('click', e => {
 	search(sortedShows)
 	allShowsLayout()
 	addPlaceholder()
-})
+}
+
+const backToShows = document.getElementById('navigation-link')
+backToShows.addEventListener('click', navigateToHome)
+const logo = document.getElementById('logo')
+logo.addEventListener('click', navigateToHome)
 
 const resetRootAndSelect = () => {
 	let customSelect = document.getElementById('custom-select')
